@@ -12,7 +12,6 @@ var server = http.createServer(function (req, resp) {
 
     con.connect(function(err) {
     if (err) throw err;
-    console.log("Connected!");
     });
 
     if (req.url == "/charts") {
