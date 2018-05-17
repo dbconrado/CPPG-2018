@@ -1,59 +1,58 @@
-var http = require('http');
-var fs = require('fs');
+var express = require('express');
+var path = require('path');
+var favicon = require('serve-favicon');
+var logger = require('morgan');
+var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
 
-var server = http.createServer(function (req, resp) {
+var routes = require('./controller/routes');
 
-    var express = require('express');
-    var app = express();
+var app = express();
 
-    require('json-response');
+// view engine setup
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
-    var mysql = require('mysql');
+// uncomment after placing your favicon in /public
+//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(logger('dev'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-    if (req.url == '/app.js'){
-        app.post('/index', function(req, res) { 
-        //Do some req verification stuff here
-        //If req verfiication passes
-        var servResp = {};
-        servResp.success = true;
-        servResp.redirect = true;
-        servResp.redirectURL = "http://localhost:8000/charts";
-        res.send(servResp);
-        });
-    }
+app.use('/', routes);
 
-    if (req.url == "/charts"){
-        fs.readFile("index.ejs", function (error, pgResp){
-            if (error){
-                resp.writeHead(404);
-                resp.write('Contents you are looking are Not Found');
-            } else{
-                var con = mysql.createConnection({
-                    host: "localhost",
-                    user: "root",
-                    password: "root",
-                    database: "cppg"
-                });
+// catch 404 and forward to error handler
+app.use(function(req, res, next) {
+  var err = new Error('Not Found');
+  err.status = 404;
+  next(err);
+});
 
-                con.connect(function(err){
-                if (err) throw err;
-                    con.query("SELECT * FROM projeto WHERE categoriaProjeto = 'Pesquisa'", function (err, result, fields) {
-                    if (err) throw err;
-                        console.log(result);
-                    });
-                });
+// error handlers
 
-                app.get('/index.ejs', function(req, res) {
-                  res.send('porra');
-                }); 
-                resp.writeHead(200, { 'Content-Type': 'text/html' });
-                resp.write(pgResp);
-            }
-            resp.end();
-        });
-    } else{
-        resp.writeHead(404);
-        resp.end();
-    }
-    module.exports = server;
-}).listen(8000);
+// development error handler
+// will print stacktrace
+if (app.get('env') === 'development') {
+  app.use(function(err, req, res, next) {
+    res.status(err.status || 500);
+    res.render('error', {
+      message: err.message,
+      error: err
+    });
+  });
+}
+
+// production error handler
+// no stacktraces leaked to user
+app.use(function(err, req, res, next) {
+  res.status(err.status || 500);
+  res.render('error', {
+    message: err.message,
+    error: {}
+  });
+});
+
+
+module.exports = app;
