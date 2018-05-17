@@ -27,16 +27,16 @@ router.get('/charts', function(req, res, next) {
 	  database: "cppg"
 	});
 
-	var teste = con.connect(function(err) {
+	con.connect(function(err) {
 	  if (err) throw err;
-	  con.query("SELECT * FROM projeto AS gas", function (err, result, fields) {
-	    if (err) throw err;
+	  con.query("SELECT * FROM projeto AS gas", function (er, result, fields) {
+	    if (er) throw er;
 	    else {
-    	    numRows = result[0];
-	    	//console.log(result.gas);
-	    	res.render(path.resolve(__dirname + '/../views/index.ejs'), {
-			hamburguer: numRows
-		});
+	    	console.log(result[0].nomeProjeto);
+    	    numRows = result[0].nomeProjeto;
+			res.render(path.resolve(__dirname + '/../views/index.ejs'), {
+				hamburguer: numRows
+			});
 	    }
 	  });
 	});
