@@ -2,7 +2,6 @@ var path = require('path');
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
-var JQuery = require('jquery');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -30,15 +29,14 @@ router.get('/charts', function(req, res, next) {
 
 	con.connect(function(err) {
 	  if (err) throw err;
-	  con.query("SELECT * FROM projeto AS gas", function (er, result, fields) {
+	  con.query("SELECT COUNT(*) AS totalProj, anoEdital FROM projeto GROUP BY anoEdital;", function (er, result, fields) {
 	    if (er) throw er;
 	    else {
-	    	//console.log(result[1].nomeProjeto);
-    	    numRows = result[0].nomeProjeto;
+	    	size = result.length-1;
 			try {
 				res.render(path.resolve(__dirname + '/../views/index.ejs'), {
-				hamburguer: result[0]
-			});
+					nProjetosUltimoAno: result[size].totalProj
+				});
 			} catch(e) {
 				console.error(e);
 			}

@@ -7,16 +7,16 @@
 <script>
 $(function (){
     Highcharts.setOptions(Highcharts.dark);
-    
+
     Highcharts.chart('container', {
         chart: {
             type: 'column'
         },
         title: {
-            text: 'Stacked column chart'
+            text: 'Produção Anual'
         },
         xAxis: {
-            categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
+            categories: ['2015', '2016', '2017']
         },
         yAxis: {
             min: 0,
@@ -57,13 +57,13 @@ $(function (){
         },
         series: [{
             name: 'John',
-            data: [5, 3, 4, 7, 2]
+            data: [5, 3, 4]
         }, {
             name: 'Jane',
-            data: [2, 2, 3, 2, 1]
+            data: [2, 2, 3]
         }, {
             name: 'Joe',
-            data: [3, 4, 4, 2, 5]
+            data: [3, 4, <%= nProjetosUltimoAno %>]
         }]
     });
 });
@@ -72,7 +72,7 @@ $(function (){
 
 <body style='background-color: #323232'>
 
-<h1> <%= hamburguer.nomeProjeto %> </h1>
+<h1> <%= nProjetosUltimoAno %> </h1>
 <div id="container" style="width:100%; height:400px;"></div>
 
 </body>
