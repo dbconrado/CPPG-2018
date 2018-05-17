@@ -6,63 +6,64 @@
 
 <script>
 $(function (){
-
-
-    var myChart = Highcharts.chart('container', {
+    Highcharts.setOptions(Highcharts.dark);
+    
+    Highcharts.chart('container', {
         chart: {
-            borderColor: '#EBBA95',
-            borderWidth: 2,
-            backgroundColor: '#303030',
-            type: 'bar'
+            type: 'column'
         },
         title: {
-            text: 'Tipos de trabalhos',
-            style: {
-                color: '#fff',
-                fontWeight: 'bold'
-            }
+            text: 'Stacked column chart'
         },
         xAxis: {
-            categories: ['Pesquisa', 'Ensino', 'Extensão'],
-            labels: {
-                style: {
-                    color: 'white'
-                }
-            }
+            categories: ['Apples', 'Oranges', 'Pears', 'Grapes', 'Bananas']
         },
         yAxis: {
+            min: 0,
             title: {
-                text: 'Categorias dos trabalhos registrados junto ao Campus',
-                style: {
-                    color: 'white'
-                }
+                text: 'Total fruit consumption'
             },
-            labels: {
+            stackLabels: {
+                enabled: true,
                 style: {
-                    color: 'white'
+                    fontWeight: 'bold',
+                    color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
                 }
             }
         },
         legend: {
-              itemStyle: {
-                 font: '9pt Trebuchet MS, Verdana, sans-serif',
-                 color: 'white'
-              },
-              itemHoverStyle: {
-                 color: '#A0A0A0'
-              },
-              itemHiddenStyle: {
-                 color: '#444'
-              }
+            align: 'right',
+            x: -30,
+            verticalAlign: 'top',
+            y: 25,
+            floating: true,
+            backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+            borderColor: '#CCC',
+            borderWidth: 1,
+            shadow: false
+        },
+        tooltip: {
+            headerFormat: '<b>{point.x}</b><br/>',
+            pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+        },
+        plotOptions: {
+            column: {
+                stacking: 'normal',
+                dataLabels: {
+                    enabled: true,
+                    color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                }
+            }
         },
         series: [{
-            name: '2015',
-            data: [1, 0, 4],
-            color: 'white'
+            name: 'John',
+            data: [5, 3, 4, 7, 2]
         }, {
-            name: '2016',
-            data: [5, 7, 3],
-            color: 'grey'
+            name: 'Jane',
+            data: [2, 2, 3, 2, 1]
+        }, {
+            name: 'Joe',
+            data: [3, 4, 4, 2, 5]
         }]
     });
 });
@@ -71,7 +72,7 @@ $(function (){
 
 <body style='background-color: #323232'>
 
-<h1> <%= hamburguer %> </h1>
+<h1> <%= hamburguer.nomeProjeto %> </h1>
 <div id="container" style="width:100%; height:400px;"></div>
 
 </body>

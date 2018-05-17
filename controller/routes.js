@@ -2,6 +2,7 @@ var path = require('path');
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+var JQuery = require('jquery');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -32,11 +33,15 @@ router.get('/charts', function(req, res, next) {
 	  con.query("SELECT * FROM projeto AS gas", function (er, result, fields) {
 	    if (er) throw er;
 	    else {
-	    	console.log(result[1].nomeProjeto);
+	    	//console.log(result[1].nomeProjeto);
     	    numRows = result[0].nomeProjeto;
-			res.render(path.resolve(__dirname + '/../views/index.ejs'), {
-				hamburguer: numRows
+			try {
+				res.render(path.resolve(__dirname + '/../views/index.ejs'), {
+				hamburguer: result[0]
 			});
+			} catch(e) {
+				console.error(e);
+			}
 	    }
 	  });
 	});
