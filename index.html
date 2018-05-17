@@ -5,7 +5,35 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
 <script>
-$(function () {
+    $.ajax({
+    type: "POST",
+    url: '/app.js', //A string containing the URL to which the request is sent.
+    timeout: 2000,
+
+    //A plain object or string that is sent to the server with the request.
+    data: userdata,
+
+    //The type of data expected from the server. Default: Intelligent Guess (xml, json, script, text, html).
+    dataType: 'json',
+
+    success: function(response,status,xhr) {
+        //show content
+        console.log('Success!' + response+', Status: '+status+', xhr: '+xhr)
+
+        if(response.redirect) {
+            window.location = response.redirectURL;
+        }
+    },
+    error: function(jqXHR, textStatus, err) {
+        //show error message
+        alert('text status '+textStatus+', err '+err)
+    }
+});
+</script>
+
+<script>
+$(function (){
+
 
     var myChart = Highcharts.chart('container', {
         chart: {
@@ -42,7 +70,18 @@ $(function () {
                 }
             }
         },
-        
+        legend: {
+              itemStyle: {
+                 font: '9pt Trebuchet MS, Verdana, sans-serif',
+                 color: 'white'
+              },
+              itemHoverStyle: {
+                 color: '#A0A0A0'
+              },
+              itemHiddenStyle: {
+                 color: '#444'
+              }
+        },
         series: [{
             name: 'Jane',
             data: [1, 0, 4],
