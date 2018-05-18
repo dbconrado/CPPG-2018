@@ -18,8 +18,6 @@ router.get('/users/detail', function(req, res, next) {
 });
 
 router.get('/charts', function(req, res, next) {
-	var mysql = require('mysql');
-
 	var con = mysql.createConnection({
 	  host: "localhost",
 	  user: "root",
@@ -27,21 +25,30 @@ router.get('/charts', function(req, res, next) {
 	  database: "cppg"
 	});
 
-	con.connect(function(err) {
-	  if (err) throw err;
-	  con.query("SELECT COUNT(*) AS totalProj, anoEdital FROM projeto GROUP BY anoEdital;", function (er, result, fields) {
-	    if (er) throw er;
-	    else {
-	    	size = result.length-1;
-			try {
-				res.render(path.resolve(__dirname + '/../views/index.ejs'), {
-					nProjetosUltimoAno: result[size].totalProj
-				});
-			} catch(e) {
-				console.error(e);
+	var nProjetosUltimoAno;
+	var nProjetosPenultimoAno;
+	var nProjetosAnoRetrasado;
+	try {
+		con.connect();
+		con.query("SELECT MAX(anoEdital) AS anoAtual, COUNT(*) AS totalProj FROM projeto WHERE categoriaProjeto = 'Pesquisa';",
+			function (er, result, fields) {
+			if (er) throw er;
+			else {
+				nProjetosUltimoAno = result[0].totalProj;
 			}
-	    }
-	  });
-	});
+		});
+		con.end();
+	}
+	catch(e) {
+		throw e;
+	}
+	try {
+		res.render(path.resolve(__dirname + '/../views/index.ejs'), {
+			nProjetosUltimoAno: nProjetosUltimoAno
+		});
+	} catch(e) {
+	console.error(e);
+	}
+	}
 });
 module.exports = router;
