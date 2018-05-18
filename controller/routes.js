@@ -44,11 +44,10 @@ router.get('/charts', function(req, res, next) {
 	}
 	try {
 		res.render(path.resolve(__dirname + '/../views/index.ejs'), {
-			nProjetosUltimoAno: nProjetosUltimoAno
+		ultimoAno: nProjetosUltimoAno
 		});
 	} catch(e) {
-	console.error(e);
-	}
+		console.error(e);
 	}
 });
 module.exports = router;
