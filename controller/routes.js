@@ -22,32 +22,36 @@ router.get('/charts', function(req, res, next) {
 	  host: "localhost",
 	  user: "root",
 	  password: "root",
-	  database: "cppg"
+	  database: "cppg",
+	  multipleStatements: true
 	});
 
-	var nProjetosUltimoAno;
-	var nProjetosPenultimoAno;
-	var nProjetosAnoRetrasado;
 	try {
 		con.connect();
-		con.query("SELECT MAX(anoEdital) AS anoAtual, COUNT(*) AS totalProj FROM projeto WHERE categoriaProjeto = 'Pesquisa';",
-			function (er, result, fields) {
+
+		var sql = "SELECT anoEdital FROM projeto GROUP BY anoEdital ORDER BY anoEdital DESC;SELECT COUNT(*) AS totalPesquisa FROM projeto WHERE categoriaProjeto = 'Pesquisa' GROUP BY anoEdital;SELECT COUNT(*) AS totalExtensao FROM projeto WHERE categoriaProjeto = 'Extensão' GROUP BY anoEdital;SELECT COUNT(*) AS totalEnsino FROM projeto WHERE categoriaProjeto = 'Ensino' GROUP BY anoEdital;";
+		con.query(sql, [1,2,3,4], function (er, result, fields) {
 			if (er) throw er;
 			else {
-				nProjetosUltimoAno = result[0].totalProj;
+			    sendToView(result[0][0].anoEdital, result[0][1].anoEdital, result[0][2].anoEdital,
+			   	result[0][0].totalPesquisa,result[1][0].totalExtensao,result[2][0].totalEnsino);
 			}
 		});
 		con.end();
+
+		function sendToView(ultimoAno, penultimoAno, anoRetrasado, totalPesquisaUltimoAno, totalExtensaoUltimoAno, totalEnsinoUltimoAno) {
+			res.render(path.resolve(__dirname + '/../views/index.ejs'), {
+			ultimoAno: ultimoAno,
+			penultimoAno: penultimoAno,
+			anoRetrasado: anoRetrasado,
+			totalPesquisaUltimoAno: totalPesquisaUltimoAno,
+			totalEnsinoUltimoAno: totalEnsinoUltimoAno,
+			totalExtensaoUltimoAno: totalExtensaoUltimoAno
+			});
+		}
 	}
 	catch(e) {
 		throw e;
-	}
-	try {
-		res.render(path.resolve(__dirname + '/../views/index.ejs'), {
-		ultimoAno: nProjetosUltimoAno
-		});
-	} catch(e) {
-		console.error(e);
 	}
 });
 module.exports = router;

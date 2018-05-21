@@ -16,7 +16,7 @@ $(function (){
             text: 'Produção Anual'
         },
         xAxis: {
-            categories: ['2015', '2016', '2017']
+            categories: [<%= anoRetrasado %>, <%= penultimoAno %>, <%= ultimoAno %>]
         },
         yAxis: {
             min: 0,
@@ -56,14 +56,14 @@ $(function (){
             }
         },
         series: [{
-            name: 'John',
-            data: [5, 3, 4]
+            name: 'Pesquisa',
+            data: [5, 3, totalPesquisaUltimoAno]
         }, {
-            name: 'Jane',
-            data: [2, 2, 3]
+            name: 'Ensino',
+            data: [2, 2, totalEnsinoUltimoAno]
         }, {
-            name: 'Joe',
-            data: [3, 4, <%= nProjetosUltimoAno %>]
+            name: 'Extensão',
+            data: [3, 4, totalExtensaoUltimoAno]
         }]
     });
 });
@@ -71,8 +71,6 @@ $(function (){
 </head>
 
 <body style='background-color: #323232'>
-
-<h1> <%= nProjetosUltimoAno %> </h1>
 <div id="container" style="width:100%; height:400px;"></div>
 
 </body>
