@@ -57,13 +57,13 @@ $(function (){
         },
         series: [{
             name: 'Pesquisa',
-            data: [5, 3, totalPesquisaUltimoAno]
+            data: [5, 3, <%= totalPesquisaUltimoAno %>]
         }, {
             name: 'Ensino',
-            data: [2, 2, totalEnsinoUltimoAno]
+            data: [2, 2, <%= totalEnsinoUltimoAno %>]
         }, {
             name: 'Extensão',
-            data: [3, 4, totalExtensaoUltimoAno]
+            data: [3, 4, <%= totalExtensaoUltimoAno %>]
         }]
     });
 });
