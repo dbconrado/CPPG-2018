@@ -160,43 +160,46 @@ router.get('/charts', function(req, res, next) {
 
 			for(var i = 0; i<data.length; i++)
 			{
-				typesOfAssistance[i] = [0, 0, 0, 0, 0]
+				typesOfAssistance[i] = [0, 0, 0, 0, 0];
 			}
-
-			console.log(typesOfAssistance);
 			
 			for(var i = 0; i<data.length; i++)
 			{
 				sql = "SELECT AP.modalidadeBolsa AS tipoBolsa FROM aluno_participa_projeto AP JOIN projeto P ON P.idProjeto = AP.idProjeto WHERE P.anoEdital = " + data[i].anoEdital;
-				con.query(sql, function (er, result, fields)
-				{
-					console.log(result);
-					for(var j = 0; j<result.length; j++)
+
+				typesOfAssistance.forEach(function(val){
+					con.query(sql,val, function (er, result, fields)
 					{
-						if(result[j].tipoBolsa == "PIBIC")
+						//console.log(result);
+						for(var j = 0; j<result.length; j++)
 						{
-							console.log('data ' + data.length);
-							console.log('i ' + i);
-							typesOfAssistance[i][0]++;
+							if(result[j].tipoBolsa == "PIBIC")
+							{
+								//console.log(typesOfAssistance[0]);
+								typesOfAssistance[i][0]++;
+							}
+							else if(result[j].tipoBolsa == "PIBIC-JR")
+							{
+								typesOfAssistance[i][1]++;
+							}
+							else if(result[j].tipoBolsa == "PIBIT")
+							{
+								typesOfAssistance[i][2]++;
+							}
+							else if(result[j].tipoBolsa == "PIBEX")
+							{
+								typesOfAssistance[i][3]++;
+							}
+							else
+							{
+								//console.log(typesOfAssistance[i][0]);
+								typesOfAssistance[i][4]++;
+							}
 						}
-						else if(result[j].tipoBolsa == "PIBIC-JR")
-						{
-							typesOfAssistance[i][1]++;
-						}
-						else if(result[j].tipoBolsa == "PIBIT")
-						{
-							typesOfAssistance[i][2]++;
-						}
-						else if(result[j].tipoBolsa == "PIBEX")
-						{
-							typesOfAssistance[i][3]++;
-						}
-						else
-						{
-							typesOfAssistance[i][4]++;
-						}
-					}
-				});
+						//console.log(result);
+					});
+					});
+				
 			}
 			return typesOfAssistance;
 		}
