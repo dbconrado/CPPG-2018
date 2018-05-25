@@ -47,7 +47,7 @@ router.get('/charts', function(req, res, next) {
 	try {
 		con.connect();
 		// Recupera os três últimos anos nos quais hajam dados no banco
-		sql = "SELECT COUNT(*) AS total, anoEdital FROM aluno_participa_projeto AP JOIN projeto P ON P.idProjeto = AP.idProjeto GROUP BY P.anoEdital ORDER BY P.anoEdital DESC";
+		sql = "SELECT anoEdital FROM aluno_participa_projeto AP JOIN projeto P ON P.idProjeto = AP.idProjeto GROUP BY P.anoEdital ORDER BY P.anoEdital DESC";
 		con.query(sql, function (er, result, fields)
 		{
 		if (er) throw er;
@@ -56,166 +56,61 @@ router.get('/charts', function(req, res, next) {
 			years = result;
 			var numberOfYears = 0;
 			var typesOfAssistance = [];
-			//con.query(sql, function (er, result, fields)
-			//{
-				for(var i=0; i<years.length; i++)
-				{
-					lookForProjectsPerYear(years[i].anoEdital, numberOfYears, typesOfAssistance);
-					numberOfYears++;
-				}
-				sendToView(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
-				/*if(er) throw er;
-				else
-				{
-					numberOfProjectsPerYear = lookForProjectsPerYear(result,ultimoAno);
-
-					if (result[0] != undefined)
-					{
-						if(result[0].anoEdital == ultimoAno) nPesquisaUltimoAno = result[0].total;
-						else nPesquisaUltimoAno = 0;
-					}
-					else nPesquisaUltimoAno = 0;
-
-					if (result[1] != undefined)
-					{
-						if(result[1].anoEdital == penultimoAno) nPesquisaPenultimoAno = result[1].total;
-						else nPesquisaPenultimoAno = 0;
-					}
-					else nPesquisaPenultimoAno = 0;
-
-					if (result[2] != undefined)
-					{
-						if(result[2].anoEdital == anoRetrasado) nPesquisaAnoRetrasado = result[2].total;
-						else nPesquisaAnoRetrasado = 0;
-					}
-					else nPesquisaAnoRetrasado = 0;
-
-					sql = "SELECT COUNT(*) AS total, anoEdital, categoriaProjeto FROM projeto WHERE categoriaProjeto = 'Ensino' GROUP BY anoEdital ORDER BY anoEdital DESC;";
-					con.query(sql, function (er, result, fields)
-					{
-						if(er) throw er;
-						else
-						{
-							if (result[0] != undefined)
-							{
-								if(result[0].anoEdital == ultimoAno) nEnsinoUltimoAno = result[0].total;
-								else nEnsinoUltimoAno = 0;
-							}
-							else nEnsinoUltimoAno = 0;
-
-							if (result[1] != undefined)
-							{
-								if(result[1].anoEdital == penultimoAno) nEnsinoPenultimoAno = result[1].total;
-								else nEnsinoPenultimoAno = 0;
-							}							
-							else nEnsinoPenultimoAno = 0;
-
-							if (result[2] != undefined)
-							{
-								if(result[2].anoEdital == anoRetrasado) nEnsinoAnoRetrasado = result[2].total;
-								else nEnsinoAnoRetrasado = 0;
-							}
-							else nEnsinoAnoRetrasado = 0;
-
-							sql = "SELECT COUNT(*) AS total, anoEdital, categoriaProjeto FROM projeto WHERE categoriaProjeto = 'Extensão' GROUP BY anoEdital ORDER BY anoEdital DESC;";
-							con.query(sql, function (er, result, fields)
-							{
-								if(er) throw er;
-								else
-								{sql = "SELECT COUNT(*) AS total, anoEdital, categoriaProjeto FROM projeto WHERE categoriaProjeto = 'Pesquisa' GROUP BY anoEdital ORDER BY anoEdital DESC;";
-			con.query(sql, function (er, result, fields)
+			for(var i=0; i<years.length; i++)
 			{
-				lookForProjectsPerYear(years);
-									if (result[0] != undefined)
-									{
-										if(result[0].anoEdital == ultimoAno) nExtensaoUltimoAno = result[0].total;
-										else nExtensaoUltimoAno = 0;
-									}
-									else nExtensaoUltimoAno = 0;
-
-									if (result[1] != undefined)
-									{
-										if(result[1].anoEdital == penultimoAno) nExtensaoPenultimoAno = result[1].total;
-										else nExtensaoPenultimoAno = 0;
-									}
-									else nExtensaoPenultimoAno = 0;
-
-									if (result[2] != undefined)
-									{
-										if(result[2].anoEdital == anoRetrasado) nExtensaoAnoRetrasado = result[2].total;
-										else nExtensaoAnoRetrasado = 0;
-									}
-									else nExtensaoAnoRetrasado = 0;
-
-									sendToView(ultimoAno, penultimoAno, anoRetrasado, nPesquisaAnoRetrasado, nExtensaoAnoRetrasado, nEnsinoAnoRetrasado, nPesquisaPenultimoAno, nExtensaoPenultimoAno, nEnsinoPenultimoAno, nPesquisaUltimoAno, nExtensaoUltimoAno, nEnsinoUltimoAno);
-								}
-							});
-						}
-					});
-				}*/
-			//});
+				lookForProjectsPerYear(years[i].anoEdital, numberOfYears, typesOfAssistance);
+				numberOfYears++;
+			}
+			sendToView(years, typesOfAssistance);
 		}
 		});
 	
 		function lookForProjectsPerYear(actualYear, countYears, typesOfAssistance)
 		{
 			var sql = "SELECT AP.modalidadeBolsa AS tipoBolsa FROM aluno_participa_projeto AP JOIN projeto P ON P.idProjeto = AP.idProjeto WHERE P.anoEdital = ?";
-			console.log('ano em escopo: ' + actualYear);
 
 			typesOfAssistance[countYears] = [0, 0, 0, 0, 0];
 			
 			con.query(sql, [actualYear], function (er, result, fields)
 			{
-				console.log(result);
 				for(var j = 0; j<result.length; j++)
 				{
 					if(result[j].tipoBolsa == "PIBIC")
 					{
-						console.log('cai1');
 						typesOfAssistance[countYears][0]++;
 					}
 					else if(result[j].tipoBolsa == "PIBIC-JR")
 					{
-						console.log('cai2');
 						typesOfAssistance[countYears][1]++;
 					}
 					else if(result[j].tipoBolsa == "PIBIT")
 					{
-						console.log('cai3');
 						typesOfAssistance[countYears][2]++;
 					}
 					else if(result[j].tipoBolsa == "PIBEX")
 					{
-						console.log('cai4');
 						typesOfAssistance[countYears][3]++;
 					}
 					else
 					{
-						console.log('cai5');
 						typesOfAssistance[countYears][4]++;
 					}
-					console.log(typesOfAssistance);
 				}
+				return typesOfAssistance;
 			});
-			return typesOfAssistance;
 		}
 
-		function sendToView(ultimoAno, penultimoAno, anoRetrasado, nPesquisaAnoRetrasado, nExtensaoAnoRetrasado, nEnsinoAnoRetrasado, nPesquisaPenultimoAno, nExtensaoPenultimoAno, nEnsinoPenultimoAno, nPesquisaUltimoAno, nExtensaoUltimoAno, nEnsinoUltimoAno)
+		function sendToView(years, typesOfAssistance)
 		{
+			var yearData = [];
+			for(var i=(years.length-1); i>0; i--)
+			{
+				yearData.push(years[i].anoEdital);
+			}
+
 			res.render(path.resolve(__dirname + '/../views/index.ejs'), {
-			ultimoAno: ultimoAno,
-			penultimoAno: penultimoAno,
-			anoRetrasado: anoRetrasado,
-			nPesquisaUltimoAno: nPesquisaUltimoAno,
-			nEnsinoUltimoAno: nEnsinoUltimoAno,
-			nExtensaoUltimoAno: nExtensaoUltimoAno,
-			nPesquisaPenultimoAno: nPesquisaPenultimoAno,
-			nEnsinoPenultimoAno: nEnsinoPenultimoAno,
-			nExtensaoPenultimoAno: nExtensaoPenultimoAno,
-			nPesquisaAnoRetrasado: nPesquisaAnoRetrasado,
-			nEnsinoAnoRetrasado: nEnsinoAnoRetrasado,
-			nExtensaoAnoRetrasado: nExtensaoAnoRetrasado
+				years: yearData
 			});
 		}
 	}

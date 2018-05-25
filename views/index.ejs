@@ -6,6 +6,13 @@
 
 <script>
 $(function (){
+    var mySeries = [];
+    mySeries.push(1);
+    mySeries.push(1);
+    mySeries.push(1);
+    console.log(mySeries);
+    console.log(<%= years %>);
+
     Highcharts.setOptions(Highcharts.dark);
 
     Highcharts.chart('container', {
@@ -16,7 +23,7 @@ $(function (){
             text: 'Produção Anual'
         },
         xAxis: {
-            categories: [<%= anoRetrasado %>, <%= penultimoAno %>, <%= ultimoAno %>]
+            categories: [<%= years %>]
         },
         yAxis: {
             min: 0,
@@ -57,13 +64,13 @@ $(function (){
         },
         series: [{
             name: 'Pesquisa',
-            data: [<%= nPesquisaAnoRetrasado %>, <%= nPesquisaPenultimoAno %>, <%= nPesquisaUltimoAno %>]
+            data: mySeries
         }, {
             name: 'Ensino',
-            data: [<%= nEnsinoAnoRetrasado %>, <%= nEnsinoPenultimoAno %>, <%= nEnsinoUltimoAno %>]
+            data: mySeries
         }, {
             name: 'Extensão',
-            data: [<%= nExtensaoAnoRetrasado %>, <%= nExtensaoPenultimoAno %>, <%= nExtensaoUltimoAno %>]
+            data: mySeries
         }]
     });
 });
