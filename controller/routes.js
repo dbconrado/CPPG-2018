@@ -193,7 +193,7 @@ router.get('/charts', function(req, res, next) {
 					else
 					{
 						console.log('cai5');
-						typesOfAssistance[countYears][4] = 1;
+						typesOfAssistance[countYears][4]++;
 					}
 					console.log(typesOfAssistance);
 				}
