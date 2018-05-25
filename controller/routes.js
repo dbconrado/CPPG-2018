@@ -55,14 +55,22 @@ router.get('/charts', function(req, res, next) {
 		{
 			years = result;
 			var numberOfYears = 0;
+			var conta=[];
 			var typesOfAssistance = [];
 
 			for(var i=0; i<years.length; i++)
 			{
-				lookForProjectsPerYear(years[i].anoEdital, numberOfYears, typesOfAssistance);
+				var tal = lookForProjectsPerYear(years[i].anoEdital, numberOfYears, typesOfAssistance).then(function(typesDown) {
+					conta.push(1);
+
+					// Se já rodei todas as promises, mando pra view
+					if(conta.length == years.length)
+					{
+						sendToView(years, typesOfAssistance);
+					}
+				}).catch((err) => setImmediate(() => { throw err; }));
 				numberOfYears++;
 			}
-			sendToView(years, typesOfAssistance);
 		}
 		});
 	
@@ -72,32 +80,36 @@ router.get('/charts', function(req, res, next) {
 
 			typesOfAssistance[countYears] = [0, 0, 0, 0, 0];
 			
-			con.query(sql, [actualYear], function (er, result, fields)
+			return new Promise(function(resolve,reject)
 			{
-				for(var j = 0; j<result.length; j++)
+				con.query(sql, [actualYear], function (er, result, fields)
 				{
-					if(result[j].tipoBolsa == "PIBIC")
+					if(er) return reject(err);
+					for(var j = 0; j<result.length; j++)
 					{
-						typesOfAssistance[countYears][0]++;
+						if(result[j].tipoBolsa == "PIBIC")
+						{
+							typesOfAssistance[countYears][0]++;
+						}
+						else if(result[j].tipoBolsa == "PIBIC-JR")
+						{
+							typesOfAssistance[countYears][1]++;
+						}
+						else if(result[j].tipoBolsa == "PIBIT")
+						{
+							typesOfAssistance[countYears][2]++;
+						}
+						else if(result[j].tipoBolsa == "PIBEX")
+						{
+							typesOfAssistance[countYears][3]++;
+						}
+						else
+						{
+							typesOfAssistance[countYears][4]++;
+						}
 					}
-					else if(result[j].tipoBolsa == "PIBIC-JR")
-					{
-						typesOfAssistance[countYears][1]++;
-					}
-					else if(result[j].tipoBolsa == "PIBIT")
-					{
-						typesOfAssistance[countYears][2]++;
-					}
-					else if(result[j].tipoBolsa == "PIBEX")
-					{
-						typesOfAssistance[countYears][3]++;
-					}
-					else
-					{
-						typesOfAssistance[countYears][4]++;
-					}
-				}
-				return typesOfAssistance;
+					resolve(typesOfAssistance);
+				});
 			});
 		}
 
