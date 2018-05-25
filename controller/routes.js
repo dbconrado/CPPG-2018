@@ -38,8 +38,8 @@ router.get('/charts', function(req, res, next) {
 
 	var con = mysql.createConnection({
 	  host: "localhost",
-	  user: "root",
-	  password: "root",
+	  user: "jose.luiz",
+	  password: "jOzE741963258",
 	  database: "cppg",
 	  multipleStatements: true
 	});
@@ -54,11 +54,15 @@ router.get('/charts', function(req, res, next) {
 		else
 		{
 			years = result;
-
-			sql = "SELECT COUNT(*) AS total, anoEdital, categoriaProjeto FROM projeto WHERE categoriaProjeto = 'Pesquisa' GROUP BY anoEdital ORDER BY anoEdital DESC;";
-			con.query(sql, function (er, result, fields)
-			{
-				lookForProjectsPerYear(years);
+			var numberOfYears = 0;
+			var typesOfAssistance = [];
+			//con.query(sql, function (er, result, fields)
+			//{
+				for(var i=0; i<years.length; i++)
+				{
+					lookForProjectsPerYear(years[i].anoEdital, numberOfYears, typesOfAssistance);
+					numberOfYears++;
+				}
 				sendToView(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
 				/*if(er) throw er;
@@ -150,65 +154,50 @@ router.get('/charts', function(req, res, next) {
 						}
 					});
 				}*/
-			});
+			//});
 		}
 		});
 	
-		function lookForProjectsPerYear(data)
+		function lookForProjectsPerYear(actualYear, countYears, typesOfAssistance)
 		{
-			var typesOfAssistance = [];
-			var sql;
+			var sql = "SELECT AP.modalidadeBolsa AS tipoBolsa FROM aluno_participa_projeto AP JOIN projeto P ON P.idProjeto = AP.idProjeto WHERE P.anoEdital = ?";
+			console.log('ano em escopo: ' + actualYear);
 
-			for(var i = 0; i<data.length; i++)
+			typesOfAssistance[countYears] = [0, 0, 0, 0, 0];
+			
+			con.query(sql, [actualYear], function (er, result, fields)
 			{
-				typesOfAssistance[i] = [0, 0, 0, 0, 0];
-			}
-
-			console.log(data);
-
-			while(i<data.length)
-			{
-				sql = "SELECT AP.modalidadeBolsa AS tipoBolsa FROM aluno_participa_projeto AP JOIN projeto P ON P.idProjeto = AP.idProjeto WHERE P.anoEdital = ?";
-				
-				async.each(
-				con.query(sql, [data[i].anoEdital], function (er, result, fields)
+				console.log(result);
+				for(var j = 0; j<result.length; j++)
 				{
-					console.log(result + 'cai');
-					for(var j = 0; j<result.length; j++)
+					if(result[j].tipoBolsa == "PIBIC")
 					{
-						if(result[j].tipoBolsa == "PIBIC")
-						{
-							console.log('cai1');
-							typesOfAssistance[i][0]++;
-						}
-						else if(result[j].tipoBolsa == "PIBIC-JR")
-						{
-							console.log('cai2');
-							typesOfAssistance[i][1]++;
-						}
-						else if(result[j].tipoBolsa == "PIBIT")
-						{
-							console.log('cai3');
-							typesOfAssistance[i][2]++;
-						}
-						else if(result[j].tipoBolsa == "PIBEX")
-						{
-							console.log('cai4');
-							typesOfAssistance[i][3]++;
-						}
-						else
-						{
-							console.log('cai5');
-							typesOfAssistance[i][4] = 1;
-						}
+						console.log('cai1');
+						typesOfAssistance[countYears][0]++;
 					}
-					i++;
-				});, function(url, callback){
+					else if(result[j].tipoBolsa == "PIBIC-JR")
+					{
+						console.log('cai2');
+						typesOfAssistance[countYears][1]++;
+					}
+					else if(result[j].tipoBolsa == "PIBIT")
+					{
+						console.log('cai3');
+						typesOfAssistance[countYears][2]++;
+					}
+					else if(result[j].tipoBolsa == "PIBEX")
+					{
+						console.log('cai4');
+						typesOfAssistance[countYears][3]++;
+					}
+					else
+					{
+						console.log('cai5');
+						typesOfAssistance[countYears][4] = 1;
+					}
 					console.log(typesOfAssistance);
 				}
-			}
-				
-			}
+			});
 			return typesOfAssistance;
 		}
 
