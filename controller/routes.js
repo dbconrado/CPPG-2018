@@ -4,14 +4,13 @@ var router = express.Router();
 var mysql = require('mysql');
 var async = require('async');
 
-/* GET home page. */
 router.get('/', function(req, res, next) {
 	res.render('index', { title: 'Cool, huh!', condition: false });
 });
 
-/* GET users listing. */
-router.get('/users', function(req, res, next) {
-	res.send('respond with a resource');
+router.get('/404', function(req, res, next) {
+	console.log(req.session.error);
+	res.render(path.resolve(__dirname + '/../views/404.ejs'), {});
 });
 
 router.get('/users/detail', function(req, res, next) {
@@ -113,8 +112,23 @@ router.get('/charts', function(req, res, next) {
 			});
 		}
 
+		function getCol(matrix, col)
+		{
+			var column = [];
+			for(var i=0; i<matrix.length; i++){
+			   column.push(matrix[i][col]);
+			}
+			return column;
+		 }
+
 		function sendToView(years, typesOfAssistance)
 		{
+			var pibicAssistance 	= getCol(typesOfAssistance, 0);
+			var pibicJrAssistance 	= getCol(typesOfAssistance, 1);
+			var pibitAssistance 	= getCol(typesOfAssistance, 2);
+			var pibexJrAssistance 	= getCol(typesOfAssistance, 3);
+			var volunteerAssistance = getCol(typesOfAssistance, 4);
+
 			var yearData = [];
 			for(var i=(years.length-1); i>0; i--)
 			{
@@ -123,7 +137,18 @@ router.get('/charts', function(req, res, next) {
 
 			res.render(path.resolve(__dirname + '/../views/index.ejs'), {
 				years: yearData,
-				typesOfAssistance: typesOfAssistance
+				pibicAssistance: pibicAssistance,
+				pibicJrAssistance: pibicJrAssistance,
+				pibitAssistance: pibitAssistance,
+				pibexJrAssistance: pibexJrAssistance,
+				volunteerAssistance: volunteerAssistance
+			}, function(err, html) {
+				if(err) {
+					res.redirect('/404');
+				} else {
+					console.log('cai');
+					res.send(html);
+				}
 			});
 		}
 	}

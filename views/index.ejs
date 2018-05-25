@@ -20,7 +20,7 @@ $(function (){
             type: 'column'
         },
         title: {
-            text: 'Produção Anual'
+            text: 'Bolsas Estudantis'
         },
         xAxis: {
             categories: [<%= years %>]
@@ -28,7 +28,7 @@ $(function (){
         yAxis: {
             min: 0,
             title: {
-                text: 'Total fruit consumption'
+                text: 'Modalidades de Bolsas Estudantis'
             },
             stackLabels: {
                 enabled: true,
@@ -40,7 +40,7 @@ $(function (){
         },
         legend: {
             align: 'right',
-            x: -30,
+            x: -60,
             verticalAlign: 'top',
             y: 25,
             floating: true,
@@ -63,14 +63,20 @@ $(function (){
             }
         },
         series: [{
-            name: 'Pesquisa',
-            data: mySeries
+            name: 'PIBIC',
+            data: [<%= pibicAssistance %>]
         }, {
-            name: 'Ensino',
-            data: mySeries
+            name: 'PIBIC-JR',
+            data: <%= pibicJrAssistance %>
         }, {
-            name: 'Extensão',
-            data: mySeries
+            name: 'PIBIT',
+            data: <%= pibitAssistance %>
+        }, {
+            name: 'PIBEX',
+            data: <%= pibexAssistance %>
+        }, {
+            name: 'Voluntário',
+            data: <%= volunteerAssistance %>
         }]
     });
 });
