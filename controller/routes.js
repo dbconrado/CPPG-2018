@@ -122,7 +122,8 @@ router.get('/charts', function(req, res, next) {
 			}
 
 			res.render(path.resolve(__dirname + '/../views/index.ejs'), {
-				years: yearData
+				years: yearData,
+				typesOfAssistance: typesOfAssistance
 			});
 		}
 	}
