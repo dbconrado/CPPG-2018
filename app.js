@@ -4,6 +4,7 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var expressSession = require('express-session');
 
 var routes = require('./controller/routes');
 
@@ -20,14 +21,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(__dirname + '/public'));
+app.use(expressSession({secret: 'max', saveUninitialized: false, resave: false}));
 
 app.use('/', routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
+  req.session.error = 'Choose an existing page would make my life soooooo much easier..';
+  res.status(404).redirect('/404');
 });
 
 // error handlers

@@ -10,7 +10,12 @@ router.get('/', function(req, res, next) {
 
 router.get('/404', function(req, res, next) {
 	console.log(req.session.error);
-	res.render(path.resolve(__dirname + '/../views/404.ejs'), {});
+	if(req.session == undefined) res.render(path.resolve(__dirname + '/../views/404.ejs'), {});
+	else res.render(path.resolve(__dirname + '/../views/404.ejs'), {
+		error: req.session.error
+	});
+	delete req.session.error;
+	console.log(req.session.error);
 });
 
 router.get('/users/detail', function(req, res, next) {
@@ -144,9 +149,10 @@ router.get('/charts', function(req, res, next) {
 				volunteerAssistance: volunteerAssistance
 			}, function(err, html) {
 				if(err) {
+					req.session.error = err.message;
+					console.error(req.session.error);
 					res.redirect('/404');
 				} else {
-					console.log('cai');
 					res.send(html);
 				}
 			});
