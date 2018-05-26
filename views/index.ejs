@@ -8,13 +8,6 @@
 $(function (){
     <%- include ../highcharts-themes/dark-unica.js %>
 
-    var mySeries = [];
-    mySeries.push(1);
-    mySeries.push(1);
-    mySeries.push(1);
-    console.log(mySeries);
-    console.log(<%= years %>);
-
     Highcharts.chart('container', {
         chart: {
             type: 'column'
@@ -67,16 +60,16 @@ $(function (){
             data: [<%= pibicAssistance %>]
         }, {
             name: 'PIBIC-JR',
-            data: <%= pibicJrAssistance %>
+            data: [<%= pibicJrAssistance %>]
         }, {
             name: 'PIBIT',
-            data: <%= pibitAssistance %>
+            data: [<%= pibitAssistance %>]
         }, {
             name: 'PIBEX',
-            data: <%= pibexAssistance %>
+            data: [<%= pibexAssistance %>]
         }, {
             name: 'Voluntário',
-            data: <%= volunteerAssistance %>
+            data: [<%= volunteerAssistance %>]
         }]
     });
 });

@@ -131,7 +131,7 @@ router.get('/charts', function(req, res, next) {
 			var pibicAssistance 	= getCol(typesOfAssistance, 0);
 			var pibicJrAssistance 	= getCol(typesOfAssistance, 1);
 			var pibitAssistance 	= getCol(typesOfAssistance, 2);
-			var pibexJrAssistance 	= getCol(typesOfAssistance, 3);
+			var pibexAssistance 	= getCol(typesOfAssistance, 3);
 			var volunteerAssistance = getCol(typesOfAssistance, 4);
 
 			var yearData = [];
@@ -140,17 +140,18 @@ router.get('/charts', function(req, res, next) {
 				yearData.push(years[i].anoEdital);
 			}
 
+			console.log(volunteerAssistance);
+
 			res.render(path.resolve(__dirname + '/../views/index.ejs'), {
 				years: yearData,
 				pibicAssistance: pibicAssistance,
 				pibicJrAssistance: pibicJrAssistance,
 				pibitAssistance: pibitAssistance,
-				pibexJrAssistance: pibexJrAssistance,
+				pibexAssistance: pibexAssistance,
 				volunteerAssistance: volunteerAssistance
 			}, function(err, html) {
 				if(err) {
 					req.session.error = err.message;
-					console.error(req.session.error);
 					res.redirect('/404');
 				} else {
 					res.send(html);
