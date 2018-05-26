@@ -15,7 +15,7 @@ router.get('/404', function(req, res, next) {
 	delete req.session.error;
 });
 
-router.get('/charts', function(req, res, next) {
+router.get('/stackedBar', function(req, res, next) {
 	var sql;
 	var years;
 
@@ -121,7 +121,7 @@ router.get('/charts', function(req, res, next) {
 				yearData.push(years[i].anoEdital);
 			}
 
-			res.render(path.resolve(__dirname + '/../views/index.ejs'), {
+			res.render(path.resolve(__dirname + '/../views/stackedBar.ejs'), {
 				years: yearData,
 				pibicAssistance: pibicAssistance,
 				pibicJrAssistance: pibicJrAssistance,
