@@ -2,20 +2,17 @@ var path = require('path');
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
-var async = require('async');
 
 router.get('/', function(req, res, next) {
 	res.render('index', { title: 'Cool, huh!', condition: false });
 });
 
 router.get('/404', function(req, res, next) {
-	console.log(req.session.error);
 	if(req.session == undefined) res.render(path.resolve(__dirname + '/../views/404.ejs'), {});
 	else res.render(path.resolve(__dirname + '/../views/404.ejs'), {
 		error: req.session.error
 	});
 	delete req.session.error;
-	console.log(req.session.error);
 });
 
 router.get('/users/detail', function(req, res, next) {
@@ -24,19 +21,6 @@ router.get('/users/detail', function(req, res, next) {
 
 router.get('/charts', function(req, res, next) {
 	var sql;
-	var ultimoAno=0;
-	var penultimoAno=0;
-	var anoRetrasado=0;
-	var nPesquisaUltimoAno = 0;
-	var nEnsinoUltimoAno = 0;
-	var nExtensaoUltimoAno = 0;
-	var nPesquisaPenultimoAno = 0;
-	var nEnsinoPenultimoAno = 0;
-	var nExtensaoPenultimoAno = 0;
-	var nPesquisaAnoRetrasado = 0;
-	var nEnsinoAnoRetrasado = 0;
-	var nExtensaoAnoRetrasado = 0;
-	var numberOfProjectsPerYear;
 	var years;
 
 
@@ -64,7 +48,7 @@ router.get('/charts', function(req, res, next) {
 
 			for(var i=0; i<years.length; i++)
 			{
-				var tal = lookForProjectsPerYear(years[i].anoEdital, numberOfYears, typesOfAssistance).then(function(typesDown) {
+				lookForProjectsPerYear(years[i].anoEdital, numberOfYears, typesOfAssistance).then(function(typesDown) {
 					conta.push(1);
 
 					// Se já rodei todas as promises, mando pra view
@@ -139,8 +123,6 @@ router.get('/charts', function(req, res, next) {
 			{
 				yearData.push(years[i].anoEdital);
 			}
-
-			console.log(volunteerAssistance);
 
 			res.render(path.resolve(__dirname + '/../views/index.ejs'), {
 				years: yearData,
