@@ -15,10 +15,6 @@ router.get('/404', function(req, res, next) {
 	delete req.session.error;
 });
 
-router.get('/users/detail', function(req, res, next) {
-	res.send('detail');
-});
-
 router.get('/charts', function(req, res, next) {
 	var sql;
 	var years;
@@ -36,6 +32,7 @@ router.get('/charts', function(req, res, next) {
 		con.connect();
 		// Recupera os três últimos anos nos quais hajam dados no banco
 		sql = "SELECT anoEdital FROM aluno_participa_projeto AP JOIN projeto P ON P.idProjeto = AP.idProjeto GROUP BY P.anoEdital ORDER BY P.anoEdital DESC";
+
 		con.query(sql, function (er, result, fields)
 		{
 		if (er) throw er;
@@ -119,7 +116,7 @@ router.get('/charts', function(req, res, next) {
 			var volunteerAssistance = getCol(typesOfAssistance, 4);
 
 			var yearData = [];
-			for(var i=(years.length-1); i>0; i--)
+			for(var i=(years.length-1); i>=0; i--)
 			{
 				yearData.push(years[i].anoEdital);
 			}
