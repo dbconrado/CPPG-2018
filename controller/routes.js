@@ -3,16 +3,23 @@ var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
 
-router.get('/', function(req, res, next) {
-	res.render('index', { title: 'Cool, huh!', condition: false });
-});
-
 router.get('/404', function(req, res, next) {
 	if(req.session == undefined) res.render(path.resolve(__dirname + '/../views/404.ejs'), {});
 	else res.render(path.resolve(__dirname + '/../views/404.ejs'), {
 		error: req.session.error
 	});
 	delete req.session.error;
+});
+
+router.get('/pub-discentes/compilados/2014-2016.pdf', function(req, res, next) {
+	res.sendFile(path.resolve(__dirname + '/../public/publicacoes-discentes/compilados/2014-2016.pdf'), function(err, html) {
+		if(err) {
+			req.session.error = err.message;
+			res.redirect('/404');
+		} else {
+			res.send(html);
+		}
+	});
 });
 
 router.get('/stackedBar', function(req, res, next) {
