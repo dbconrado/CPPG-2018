@@ -2,7 +2,7 @@ var config = {
     development: {
         //url to be used in link generation
         url: 'http://localhost:8000/',
-        //mongodb connection settings
+        //database connection settings
         database: {
             host:   'localhost',
             port:   '3306',
@@ -19,7 +19,7 @@ var config = {
     production: {
         //url to be used in link generation
         url: 'http://localhost:8000/',
-        //mongodb connection settings
+        //database connection settings
         database: {
             host: '127.0.0.1',
             port: '27017',
