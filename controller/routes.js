@@ -2,6 +2,15 @@ var path = require('path');
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+var env = process.env.NODE_ENV || 'development';
+var config = require('../model/config')[env];
+var con = mysql.createConnection({
+	host: config.database.host,
+	user: config.database.user,
+	password: config.database.pass,
+	database: config.database.db,
+	multipleStatements: true
+  });
 
 router.get('/404', function(req, res, next) {
 	if(req.session == undefined) res.render(path.resolve(__dirname + '/../views/404.ejs'), {});
@@ -25,15 +34,6 @@ router.get('/pub-discentes/compilados/2014-2016.pdf', function(req, res, next) {
 router.get('/stackedBar', function(req, res, next) {
 	var sql;
 	var years;
-
-
-	var con = mysql.createConnection({
-	  host: "localhost",
-	  user: "jose.luiz",
-	  password: "jOzE741963258",
-	  database: "cppg",
-	  multipleStatements: true
-	});
 
 	try {
 		con.connect();
