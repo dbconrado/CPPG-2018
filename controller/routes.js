@@ -12,8 +12,6 @@ var con = mysql.createConnection({
 	multipleStatements: true
   });
 
-  console.log(config.url);
-
 router.get('/404', function(req, res, next) {
 	if(req.session == undefined) res.render(path.resolve(__dirname + '/../views/404.ejs'), {});
 	else res.render(path.resolve(__dirname + '/../views/404.ejs'), {
