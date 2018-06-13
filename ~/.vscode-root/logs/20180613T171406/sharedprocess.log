@@ -1,0 +1,48 @@
+[2018-06-13 17:14:09.058] [sharedprocess] [info] main {"machineId":"b7aad910686236c83fc3c8be75f8846f141c2b46cde60bfe7ecbc05692260545"}
+[2018-06-13 17:14:09.192] [sharedprocess] [info] Scanned user extensions: 0
+[2018-06-13 17:14:10.223] [sharedprocess] [info] Scanned system extensions: 70
+[2018-06-13 17:14:12.208] [sharedprocess] [info] Scanned user extensions: 0
+[2018-06-13 17:14:12.212] [sharedprocess] [info] Scanned user extensions: 0
+[2018-06-13 17:14:12.226] [sharedprocess] [info] Scanned user extensions: 0
+[2018-06-13 17:14:12.387] [sharedprocess] [info] Scanned system extensions: 70
+[2018-06-13 17:14:12.390] [sharedprocess] [info] Scanned system extensions: 70
+[2018-06-13 17:14:14.631] [sharedprocess] [info] Scanned user extensions: 0
+[2018-06-13 17:14:16.199] [sharedprocess] [info] Scanned user extensions: 0
+[2018-06-13 17:14:27.081] [sharedprocess] [info] Scanned user extensions: 0
+[2018-06-13 17:14:27.084] [sharedprocess] [info] Scanned user extensions: 0
+[2018-06-13 17:14:27.091] [sharedprocess] [info] Scanned user extensions: 0
+[2018-06-13 17:14:27.194] [sharedprocess] [info] Installing extension: vscode-language-pack-pt-BR
+[2018-06-13 17:14:27.194] [sharedprocess] [info] Scanned system extensions: 70
+[2018-06-13 17:14:27.197] [sharedprocess] [info] Scanned system extensions: 70
+[2018-06-13 17:14:27.203] [sharedprocess] [info] Scanned user extensions: 0
+[2018-06-13 17:14:31.763] [sharedprocess] [info] Downloaded extension: vscode-language-pack-pt-BR
+[2018-06-13 17:14:35.206] [sharedprocess] [info] main {"machineId":"b7aad910686236c83fc3c8be75f8846f141c2b46cde60bfe7ecbc05692260545"}
+[2018-06-13 17:14:35.272] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-13 17:14:35.336] [sharedprocess] [info] Scanned system extensions: 70
+[2018-06-13 17:14:36.648] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-13 17:14:36.649] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-13 17:14:36.653] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-13 17:14:36.671] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-13 17:14:36.813] [sharedprocess] [info] Scanned system extensions: 70
+[2018-06-13 17:14:36.816] [sharedprocess] [info] Scanned system extensions: 70
+[2018-06-13 17:14:36.830] [sharedprocess] [info] Scanned system extensions: 70
+[2018-06-13 17:14:39.302] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-13 17:14:39.304] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-13 17:14:48.047] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-13 17:14:48.050] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-13 17:14:48.059] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-13 17:14:48.329] [sharedprocess] [info] Scanned system extensions: 70
+[2018-06-13 17:14:48.346] [sharedprocess] [info] Scanned system extensions: 70
+[2018-06-13 17:14:50.584] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-13 17:14:50.602] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-13 17:15:15.223] [sharedprocess] [info] Starting to clean up unused language packs.
+[2018-06-13 17:15:15.239] [sharedprocess] [info] Skipping directory 627bccf16e1ccca2d7c8491b1da18ff5.pt-br. Language pack still in use.
+[2018-06-13 17:19:50.749] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-13 17:24:50.765] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-13 17:29:50.780] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-13 17:34:50.792] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-13 17:39:50.813] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-13 17:44:50.825] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-13 17:49:50.847] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-13 17:54:50.867] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-13 17:59:50.876] [sharedprocess] [info] Scanned user extensions: 1

@@ -1,0 +1,81 @@
+Procurando pelo git em: git
+Usando git 2.7.4 de git
+> git rev-parse --show-toplevel
+> git config --get commit.template
+Open repository: /home/ifmg/CPPG
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse publicacoes-discentes
+> git rev-parse --symbolic-full-name publicacoes-discentes@{u}
+> git rev-list --left-right publicacoes-discentes...refs/remotes/origin/publicacoes-discentes
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git check-ignore -z --stdin
+> git check-ignore -z --stdin
+> git check-ignore -z --stdin
+> git show :controller/routes.js
+> git show :controller/routes.js
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse master
+> git rev-parse --symbolic-full-name master@{u}
+fatal: no upstream configured for branch 'master'
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git show :controller/routes.js
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse publicacoes-discentes
+> git rev-parse --symbolic-full-name publicacoes-discentes@{u}
+> git rev-list --left-right publicacoes-discentes...refs/remotes/origin/publicacoes-discentes
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse publicacoes-discentes
+> git rev-parse --symbolic-full-name publicacoes-discentes@{u}
+> git rev-list --left-right publicacoes-discentes...refs/remotes/origin/publicacoes-discentes
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse publicacoes-discentes
+> git rev-parse --symbolic-full-name publicacoes-discentes@{u}
+> git rev-list --left-right publicacoes-discentes...refs/remotes/origin/publicacoes-discentes
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse publicacoes-discentes
+> git rev-parse --symbolic-full-name publicacoes-discentes@{u}
+> git rev-list --left-right publicacoes-discentes...refs/remotes/origin/publicacoes-discentes
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse publicacoes-discentes
+> git rev-parse --symbolic-full-name publicacoes-discentes@{u}
+> git rev-list --left-right publicacoes-discentes...refs/remotes/origin/publicacoes-discentes
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse publicacoes-discentes
+> git rev-parse --symbolic-full-name publicacoes-discentes@{u}
+> git rev-list --left-right publicacoes-discentes...refs/remotes/origin/publicacoes-discentes
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse publicacoes-discentes
+> git rev-parse --symbolic-full-name publicacoes-discentes@{u}
+> git rev-list --left-right publicacoes-discentes...refs/remotes/origin/publicacoes-discentes
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse publicacoes-discentes
+> git rev-parse --symbolic-full-name publicacoes-discentes@{u}
+> git rev-list --left-right publicacoes-discentes...refs/remotes/origin/publicacoes-discentes
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
