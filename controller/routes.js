@@ -26,7 +26,10 @@ router.get('/pub-discentes/compilados/2014-2016.pdf', function(req, res, next) {
 			req.session.error = err.message;
 			res.redirect('/404');
 		} else {
-			res.send(html);
+			if(!res.status(200))
+			{
+				res.send(html);
+			}
 		}
 	});
 });
