@@ -26,7 +26,10 @@ router.get('/pub-discentes/compilados/2014-2016.pdf', function(req, res, next) {
 			req.session.error = err.message;
 			res.redirect('/404');
 		} else {
-			res.send(html);
+			if(!res.status(200))
+			{
+				res.send(html);
+			}
 		}
 	});
 });
@@ -36,7 +39,12 @@ router.get('/stackedBar', function(req, res, next) {
 	var years;
 
 	try {
-		con.connect();
+		if(con.state === 'disconnected'){
+			con.connect(function(err) {
+				if (err) throw err;
+			});
+		}
+		
 		// Recupera os três últimos anos nos quais hajam dados no banco
 		sql = "SELECT anoEdital FROM aluno_participa_projeto AP JOIN projeto P ON P.idProjeto = AP.idProjeto GROUP BY P.anoEdital ORDER BY P.anoEdital DESC";
 
@@ -76,7 +84,7 @@ router.get('/stackedBar', function(req, res, next) {
 			{
 				con.query(sql, [actualYear], function (er, result, fields)
 				{
-					if(er) return reject(err);
+					if(er) return reject(er);
 					for(var j = 0; j<result.length; j++)
 					{
 						if(result[j].tipoBolsa == "PIBIC")

@@ -1,0 +1,22 @@
+[2018-06-15 12:46:56.621] [sharedprocess] [info] main {"machineId":"b7aad910686236c83fc3c8be75f8846f141c2b46cde60bfe7ecbc05692260545"}
+[2018-06-15 12:46:56.911] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-15 12:46:58.274] [sharedprocess] [info] Scanned system extensions: 70
+[2018-06-15 12:47:00.113] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-15 12:47:00.114] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-15 12:47:00.203] [sharedprocess] [info] Scanned system extensions: 70
+[2018-06-15 12:47:03.922] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-15 12:47:06.755] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-15 12:47:36.742] [sharedprocess] [info] Starting to clean up unused language packs.
+[2018-06-15 12:47:36.881] [sharedprocess] [info] Skipping directory 627bccf16e1ccca2d7c8491b1da18ff5.pt-br. Language pack still in use.
+[2018-06-15 12:52:07.887] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-15 12:57:08.201] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-15 13:02:08.216] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-15 13:07:08.228] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-15 13:12:08.239] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-15 13:17:08.320] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-15 13:22:08.527] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-15 13:27:09.726] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-15 13:32:09.775] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-15 13:37:09.789] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-15 13:42:09.802] [sharedprocess] [info] Scanned user extensions: 1
+[2018-06-15 13:47:30.027] [sharedprocess] [info] Scanned user extensions: 1
