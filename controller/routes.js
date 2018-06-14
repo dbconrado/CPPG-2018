@@ -21,7 +21,9 @@ router.get('/404', function(req, res, next) {
 });
 
 router.get('/publicacoes/:nomePub', function (req, res) {
-	res.send(nomePub), function(err, html) {
+	req.params.nomePub = '/../public/publicacoes-discentes/2014/Conferencias/Nacional/Resumo/01_CNMAC2014_Welton.pdf';
+
+	res.sendFile(path.resolve(__dirname + req.params.nomePub), function(err, html) {
 		if(err) {
 			req.session.error = err.message;
 			res.redirect('/404');
@@ -31,7 +33,7 @@ router.get('/publicacoes/:nomePub', function (req, res) {
 				res.send(html);
 			}
 		}
-	}
+	});
 });
 
 router.get('/pub-discentes/compilados/2014-2016.pdf', function(req, res, next) {
