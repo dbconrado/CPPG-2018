@@ -12,6 +12,10 @@ var con = mysql.createConnection({
 	multipleStatements: true
   });
 
+router.get('/', function(req, res, next) {
+	res.render(path.resolve(__dirname + '/../views/index.ejs'));
+});
+  
 router.get('/404', function(req, res, next) {
 	if(req.session == undefined) res.render(path.resolve(__dirname + '/../views/404.ejs'), {});
 	else res.render(path.resolve(__dirname + '/../views/404.ejs'), {

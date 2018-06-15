@@ -1,0 +1,24 @@
+Looking for git in: git
+Using git 2.7.4 from git
+> git rev-parse --show-toplevel
+> git config --get commit.template
+Open repository: /home/ifmg/CPPG
+> git status -z -u
+> git symbolic-ref --short HEAD
+> git rev-parse search-bar
+> git rev-parse --symbolic-full-name search-bar@{u}
+> git rev-list --left-right search-bar...refs/remotes/origin/search-bar
+> git for-each-ref --format %(refname) %(objectname) --sort -committerdate
+> git remote --verbose
+> git check-ignore -z --stdin
+> git check-ignore -z --stdin
+> git show :views/index.ejs
+> git ls-tree -l HEAD -- /home/ifmg/CPPG/views/index.ejs
+> git show f310905b3970c0ff6cebc1ccc0a9c4b65e0930f5
+> git ls-files --stage -- /home/ifmg/CPPG/views/index.ejs
+> git cat-file -s 14ddc054f88793292d7715cf7eb39a1916c1568f
+> git show 14ddc054f88793292d7715cf7eb39a1916c1568f
+> git show HEAD:views/index.ejs
+> git show :views/index.ejs
+> git check-ignore -z --stdin
+> git show :views/index.ejs
