@@ -17,6 +17,32 @@ router.get('/', function(req, res, next) {
 });
 
 router.post('/search', function(req, res, next) {
+	searchValue = req.body.searchValue;
+
+	try
+	{
+		if(con.state === 'disconnected')
+		{
+			con.connect(function(err) {
+				if (err) throw err;
+			});
+		}
+
+		sql = "SELECT URN_ArtigoCompleto AS proceedingPath FROM publicacao WHERE nomePublicacao LIKE '% '" + searchValue + "'" + "'%'";
+		console.log(sql);
+		
+		con.query(sql, [searchValue], function (er, result, fields)
+		{
+			console.log(this.sql);
+			if(er) throw er;
+		});
+		console.log(result);
+	}
+	catch(e)
+	{
+		throw e;
+	}
+
 	res.render('searchProceedings', { searchValue: req.body.searchValue }, function(err, html) {
 		if(err) {
 			req.session.error = err.message;

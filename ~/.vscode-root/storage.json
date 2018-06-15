@@ -448,15 +448,14 @@
                 "mode": 0,
                 "x": 65,
                 "y": 24,
-                "width": 1301,
-                "height": 744
+                "width": 1855,
+                "height": 1056
             }
         }
     },
     "pickerWorkingDir": "/home/ifmg",
     "openedPathsList": {
         "workspaces": [
-            "/home/ifmg/CPPG",
             "/home/ifmg/CPPG"
         ],
         "files": []
