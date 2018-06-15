@@ -15,7 +15,18 @@ var con = mysql.createConnection({
 router.get('/', function(req, res, next) {
 	res.render(path.resolve(__dirname + '/../views/index.ejs'));
 });
-  
+
+router.post('/search', function(req, res, next) {
+	res.render('searchProceedings', { searchValue: req.body.searchValue }, function(err, html) {
+		if(err) {
+			req.session.error = err.message;
+			res.redirect('/404');
+		} else {
+			res.send(html);
+		}
+	});
+});
+
 router.get('/404', function(req, res, next) {
 	if(req.session == undefined) res.render(path.resolve(__dirname + '/../views/404.ejs'), {});
 	else res.render(path.resolve(__dirname + '/../views/404.ejs'), {
