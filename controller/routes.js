@@ -30,28 +30,40 @@ router.post('/search', function(req, res, next) {
 		
 		searchValue = '%' + searchValue + '%'; // Apenas escapa as aspas simples
 		sql = "SELECT URN_ArtigoCompleto AS proceedingPath FROM publicacao WHERE nomePublicacao LIKE ?";
-		console.log(sql);
 		
-		con.query(sql, [searchValue], function (er, result, fields)
-		{
-			console.log(this.sql);
-			if(er) throw er;
+		executeQuery(sql, searchValue).then(function(rows) {
+			console.log(rows);
+		}).catch((err) => setImmediate(() => { throw err; }));
+
+		res.render(path.resolve(__dirname + '/../views/searchProceedings.ejs'), { searchValue: req.body.searchValue }, function(err, html) {
+			if(err) {
+				req.session.error = err.message;
+				res.redirect('/404');
+			} else {
+				res.send(html);
+			}
 		});
-		console.log(result);
 	}
 	catch(e)
 	{
+		res.render(path.resolve(__dirname + '/../views/searchProceedings.ejs'), { searchValue: req.body.searchValue }, function(html) {
+			req.session.error = e.message;
+			res.redirect('/404');
+		});
 		throw e;
 	}
 
-	res.render('searchProceedings', { searchValue: req.body.searchValue }, function(err, html) {
-		if(err) {
-			req.session.error = err.message;
-			res.redirect('/404');
-		} else {
-			res.send(html);
-		}
-	});
+	function executeQuery(query, searchValue)
+	{
+		return new Promise(function(resolve, reject) {
+			con.query(query, searchValue, function (err, result, fields) {
+				if (err) {
+					return reject(err);
+				}
+				resolve(result);
+			});
+		});
+	}
 });
 
 router.get('/404', function(req, res, next) {
