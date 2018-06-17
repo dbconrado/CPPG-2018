@@ -29,7 +29,7 @@ router.post('/search', function(req, res, next) {
 		}
 		
 		searchValue = '%' + searchValue + '%'; // Apenas escapa as aspas simples
-		sql = "SELECT URN_ArtigoCompleto AS proceedingPath FROM publicacao WHERE nomePublicacao LIKE ?";
+		sql = "SELECT nomePublicacao, URN_ArtigoCompleto AS proceedingPath FROM publicacao WHERE nomePublicacao LIKE ?";
 		
 		executeQuery(sql, searchValue).then(function(rows) {
 			console.log(rows);
@@ -55,12 +55,25 @@ router.post('/search', function(req, res, next) {
 
 	function executeQuery(query, searchValue)
 	{
+		var treatedResults = [];
+		var auxResult = [];
 		return new Promise(function(resolve, reject) {
-			con.query(query, searchValue, function (err, result, fields) {
+			con.query(query, searchValue, function (err, results, fields) {
 				if (err) {
 					return reject(err);
 				}
-				resolve(result);
+
+				//Trata cada resultado obtido
+				results.forEach(function(result){
+					if(result["proceedingPath"] != null)
+					{
+						auxResult.push(result["nomePublicacao"]);
+						auxResult.push(result["proceedingPath"]);
+						treatedResults.push(auxResult);
+						auxResult = [];
+					}
+				});
+				resolve(treatedResults);
 			});
 		});
 	}
