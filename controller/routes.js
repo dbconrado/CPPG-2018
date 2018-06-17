@@ -31,18 +31,16 @@ router.post('/search', function(req, res, next) {
 		searchValue = '%' + searchValue + '%'; // Apenas escapa as aspas simples
 		sql = "SELECT nomePublicacao, URN_ArtigoCompleto AS proceedingPath FROM publicacao WHERE nomePublicacao LIKE ?";
 		
-		executeQuery(sql, searchValue).then(function(rows) {
-			console.log(rows);
+		executeQuery(sql, searchValue).then(function(result) {
+			res.render(path.resolve(__dirname + '/../views/searchProceedings.ejs'), { proceedingNames: result[0], proceedingPaths: result[1] }, function(err, html) {
+				if(err) {
+					req.session.error = err.message;
+					res.redirect('/404');
+				} else {
+					res.send(html);
+				}
+			});
 		}).catch((err) => setImmediate(() => { throw err; }));
-
-		res.render(path.resolve(__dirname + '/../views/searchProceedings.ejs'), { searchValue: req.body.searchValue }, function(err, html) {
-			if(err) {
-				req.session.error = err.message;
-				res.redirect('/404');
-			} else {
-				res.send(html);
-			}
-		});
 	}
 	catch(e)
 	{
@@ -55,8 +53,9 @@ router.post('/search', function(req, res, next) {
 
 	function executeQuery(query, searchValue)
 	{
+		var proceedings = [];
+		var urls = [];
 		var treatedResults = [];
-		var auxResult = [];
 		return new Promise(function(resolve, reject) {
 			con.query(query, searchValue, function (err, results, fields) {
 				if (err) {
@@ -65,14 +64,11 @@ router.post('/search', function(req, res, next) {
 
 				//Trata cada resultado obtido
 				results.forEach(function(result){
-					if(result["proceedingPath"] != null)
-					{
-						auxResult.push(result["nomePublicacao"]);
-						auxResult.push(result["proceedingPath"]);
-						treatedResults.push(auxResult);
-						auxResult = [];
-					}
+					proceedings.push(result["nomePublicacao"]);
+					urls.push(result["proceedingPath"]);
 				});
+				
+				treatedResults.push(proceedings,urls);
 				resolve(treatedResults);
 			});
 		});
