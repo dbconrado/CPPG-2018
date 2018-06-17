@@ -29,10 +29,11 @@ router.post('/search', function(req, res, next) {
 		}
 		
 		searchValue = '%' + searchValue + '%'; // Apenas escapa as aspas simples
-		sql = "SELECT nomePublicacao, URN_ArtigoCompleto AS proceedingPath FROM publicacao WHERE nomePublicacao LIKE ?";
+		sql = "SELECT nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath FROM publicacao WHERE nomePublicacao LIKE ?";
 		
 		executeQuery(sql, searchValue).then(function(result) {
-			res.render(path.resolve(__dirname + '/../views/searchProceedings.ejs'), { proceedingNames: result[0], proceedingPaths: result[1] }, function(err, html) {
+			res.render(path.resolve(__dirname + '/../views/searchProceedings.ejs'), { proceedingsRows: result }, function(err, html) {
+				console.log(result);
 				if(err) {
 					req.session.error = err.message;
 					res.redirect('/404');
@@ -53,9 +54,8 @@ router.post('/search', function(req, res, next) {
 
 	function executeQuery(query, searchValue)
 	{
-		var proceedings = [];
-		var urls = [];
-		var treatedResults = [];
+		var proceedingName, proceedingPath;
+		var treatedResults = [], auxArray = [];
 		return new Promise(function(resolve, reject) {
 			con.query(query, searchValue, function (err, results, fields) {
 				if (err) {
@@ -64,11 +64,13 @@ router.post('/search', function(req, res, next) {
 
 				//Trata cada resultado obtido
 				results.forEach(function(result){
-					proceedings.push(result["nomePublicacao"]);
-					urls.push(result["proceedingPath"]);
+					proceedingName = result["proceedingName"];
+					proceedingPath = result["proceedingPath"] ;
+					auxArray.push(proceedingName);
+					auxArray.push(proceedingPath);
+					treatedResults.push(auxArray);
+					auxArray = [];
 				});
-				
-				treatedResults.push(proceedings,urls);
 				resolve(treatedResults);
 			});
 		});
