@@ -33,7 +33,6 @@ router.post('/search', function(req, res, next) {
 		
 		executeQuery(sql, searchValue).then(function(result) {
 			res.render(path.resolve(__dirname + '/../views/searchProceedings.ejs'), { proceedingsRows: result }, function(err, html) {
-				console.log(result);
 				if(err) {
 					req.session.error = err.message;
 					res.redirect('/404');
