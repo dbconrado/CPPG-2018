@@ -27,8 +27,9 @@ router.post('/search', function(req, res, next) {
 				if (err) throw err;
 			});
 		}
-
-		sql = "SELECT URN_ArtigoCompleto AS proceedingPath FROM publicacao WHERE nomePublicacao LIKE '% '" + searchValue + "'" + "'%'";
+		
+		searchValue = '%' + searchValue + '%'; // Apenas escapa as aspas simples
+		sql = "SELECT URN_ArtigoCompleto AS proceedingPath FROM publicacao WHERE nomePublicacao LIKE ?";
 		console.log(sql);
 		
 		con.query(sql, [searchValue], function (er, result, fields)
@@ -130,8 +131,12 @@ router.get('/stackedBar', function(req, res, next) {
 			}
 		}
 		});
-	
-		function lookForProjectsPerYear(actualYear, countYears, typesOfAssistance)
+	}
+	catch(e) {
+		throw e;
+	}
+
+	function lookForProjectsPerYear(actualYear, countYears, typesOfAssistance)
 		{
 			var sql = "SELECT AP.modalidadeBolsa AS tipoBolsa FROM aluno_participa_projeto AP JOIN projeto P ON P.idProjeto = AP.idProjeto WHERE P.anoEdital = ?";
 
@@ -209,9 +214,5 @@ router.get('/stackedBar', function(req, res, next) {
 				}
 			});
 		}
-	}
-	catch(e) {
-		throw e;
-	}
 });
 module.exports = router;
