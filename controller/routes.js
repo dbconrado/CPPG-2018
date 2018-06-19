@@ -29,11 +29,14 @@ router.post('/search', function(req, res, next) {
 		}
 		
 		searchValue = '%' + searchValue + '%'; // Apenas escapa as aspas simples
-		sql = "SELECT nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath FROM publicacao WHERE nomePublicacao LIKE ?";
 		
-		executeQuery(sql, searchValue).then(function(result) {
-			res.render(path.resolve(__dirname + '/../views/searchProceedings.ejs'), { proceedingsRows: result }, function(err, html) {
-				if(err) {
+		searchDatabase(searchValue).then(function(result)
+		{
+			// console.log("vet 1 " + result[1]);
+			res.render(path.resolve(__dirname + '/../views/searchProceedings.ejs'), { proceedingsByName: result[0], proceedingsByAuthor: result[1] }, function(err, html)
+			{
+				if(err)
+				{
 					req.session.error = err.message;
 					res.redirect('/404');
 				} else {
@@ -44,32 +47,74 @@ router.post('/search', function(req, res, next) {
 	}
 	catch(e)
 	{
-		res.render(path.resolve(__dirname + '/../views/searchProceedings.ejs'), { searchValue: req.body.searchValue }, function(html) {
+		res.render(path.resolve(__dirname + '/../views/searchProceedings.ejs'), { searchValue: req.body.searchValue }, function(html)
+		{
 			req.session.error = e.message;
 			res.redirect('/404');
 		});
 		throw e;
 	}
 
-	function executeQuery(query, searchValue)
+	function searchDatabase(toSearchValue)
 	{
 		var proceedingName, proceedingPath;
-		var treatedResults = [], auxArray = [];
-		return new Promise(function(resolve, reject) {
-			con.query(query, searchValue, function (err, results, fields) {
-				if (err) {
+		var treatedResults = [];
+		sql1 = "SELECT nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath FROM publicacao WHERE nomePublicacao LIKE '" + toSearchValue + "'";
+		sql2 = "SELECT nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath FROM publicacao P JOIN servidor_publica SP ON SP.codPublicacao = P.codPublicacao  JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.nomeServidor LIKE '" + toSearchValue + "'";
+		sql3 = "SELECT nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath FROM publicacao P JOIN aluno_publica AP ON AP.codPublicacao = P.codPublicacao  JOIN aluno A ON A.matriculaAluno = AP.matriculaAluno WHERE A.nomeAluno LIKE '" + toSearchValue + "'";
+		sql = sql1 + ";" + sql2 + ";" + sql3;
+
+		return new Promise(function(resolve, reject)
+		{
+			con.query(sql, [1, 2, 3], function (err, results, fields)
+			{
+				if (err)
+				{
 					return reject(err);
 				}
 
 				//Trata cada resultado obtido
-				results.forEach(function(result){
+				//Trata a busca por nome de publicação
+				auxArray = [];
+				proceedingsByName = [];
+				results[0].forEach(function(result)
+				{
 					proceedingName = result["proceedingName"];
 					proceedingPath = result["proceedingPath"] ;
 					auxArray.push(proceedingName);
 					auxArray.push(proceedingPath);
-					treatedResults.push(auxArray);
+					proceedingsByName.push(auxArray);
 					auxArray = [];
 				});
+				treatedResults.push(proceedingsByName);
+
+				//Trata a busca por nome de servidor
+				auxArray = [];
+				proceedingsByAuthor = [];
+				results[1].forEach(function(result)
+				{
+					proceedingName = result["proceedingName"];
+					proceedingPath = result["proceedingPath"] ;
+					auxArray.push(proceedingName);
+					auxArray.push(proceedingPath);
+					proceedingsByAuthor.push(auxArray);
+					auxArray = [];
+				});
+				treatedResults.push(proceedingsByAuthor);
+
+				//Trata a busca por nome de aluno
+				auxArray = [];
+				proceedingsByStudent = [];
+				results[2].forEach(function(result)
+				{
+					proceedingName = result["proceedingName"];
+					proceedingPath = result["proceedingPath"] ;
+					auxArray.push(proceedingName);
+					auxArray.push(proceedingPath);
+					proceedingsByStudent.push(auxArray);
+					auxArray = [];
+				});
+				treatedResults.push(proceedingsByStudent);
 				resolve(treatedResults);
 			});
 		});
