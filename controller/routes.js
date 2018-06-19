@@ -30,7 +30,7 @@ router.post('/search', function(req, res, next) {
 		
 		searchValue = '%' + searchValue + '%'; // Apenas escapa as aspas simples
 		
-		searchDatabase(searchValue).then(function(result)
+		runQueries(searchValue).then(function(result)
 		{
 			// console.log("vet 1 " + result[1]);
 			res.render(path.resolve(__dirname + '/../views/searchProceedings.ejs'), { proceedingsByName: result[0], proceedingsByAuthor: result[1] }, function(err, html)
@@ -55,7 +55,7 @@ router.post('/search', function(req, res, next) {
 		throw e;
 	}
 
-	function searchDatabase(toSearchValue)
+	function runQueries(toSearchValue)
 	{
 		var proceedingName, proceedingPath;
 		var treatedResults = [];
