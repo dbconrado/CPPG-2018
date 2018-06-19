@@ -1,3 +1,7 @@
+// FAZER NUVEM DE TAGS SEPARANDO EM TRES SETORES (TITULO, AUTOR E ALUNO) NA MESMA TELA DOS RESULTADOS
+// DA PESQUISA
+
+
 var path = require('path');
 var express = require('express');
 var router = express.Router();
@@ -30,9 +34,8 @@ router.post('/search', function(req, res, next) {
 		
 		searchValue = '%' + searchValue + '%'; // Apenas escapa as aspas simples
 		
-		searchDatabase(searchValue).then(function(result)
+		runQueries(searchValue).then(function(result)
 		{
-			// console.log("vet 1 " + result[1]);
 			res.render(path.resolve(__dirname + '/../views/searchProceedings.ejs'), { proceedingsByName: result[0], proceedingsByAuthor: result[1] }, function(err, html)
 			{
 				if(err)
@@ -55,14 +58,15 @@ router.post('/search', function(req, res, next) {
 		throw e;
 	}
 
-	function searchDatabase(toSearchValue)
+	function runQueries(toSearchValue)
 	{
 		var proceedingName, proceedingPath;
 		var treatedResults = [];
-		sql1 = "SELECT nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath FROM publicacao WHERE nomePublicacao LIKE '" + toSearchValue + "'";
-		sql2 = "SELECT nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath FROM publicacao P JOIN servidor_publica SP ON SP.codPublicacao = P.codPublicacao  JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.nomeServidor LIKE '" + toSearchValue + "'";
-		sql3 = "SELECT nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath FROM publicacao P JOIN aluno_publica AP ON AP.codPublicacao = P.codPublicacao  JOIN aluno A ON A.matriculaAluno = AP.matriculaAluno WHERE A.nomeAluno LIKE '" + toSearchValue + "'";
-		sql = sql1 + ";" + sql2 + ";" + sql3;
+
+		queryGetProceedingByTitle = "SELECT nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath, nomeServidor AS proceedingAuthor FROM publicacao P JOIN servidor_publica SP ON SP.codPublicacao = P.codPublicacao JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE P.nomePublicacao LIKE '" + toSearchValue + "'";
+		queryGetProceedingsByTeachers = "SELECT nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath FROM publicacao P JOIN servidor_publica SP ON SP.codPublicacao = P.codPublicacao  JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.nomeServidor LIKE '" + toSearchValue + "'";
+		queryGetProceedingsByStudents = "SELECT nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath FROM publicacao P JOIN aluno_publica AP ON AP.codPublicacao = P.codPublicacao  JOIN aluno A ON A.matriculaAluno = AP.matriculaAluno WHERE A.nomeAluno LIKE '" + toSearchValue + "'";
+		sql = queryGetProceedingByTitle + ";" + queryGetProceedingsByTeachers + ";" + queryGetProceedingsByStudents;
 
 		return new Promise(function(resolve, reject)
 		{
@@ -80,9 +84,21 @@ router.post('/search', function(req, res, next) {
 				results[0].forEach(function(result)
 				{
 					proceedingName = result["proceedingName"];
+					index = searchInVector(proceedingsByName, proceedingName, 0);
+					console.log("i " + index);
+					// Testa se elemento já está no vetor, para evitar repetições
+					if(index)
+					{
+						console.log(" ainda n registrado");
+					} else
+					{
+						console.log("já registrado");
+					}
 					proceedingPath = result["proceedingPath"] ;
+					proceedingAuthors = result["proceedingAuthor"];
 					auxArray.push(proceedingName);
 					auxArray.push(proceedingPath);
+					auxArray.push(proceedingAuthors);
 					proceedingsByName.push(auxArray);
 					auxArray = [];
 				});
@@ -114,9 +130,31 @@ router.post('/search', function(req, res, next) {
 					proceedingsByStudent.push(auxArray);
 					auxArray = [];
 				});
+
 				treatedResults.push(proceedingsByStudent);
 				resolve(treatedResults);
 			});
+		});
+	}
+	
+	function searchInVector(vectorToSearch, value, op)
+	{
+		vectorToSearch.forEach(function(element, i)
+		{
+			if(op == 0)
+			{
+				console.log(value + " é igual a " + element[0] + " ? ");
+				if(element[0] == value)
+				{
+					console.log("sim");
+					console.log("então retorno " + i);
+					return true;
+				} else
+				{
+					console.log("não");
+				}
+			}
+			return false;
 		});
 	}
 });
@@ -246,7 +284,7 @@ router.get('/stackedBar', function(req, res, next) {
 		{
 			var column = [];
 			for(var i=0; i<matrix.length; i++){
-			   column.push(matrix[i][col]);
+						   ]			   column.push(matrix[i][col]);
 			}
 			return column;
 		 }
