@@ -63,7 +63,7 @@
         },
         "workbench.action.closeWindow": {
             "id": "workbench.action.closeWindow",
-            "label": "Ctrl+Shift+W",
+            "label": "Ctrl+W",
             "isNative": true
         },
         "workbench.action.closeFolder": {
@@ -456,7 +456,6 @@
     "pickerWorkingDir": "/home/ifmg",
     "openedPathsList": {
         "workspaces": [
-            "/home/ifmg/CPPG",
             "/home/ifmg/CPPG"
         ],
         "files": []

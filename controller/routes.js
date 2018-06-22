@@ -60,10 +60,10 @@ router.post('/search', function(req, res, next) {
 
 	function runQueries(toSearchValue)
 	{
-		var proceedingName, proceedingPath;
+		var proceedingName, proceedingPath, index;
 		var treatedResults = [];
 
-		queryGetProceedingByTitle = "SELECT nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath, nomeServidor AS proceedingAuthor FROM publicacao P JOIN servidor_publica SP ON SP.codPublicacao = P.codPublicacao JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE P.nomePublicacao LIKE '" + toSearchValue + "'";
+		queryGetProceedingByTitle = "SELECT P.codPublicacao AS proceedingCode, nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath, nomeServidor AS proceedingAuthor FROM publicacao P JOIN servidor_publica SP ON SP.codPublicacao = P.codPublicacao JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE P.nomePublicacao LIKE '" + toSearchValue + "'";
 		queryGetProceedingsByTeachers = "SELECT nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath FROM publicacao P JOIN servidor_publica SP ON SP.codPublicacao = P.codPublicacao  JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.nomeServidor LIKE '" + toSearchValue + "'";
 		queryGetProceedingsByStudents = "SELECT nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath FROM publicacao P JOIN aluno_publica AP ON AP.codPublicacao = P.codPublicacao  JOIN aluno A ON A.matriculaAluno = AP.matriculaAluno WHERE A.nomeAluno LIKE '" + toSearchValue + "'";
 		sql = queryGetProceedingByTitle + ";" + queryGetProceedingsByTeachers + ";" + queryGetProceedingsByStudents;
@@ -83,24 +83,32 @@ router.post('/search', function(req, res, next) {
 				proceedingsByName = [];
 				results[0].forEach(function(result)
 				{
-					proceedingName = result["proceedingName"];
-					index = searchInVector(proceedingsByName, proceedingName, 0);
-					console.log("i " + index);
+					proceedingCode = result["proceedingCode"];
+					index = searchInVector(proceedingsByName, proceedingCode, 0);
+					console.log("index: " + index);
 					// Testa se elemento já está no vetor, para evitar repetições
-					if(index)
+					if(index == -1)
 					{
-						console.log(" ainda n registrado");
+						proceedingCode = result["proceedingCode"];
+						proceedingName = result["proceedingName"];
+						proceedingPath = result["proceedingPath"];
+						proceedingAuthors = result["proceedingAuthor"];
+						auxArray.push(proceedingCode);
+						auxArray.push(proceedingName);
+						auxArray.push(proceedingPath);
+						auxArray.push(proceedingAuthors);
+						proceedingsByName.push(auxArray);
+						auxArray = [];
 					} else
 					{
-						console.log("já registrado");
+						// proceedingPath = result["proceedingPath"];
+						// proceedingAuthors = result["proceedingAuthor"];
+						// auxArray.push(proceedingName);
+						// auxArray.push(proceedingPath);
+						// auxArray.push(proceedingAuthors);
+						// proceedingsByName.push(auxArray);
+						// auxArray = [];
 					}
-					proceedingPath = result["proceedingPath"] ;
-					proceedingAuthors = result["proceedingAuthor"];
-					auxArray.push(proceedingName);
-					auxArray.push(proceedingPath);
-					auxArray.push(proceedingAuthors);
-					proceedingsByName.push(auxArray);
-					auxArray = [];
 				});
 				treatedResults.push(proceedingsByName);
 
@@ -137,25 +145,40 @@ router.post('/search', function(req, res, next) {
 		});
 	}
 	
+	/* 
+		Function to search in a vector of an matrix for determinate value
+		important note: this function don't search the entire matrix, but one subvector of it!
+		param 1: matrix (i called it vector, because it is a vector of vectors)
+		param 2: value to be searched
+		param 3: op is the operator that represents the subvector for the matrix that will be target of search
+		return: element-index if value is found, -1 otherwise.
+	*/
 	function searchInVector(vectorToSearch, value, op)
 	{
-		vectorToSearch.forEach(function(element, i)
+		var exists = -1;
+		vectorToSearch.every(function(element, i)
 		{
 			if(op == 0)
 			{
-				console.log(value + " é igual a " + element[0] + " ? ");
 				if(element[0] == value)
 				{
-					console.log("sim");
-					console.log("então retorno " + i);
-					return true;
-				} else
-				{
-					console.log("não");
+					console.log("i " + i);
+					exists = i;
+					return;
 				}
 			}
-			return false;
 		});
+		
+		if(exists != -1)
+		{
+			console.log("achei");
+			return exists;
+		}
+		else
+		{
+			console.log("n achei");
+			return -1;
+		}
 	}
 });
 
@@ -284,7 +307,7 @@ router.get('/stackedBar', function(req, res, next) {
 		{
 			var column = [];
 			for(var i=0; i<matrix.length; i++){
-						   ]			   column.push(matrix[i][col]);
+				column.push(matrix[i][col]);
 			}
 			return column;
 		 }
