@@ -60,7 +60,7 @@ router.post('/search', function(req, res, next) {
 
 	function runQueries(toSearchValue)
 	{
-		var proceedingName, proceedingPath;
+		var proceedingName, proceedingPath, index;
 		var treatedResults = [];
 
 		queryGetProceedingByTitle = "SELECT nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath, nomeServidor AS proceedingAuthor FROM publicacao P JOIN servidor_publica SP ON SP.codPublicacao = P.codPublicacao JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE P.nomePublicacao LIKE '" + toSearchValue + "'";
@@ -85,22 +85,26 @@ router.post('/search', function(req, res, next) {
 				{
 					proceedingName = result["proceedingName"];
 					index = searchInVector(proceedingsByName, proceedingName, 0);
-					console.log("i " + index);
 					// Testa se elemento já está no vetor, para evitar repetições
-					if(index)
+					if(!index)
 					{
-						console.log(" ainda n registrado");
+						proceedingPath = result["proceedingPath"];
+						proceedingAuthors = result["proceedingAuthor"];
+						auxArray.push(proceedingName);
+						auxArray.push(proceedingPath);
+						auxArray.push(proceedingAuthors);
+						proceedingsByName.push(auxArray);
+						auxArray = [];
 					} else
 					{
-						console.log("já registrado");
+						// proceedingPath = result["proceedingPath"];
+						// proceedingAuthors = result["proceedingAuthor"];
+						// auxArray.push(proceedingName);
+						// auxArray.push(proceedingPath);
+						// auxArray.push(proceedingAuthors);
+						// proceedingsByName.push(auxArray);
+						// auxArray = [];
 					}
-					proceedingPath = result["proceedingPath"] ;
-					proceedingAuthors = result["proceedingAuthor"];
-					auxArray.push(proceedingName);
-					auxArray.push(proceedingPath);
-					auxArray.push(proceedingAuthors);
-					proceedingsByName.push(auxArray);
-					auxArray = [];
 				});
 				treatedResults.push(proceedingsByName);
 
@@ -139,22 +143,19 @@ router.post('/search', function(req, res, next) {
 	
 	function searchInVector(vectorToSearch, value, op)
 	{
-		vectorToSearch.forEach(function(element, i)
+		console.log("searching for " + value)
+		var exists = false;
+		vectorToSearch.every(function(element, i)
 		{
 			if(op == 0)
 			{
-				console.log(value + " é igual a " + element[0] + " ? ");
 				if(element[0] == value)
 				{
-					console.log("sim");
-					console.log("então retorno " + i);
-					return true;
-				} else
-				{
-					console.log("não");
+					console.log("achei");
+					exists = i;
+					return exists;
 				}
 			}
-			return false;
 		});
 	}
 });
@@ -284,7 +285,7 @@ router.get('/stackedBar', function(req, res, next) {
 		{
 			var column = [];
 			for(var i=0; i<matrix.length; i++){
-						   ]			   column.push(matrix[i][col]);
+				column.push(matrix[i][col]);
 			}
 			return column;
 		 }
