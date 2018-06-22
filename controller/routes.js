@@ -50,11 +50,8 @@ router.post('/search', function(req, res, next) {
 	}
 	catch(e)
 	{
-		res.render(path.resolve(__dirname + '/../views/searchProceedings.ejs'), { searchValue: req.body.searchValue }, function(html)
-		{
-			req.session.error = e.message;
-			res.redirect('/404');
-		});
+		req.session.error = e.message;
+		res.redirect('/404');
 		throw e;
 	}
 
@@ -63,88 +60,136 @@ router.post('/search', function(req, res, next) {
 		var proceedingName, proceedingPath, index;
 		var treatedResults = [];
 
-		queryGetProceedingByTitle = "SELECT P.codPublicacao AS proceedingCode, nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath, nomeServidor AS proceedingAuthor FROM publicacao P JOIN servidor_publica SP ON SP.codPublicacao = P.codPublicacao JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE P.nomePublicacao LIKE '" + toSearchValue + "'";
-		queryGetProceedingsByTeachers = "SELECT nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath FROM publicacao P JOIN servidor_publica SP ON SP.codPublicacao = P.codPublicacao  JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.nomeServidor LIKE '" + toSearchValue + "'";
+		queryGetProceedingsByTitle = "SELECT P.codPublicacao AS proceedingCode, nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath, nomeServidor AS proceedingAuthor FROM publicacao P JOIN servidor_publica SP ON SP.codPublicacao = P.codPublicacao JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE P.nomePublicacao LIKE '" + toSearchValue + "'";
+		queryGetProceedingsByTeachers = "SELECT P.codPublicacao AS proceedingCode, nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath, nomeServidor AS proceedingAuthor FROM publicacao P JOIN servidor_publica SP ON SP.codPublicacao = P.codPublicacao  JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.nomeServidor LIKE '" + toSearchValue + "'";
 		queryGetProceedingsByStudents = "SELECT nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath FROM publicacao P JOIN aluno_publica AP ON AP.codPublicacao = P.codPublicacao  JOIN aluno A ON A.matriculaAluno = AP.matriculaAluno WHERE A.nomeAluno LIKE '" + toSearchValue + "'";
-		sql = queryGetProceedingByTitle + ";" + queryGetProceedingsByTeachers + ";" + queryGetProceedingsByStudents;
+		sql = queryGetProceedingsByTitle + ";" + queryGetProceedingsByTeachers + ";" + queryGetProceedingsByStudents;
 
-		return new Promise(function(resolve, reject)
+		try
 		{
-			con.query(sql, [1, 2, 3], function (err, results, fields)
+			return new Promise(function(resolve, reject)
 			{
-				if (err)
+				con.query(sql, [1, 2, 3], function (err, results, fields)
 				{
-					return reject(err);
-				}
+					if (err)
+					{
+						return reject(err);
+					}
 
-				//Trata cada resultado obtido
-				//Trata a busca por nome de publicação
-				auxArray = [];
-				proceedingsByName = [];
-				results[0].forEach(function(result)
-				{
-					proceedingCode = result["proceedingCode"];
-					index = searchInVector(proceedingsByName, proceedingCode, 0);
-					console.log("index: " + index);
-					// Testa se elemento já está no vetor, para evitar repetições
-					if(index == -1)
+					//Trata cada resultado obtido
+					//Trata a busca por nome de publicação
+					proceedingsByName = [];
+					results[0].forEach(function(result)
+					{
+						auxArray = [];
+						proceedingCode = result["proceedingCode"];
+						index = searchInVector(proceedingsByName, proceedingCode, 0);
+						// Testa se elemento já está no vetor, para evitar repetições
+						if(index == -1)
+						{
+							proceedingCode = result["proceedingCode"];
+							proceedingName = result["proceedingName"];
+							proceedingPath = result["proceedingPath"];
+							proceedingAuthor = result["proceedingAuthor"];
+							proceedingAuthor = toTitleCase(proceedingAuthor);
+							auxArray.push(proceedingCode);
+							auxArray.push(proceedingName);
+							auxArray.push(proceedingPath);
+							auxArray.push(proceedingAuthor);
+							proceedingsByName.push(auxArray);
+							auxArray = [];
+						} else
+						{
+							proceedingAuthor = result["proceedingAuthor"];
+							proceedingAuthor = toTitleCase(proceedingAuthor);
+							proceedingsByName.every(function(proceeding)
+							{
+								if(proceeding[0] == proceedingCode)
+								{
+									auxArray = [];
+									auxArray.push(proceeding[3]);
+									auxArray.push(proceedingAuthor);
+									proceeding[3] = auxArray;
+									return;
+								}
+							});
+						}
+					});
+					treatedResults.push(proceedingsByName);
+
+					//Trata a busca por nome de servidor
+					proceedingsByAuthor = [];
+					results[1].forEach(function(result)
 					{
 						proceedingCode = result["proceedingCode"];
+						getProceedingAuthors(proceedingCode).then(function(authors)
+						{
+							auxArray = [];
+							proceedingName = result["proceedingName"];
+							auxArray.push(proceedingName);
+							authors.forEach(function(author)
+							{
+								proceedingAuthor = author["proceedingAuthor"];
+								proceedingAuthor = toTitleCase(proceedingAuthor);
+								auxArray.push(proceedingAuthor);
+							});
+							proceedingsByAuthor.push(auxArray);
+						}).catch((err) => setImmediate(() => { throw err; }));
+					});
+					treatedResults.push(proceedingsByAuthor);
+
+					//Trata a busca por nome de aluno
+					auxArray = [];
+					proceedingsByStudent = [];
+					results[2].forEach(function(result)
+					{
 						proceedingName = result["proceedingName"];
 						proceedingPath = result["proceedingPath"];
-						proceedingAuthors = result["proceedingAuthor"];
-						auxArray.push(proceedingCode);
 						auxArray.push(proceedingName);
 						auxArray.push(proceedingPath);
-						auxArray.push(proceedingAuthors);
-						proceedingsByName.push(auxArray);
+						proceedingsByStudent.push(auxArray);
 						auxArray = [];
-					} else
-					{
-						// proceedingPath = result["proceedingPath"];
-						// proceedingAuthors = result["proceedingAuthor"];
-						// auxArray.push(proceedingName);
-						// auxArray.push(proceedingPath);
-						// auxArray.push(proceedingAuthors);
-						// proceedingsByName.push(auxArray);
-						// auxArray = [];
-					}
-				});
-				treatedResults.push(proceedingsByName);
+					});
 
-				//Trata a busca por nome de servidor
-				auxArray = [];
-				proceedingsByAuthor = [];
-				results[1].forEach(function(result)
-				{
-					proceedingName = result["proceedingName"];
-					proceedingPath = result["proceedingPath"] ;
-					auxArray.push(proceedingName);
-					auxArray.push(proceedingPath);
-					proceedingsByAuthor.push(auxArray);
-					auxArray = [];
+					treatedResults.push(proceedingsByStudent);
+					resolve(treatedResults);
 				});
-				treatedResults.push(proceedingsByAuthor);
+			});
+		}
+		catch(e)
+		{
+			throw e;
+		}
+	}
+	
+	/*
+		Function to capitalize the first letter of each string
+		params: string to treat, maybe an author full name, etc
+		return: string with firts letters of each word capitalized
+	*/
+	function toTitleCase(str) {
+		return str.replace(/\w\S*/g, function(txt){
+			return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
+		});
+	}
 
-				//Trata a busca por nome de aluno
-				auxArray = [];
-				proceedingsByStudent = [];
-				results[2].forEach(function(result)
-				{
-					proceedingName = result["proceedingName"];
-					proceedingPath = result["proceedingPath"] ;
-					auxArray.push(proceedingName);
-					auxArray.push(proceedingPath);
-					proceedingsByStudent.push(auxArray);
-					auxArray = [];
-				});
-
-				treatedResults.push(proceedingsByStudent);
-				resolve(treatedResults);
+	/* Function to get authors of a proceeding
+	   params: code of proceeding to be searched
+	   return: authors of that proceeding in array
+	*/
+	function getProceedingAuthors(proceedingCode)
+	{
+		sql = "SELECT P.codPublicacao AS proceedingCode, S.nomeServidor AS proceedingAuthor, P.nomePublicacao AS proceedingName FROM servidor S JOIN servidor_publica SP ON S.siapeServidor = SP.siapeServidor JOIN publicacao P ON P.codPublicacao = SP.codPublicacao WHERE P.codPublicacao = " + proceedingCode + "";
+		return new Promise(function(resolve, reject)
+		{
+			con.query(sql, function (er, result, fields)
+			{
+				resolve(result);
 			});
 		});
 	}
 	
+
 	/* 
 		Function to search in a vector of an matrix for determinate value
 		important note: this function don't search the entire matrix, but one subvector of it!
@@ -162,8 +207,7 @@ router.post('/search', function(req, res, next) {
 			{
 				if(element[0] == value)
 				{
-					console.log("i " + i);
-					exists = i;
+					exists = element[0];
 					return;
 				}
 			}
@@ -171,12 +215,10 @@ router.post('/search', function(req, res, next) {
 		
 		if(exists != -1)
 		{
-			console.log("achei");
 			return exists;
 		}
 		else
 		{
-			console.log("n achei");
 			return -1;
 		}
 	}
