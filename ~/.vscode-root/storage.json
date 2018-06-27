@@ -21,6 +21,11 @@
             "label": "Ctrl+Shift+T",
             "isNative": true
         },
+        "workbench.action.openRecent": {
+            "id": "workbench.action.openRecent",
+            "label": "Ctrl+R",
+            "isNative": true
+        },
         "workbench.action.files.save": {
             "id": "workbench.action.files.save",
             "label": "Ctrl+S",
@@ -451,7 +456,6 @@
     "pickerWorkingDir": "/home/jose",
     "openedPathsList": {
         "workspaces": [
-            "/home/jose/CPPG",
             "/home/jose/CPPG"
         ],
         "files": []

@@ -57,9 +57,14 @@
 															<span class="pull-right Tìtulo">(Tìtulo)</span>
 														</h4>
 														<p class="summary">Autores:
-																<% for (author of proceeding[2]){%>
-																	<span><%= author %>;</span>
-																<%}%>
+															<% for (author of proceeding[2]){%>
+																<span><%= author %>;</span>
+															<%}%>
+														</p>
+														<p class="summary">Alunos Envolvidos:
+															<% for (student of proceeding[4]){%>
+																<span><%= student %>;</span>
+															<%}%>
 														</p>
 													</div>
 												</div>
@@ -100,9 +105,14 @@
 																<span class="pull-right Tìtulo">(Tìtulo)</span>
 															</h4>
 															<p class="summary">Autores:
-																	<% for (author of proceeding[2]){%>
-																		<span><%= author %>;</span>
-																	<%}%>
+																<% for (author of proceeding[2]){%>
+																	<span><%= author %>;</span>
+																<%}%>
+															</p>
+															<p class="summary">Alunos Envolvidos:
+																<% for (student of proceeding[4]){%>
+																	<span><%= student %>;</span>
+																<%}%>
 															</p>
 														</div>
 													</div>
@@ -146,6 +156,11 @@
 																	<% for (author of proceeding[2]){%>
 																		<span><%= author %>;</span>
 																	<%}%>
+															</p>
+															<p class="summary">Alunos Envolvidos:
+																<% for (student of proceeding[4]){%>
+																	<span><%= student %>;</span>
+																<%}%>
 															</p>
 														</div>
 													</div>

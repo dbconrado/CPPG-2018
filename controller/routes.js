@@ -151,23 +151,33 @@ router.post('/search', function(req, res, next) {
 	*/
 	function getProceedingInfo(proceedingCode)
 	{
-		sql = "SELECT P.codPublicacao AS proceedingCode, S.nomeServidor AS proceedingAuthor, P.nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath FROM servidor S JOIN servidor_publica SP ON S.siapeServidor = SP.siapeServidor JOIN publicacao P ON P.codPublicacao = SP.codPublicacao WHERE P.codPublicacao = " + proceedingCode + "";
+		sql = "SELECT S.nomeServidor AS proceedingAuthor, P.nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath FROM servidor S JOIN servidor_publica SP ON S.siapeServidor = SP.siapeServidor JOIN publicacao P ON P.codPublicacao = SP.codPublicacao WHERE P.codPublicacao = " + proceedingCode + ";";
+		sql += "SELECT nomeAluno AS proceedingStudent FROM aluno_publica AP JOIN aluno A ON AP.matriculaAluno = A. matriculaAluno JOIN publicacao P ON P.codPublicacao = AP.codPublicacao WHERE P.codPublicacao = " + proceedingCode + "";
 		return new Promise(function(resolve, reject)
 		{
-			con.query(sql, function (er, results, fields)
+			con.query(sql, [1, 2], function (err, results, fields)
 			{
 				proceedingInfo = [];
-				proceedingInfo.push(results[0]["proceedingCode"]);
-				proceedingInfo.push(results[0]["proceedingName"]);
+				proceedingInfo.push(proceedingCode);
+				proceedingInfo.push(results[0][0]["proceedingName"]);
 				proceedingInfo.push([]);
+				
 				if(results[0]["proceedingPath"] != null) proceedingInfo.push(results[0]["proceedingPath"]);
 				else proceedingInfo.push('null');
-				results.forEach(function(result)
+				results[0].forEach(function(result)
 				{
 					proceedingAuthor = toTitleCase(result["proceedingAuthor"]);
 					proceedingInfo[2].push(proceedingAuthor);
 				});
-				// console.log(proceedingInfo);
+
+				// Itera entre os alunos envolvidos
+				proceedingInfo.push([]);
+				results[1].forEach(function(student)
+				{
+					proceedingInfo[4].push(student["proceedingStudent"]);
+				});
+				console.log("info");
+				console.log(proceedingInfo);
 				resolve(proceedingInfo);
 			});
 		});
