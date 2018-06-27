@@ -36,7 +36,7 @@ router.post('/search', function(req, res, next) {
 		
 		runQueries(searchValue).then(function(result)
 		{
-			res.render(path.resolve(__dirname + '/../views/searchProceedings.ejs'), { proceedingsByName: result[0], proceedingsByAuthor: result[1] }, function(err, html)
+			res.render(path.resolve(__dirname + '/../views/searchProceedings.ejs'), { proceedingsByName: result[0][0], proceedingsByAuthor: result[1][0], proceedingsByStudents: result[2][0] }, function(err, html)
 			{
 				if(err)
 				{
@@ -48,21 +48,20 @@ router.post('/search', function(req, res, next) {
 			});
 		}).catch((err) => setImmediate(() => { throw err; }));
 	}
-	catch(e)
+	catch(err)
 	{
-		req.session.error = e.message;
+		req.session.error = err.message;
 		res.redirect('/404');
-		throw e;
+		throw err;
 	}
 
 	function runQueries(toSearchValue)
 	{
 		var proceedingName, proceedingPath, index;
 		var treatedResults = [];
-
-		queryGetProceedingsByTitle = "SELECT P.codPublicacao AS proceedingCode, nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath, nomeServidor AS proceedingAuthor FROM publicacao P JOIN servidor_publica SP ON SP.codPublicacao = P.codPublicacao JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE P.nomePublicacao LIKE '" + toSearchValue + "'";
+		queryGetProceedingsByTitle = "SELECT codPublicacao AS proceedingCode FROM publicacao WHERE nomePublicacao LIKE '" + toSearchValue + "'";
 		queryGetProceedingsByTeachers = "SELECT P.codPublicacao AS proceedingCode, nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath, nomeServidor AS proceedingAuthor FROM publicacao P JOIN servidor_publica SP ON SP.codPublicacao = P.codPublicacao  JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.nomeServidor LIKE '" + toSearchValue + "'";
-		queryGetProceedingsByStudents = "SELECT nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath FROM publicacao P JOIN aluno_publica AP ON AP.codPublicacao = P.codPublicacao  JOIN aluno A ON A.matriculaAluno = AP.matriculaAluno WHERE A.nomeAluno LIKE '" + toSearchValue + "'";
+		queryGetProceedingsByStudents = "SELECT P.codPublicacao AS proceedingCode FROM publicacao P JOIN aluno_publica AP ON AP.codPublicacao = P.codPublicacao JOIN aluno A ON A.matriculaAluno = AP.matriculaAluno WHERE A.nomeAluno LIKE '" + toSearchValue + "'";
 		sql = queryGetProceedingsByTitle + ";" + queryGetProceedingsByTeachers + ";" + queryGetProceedingsByStudents;
 
 		try
@@ -79,80 +78,53 @@ router.post('/search', function(req, res, next) {
 					//Trata cada resultado obtido
 					//Trata a busca por nome de publicação
 					proceedingsByName = [];
+					var promises = [];
 					results[0].forEach(function(result)
 					{
-						auxArray = [];
 						proceedingCode = result["proceedingCode"];
-						index = searchInVector(proceedingsByName, proceedingCode, 0);
-						// Testa se elemento já está no vetor, para evitar repetições
-						if(index == -1)
+						const promise = getProceedingInfo(proceedingCode);
+						promises.push(promise);
+					});
+
+					//Trata cada resultado obtido
+					//Trata a busca por nome de autor
+					Promise.all(promises).then(proceeding =>
 						{
-							proceedingCode = result["proceedingCode"];
-							proceedingName = result["proceedingName"];
-							proceedingPath = result["proceedingPath"];
-							proceedingAuthor = result["proceedingAuthor"];
-							proceedingAuthor = toTitleCase(proceedingAuthor);
-							auxArray.push(proceedingCode);
-							auxArray.push(proceedingName);
-							auxArray.push(proceedingPath);
-							auxArray.push(proceedingAuthor);
-							proceedingsByName.push(auxArray);
-							auxArray = [];
-						} else
-						{
-							proceedingAuthor = result["proceedingAuthor"];
-							proceedingAuthor = toTitleCase(proceedingAuthor);
-							proceedingsByName.every(function(proceeding)
+							proceedingsByName.push(proceeding);
+							treatedResults.push(proceedingsByName);
+							
+							proceedingsByAuthor = [];
+							promises = [];
+							results[1].forEach(function(result)
 							{
-								if(proceeding[0] == proceedingCode)
+								proceedingCode = result["proceedingCode"];
+								const promise = getProceedingInfo(proceedingCode);
+								promises.push(promise);
+							});
+							//Trata cada resultado obtido
+							//Trata a busca por nome de aluno
+							Promise.all(promises).then(proceeding =>
+							{
+								proceedingsByAuthor.push(proceeding);
+								treatedResults.push(proceedingsByAuthor);
+
+								proceedingsByStudents = [];
+								promises = [];
+								results[2].forEach(function(result)
 								{
-									auxArray = [];
-									auxArray.push(proceeding[3]);
-									auxArray.push(proceedingAuthor);
-									proceeding[3] = auxArray;
-									return;
-								}
+									proceedingCode = result["proceedingCode"];
+									const promise = getProceedingInfo(proceedingCode);
+									promises.push(promise);
+								});
+
+								Promise.all(promises).then(proceeding =>
+								{
+									proceedingsByStudents.push(proceeding);
+									treatedResults.push(proceedingsByStudents);
+									resolve(treatedResults);
+								});
 							});
-						}
 					});
-					treatedResults.push(proceedingsByName);
-
-					//Trata a busca por nome de servidor
-					proceedingsByAuthor = [];
-					results[1].forEach(function(result)
-					{
-						proceedingCode = result["proceedingCode"];
-						getProceedingAuthors(proceedingCode).then(function(authors)
-						{
-							auxArray = [];
-							proceedingName = result["proceedingName"];
-							auxArray.push(proceedingName);
-							authors.forEach(function(author)
-							{
-								proceedingAuthor = author["proceedingAuthor"];
-								proceedingAuthor = toTitleCase(proceedingAuthor);
-								auxArray.push(proceedingAuthor);
-							});
-							proceedingsByAuthor.push(auxArray);
-						}).catch((err) => setImmediate(() => { throw err; }));
-					});
-					treatedResults.push(proceedingsByAuthor);
-
-					//Trata a busca por nome de aluno
-					auxArray = [];
-					proceedingsByStudent = [];
-					results[2].forEach(function(result)
-					{
-						proceedingName = result["proceedingName"];
-						proceedingPath = result["proceedingPath"];
-						auxArray.push(proceedingName);
-						auxArray.push(proceedingPath);
-						proceedingsByStudent.push(auxArray);
-						auxArray = [];
-					});
-
-					treatedResults.push(proceedingsByStudent);
-					resolve(treatedResults);
 				});
 			});
 		}
@@ -173,21 +145,34 @@ router.post('/search', function(req, res, next) {
 		});
 	}
 
-	/* Function to get authors of a proceeding
+	/* Function to get info of a proceeding by it's code
 	   params: code of proceeding to be searched
-	   return: authors of that proceeding in array
+	   return: array containing proceeding code, it's name and authors
 	*/
-	function getProceedingAuthors(proceedingCode)
+	function getProceedingInfo(proceedingCode)
 	{
-		sql = "SELECT P.codPublicacao AS proceedingCode, S.nomeServidor AS proceedingAuthor, P.nomePublicacao AS proceedingName FROM servidor S JOIN servidor_publica SP ON S.siapeServidor = SP.siapeServidor JOIN publicacao P ON P.codPublicacao = SP.codPublicacao WHERE P.codPublicacao = " + proceedingCode + "";
+		sql = "SELECT P.codPublicacao AS proceedingCode, S.nomeServidor AS proceedingAuthor, P.nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath FROM servidor S JOIN servidor_publica SP ON S.siapeServidor = SP.siapeServidor JOIN publicacao P ON P.codPublicacao = SP.codPublicacao WHERE P.codPublicacao = " + proceedingCode + "";
 		return new Promise(function(resolve, reject)
 		{
-			con.query(sql, function (er, result, fields)
+			con.query(sql, function (er, results, fields)
 			{
-				resolve(result);
+				proceedingInfo = [];
+				proceedingInfo.push(results[0]["proceedingCode"]);
+				proceedingInfo.push(results[0]["proceedingName"]);
+				proceedingInfo.push([]);
+				if(results[0]["proceedingPath"] != null) proceedingInfo.push(results[0]["proceedingPath"]);
+				else proceedingInfo.push('null');
+				results.forEach(function(result)
+				{
+					proceedingAuthor = toTitleCase(result["proceedingAuthor"]);
+					proceedingInfo[2].push(proceedingAuthor);
+				});
+				// console.log(proceedingInfo);
+				resolve(proceedingInfo);
 			});
 		});
 	}
+	
 	
 
 	/* 

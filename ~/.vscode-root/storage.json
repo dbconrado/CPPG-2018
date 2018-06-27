@@ -21,11 +21,6 @@
             "label": "Ctrl+Shift+T",
             "isNative": true
         },
-        "workbench.action.openRecent": {
-            "id": "workbench.action.openRecent",
-            "label": "Ctrl+R",
-            "isNative": true
-        },
         "workbench.action.files.save": {
             "id": "workbench.action.files.save",
             "label": "Ctrl+S",
@@ -442,21 +437,22 @@
     "windowsState": {
         "openedWindows": [],
         "lastActiveWindow": {
-            "folderPath": "/home/ifmg/CPPG",
-            "backupPath": "/home/ifmg/CPPG/~/.vscode-root/Backups/2ac6bf224f9d4dd3faf99f769a3b2342",
+            "folderPath": "/home/jose/CPPG",
+            "backupPath": "/home/jose/CPPG/~/.vscode-root/Backups/4a5a25676ba32998ffacf8a46afbc768",
             "uiState": {
                 "mode": 0,
-                "x": 65,
-                "y": -744,
-                "width": 1301,
-                "height": 744
+                "x": 1366,
+                "y": 198,
+                "width": 1440,
+                "height": 845
             }
         }
     },
-    "pickerWorkingDir": "/home/ifmg",
+    "pickerWorkingDir": "/home/jose",
     "openedPathsList": {
         "workspaces": [
-            "/home/ifmg/CPPG"
+            "/home/jose/CPPG",
+            "/home/jose/CPPG"
         ],
         "files": []
     }
