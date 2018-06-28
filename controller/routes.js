@@ -34,7 +34,8 @@ router.get('/cloud', function(req, res, next) {
 		res.render('cloud', { tags: data } );
 	}, {
 		classPrefix: 'btn tag tag',
-		numBuckets: 10,
+		ramdomize: false,
+		numBuckets: 5,
 		htmlTag: 'span'
 	});
 	 
