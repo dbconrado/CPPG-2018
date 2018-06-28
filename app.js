@@ -10,6 +10,9 @@ var routes = require('./controller/routes');
 
 var app = express();
 
+// For tag cloud
+var tagCloud = require('tag-cloud');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
