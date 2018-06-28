@@ -19,8 +19,7 @@ var con = mysql.createConnection({
 router.get('/', function(req, res, next) {
 	res.render(path.resolve(__dirname + '/../views/index.ejs'));
 });
-
-router.post('/search', function(req, res, next) {
+router.post('/search', function(req, res, next){
 	searchValue = req.body.searchValue;
 
 	try
@@ -217,14 +216,6 @@ router.post('/search', function(req, res, next) {
 			return -1;
 		}
 	}
-});
-
-router.get('/404', function(req, res, next) {
-	if(req.session == undefined) res.render(path.resolve(__dirname + '/../views/404.ejs'), {});
-	else res.render(path.resolve(__dirname + '/../views/404.ejs'), {
-		error: req.session.error
-	});
-	delete req.session.error;
 });
 
 router.get('/publicacoes/:nomePub', function (req, res) {
