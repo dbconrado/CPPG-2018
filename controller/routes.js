@@ -1,7 +1,5 @@
 // FAZER NUVEM DE TAGS SEPARANDO EM TRES SETORES (TITULO, AUTOR E ALUNO) NA MESMA TELA DOS RESULTADOS
 // DA PESQUISA
-
-
 var path = require('path');
 var express = require('express');
 var router = express.Router();
@@ -27,7 +25,6 @@ router.get('/cloud', function(req, res, next) {
 		{tagName: 'less', count: 13},
 		{tagName: 'rest', count: 2}
 	];
-	 
 	 
 	/* Option 1 */
 	tagCloud.tagCloud(tags, function (err, data) {
@@ -67,7 +64,7 @@ router.get('/cloud', function(req, res, next) {
 
 router.post('/search', function(req, res, next) {
 	searchValue = req.body.searchValue;
-
+	
 	try
 	{
 		if(con.state === 'disconnected')
