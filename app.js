@@ -32,8 +32,12 @@ app.use('/', routes);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
-  req.session.error = 'Choosing an existing page would make my life soooooo much easier..';
-  res.status(404).redirect('/404');
+  err.message = 'Choosing an existing page would make my life soooooo much easier..';
+  res.status(err.status || 404);
+  res.render('404.ejs', {
+    message: err.message,
+    err: {}
+  });
 });
 
 // error handlers
@@ -54,7 +58,7 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
-  res.render('error', {
+  res.render('404.ejs', {
     message: err.message,
     error: {}
   });

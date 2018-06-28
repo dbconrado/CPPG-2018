@@ -264,14 +264,6 @@ router.post('/search', function(req, res, next) {
 	}
 });
 
-router.get('/404', function(req, res, next) {
-	if(req.session == undefined) res.render(path.resolve(__dirname + '/../views/404.ejs'), {});
-	else res.render(path.resolve(__dirname + '/../views/404.ejs'), {
-		error: req.session.error
-	});
-	delete req.session.error;
-});
-
 router.get('/publicacoes/:nomePub', function (req, res) {
 	req.params.nomePub = '/../public/publicacoes-discentes/2014/Conferencias/Nacional/Resumo/01_CNMAC2014_Welton.pdf';
 
