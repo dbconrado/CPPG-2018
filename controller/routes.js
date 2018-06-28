@@ -1,7 +1,5 @@
 // FAZER NUVEM DE TAGS SEPARANDO EM TRES SETORES (TITULO, AUTOR E ALUNO) NA MESMA TELA DOS RESULTADOS
 // DA PESQUISA
-
-
 var path = require('path');
 var express = require('express');
 var router = express.Router();
@@ -19,7 +17,56 @@ var con = mysql.createConnection({
 router.get('/', function(req, res, next) {
 	res.render(path.resolve(__dirname + '/../views/index.ejs'));
 });
+<<<<<<< Updated upstream
 router.post('/search', function(req, res, next){
+=======
+
+router.get('/cloud', function(req, res, next) {
+	var tags = [
+		{tagName: 'js', count: 5},
+		{tagName: 'css', count: 9},
+		{tagName: 'less', count: 13},
+		{tagName: 'rest', count: 2}
+	];
+	
+	/* Option 1 */
+	tagCloud.tagCloud(tags, function (err, data) {
+		console.log(err, data);
+	});
+	 
+	/* Option 2 */
+	tagCloud.tagCloud(tags, function (err, data) {
+		console.log(err, data);
+	}, {
+		randomize: false
+	});
+	 
+	var promise = require('bluebird');
+	promise.promisifyAll(tagCloud);
+	 
+	/* Option 3 */
+	tagCloud.tagCloudAsync(tags)
+		.then( function (html) {
+			console.log(html);
+		})
+		.catch( function (err) {
+			console.log(err);
+		});
+	 
+	/* Option 4 */
+	tagCloud.tagCloudAsync(tags, {
+		randomize: false
+	})
+		.then( function (html) {
+			console.log(html);
+		})
+		.catch( function (err) {
+			console.log(err);
+		});
+});
+
+router.post('/search', function(req, res, next) {
+>>>>>>> Stashed changes
 	searchValue = req.body.searchValue;
 
 	try
