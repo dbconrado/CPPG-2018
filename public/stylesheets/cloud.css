@@ -1,0 +1,55 @@
+.tag {
+    border-radius: 15px !important;
+    color: lightgrey;
+}
+
+.tag0 {
+    background-color: red;
+    font-size: 15px;
+}
+
+.tag1 {
+    background-color: red;
+    font-size: 20px;
+}
+
+.tag2 {
+    background-color: blue;
+    font-size: 40px;
+}
+
+.tag3 {
+    background-color: yellow;
+    font-size: 60px;
+}
+.tag4 {
+    background-color: pink;
+    font-size: 80px;
+}
+.tag5 {
+    background-color: black;
+    font-size: 100px;
+}
+
+.tag6 {
+    background-color: magenta;
+    font-size: 120px;
+}
+
+.tag7 {
+    background-color: lightblue;
+    font-size: 140px;
+}
+.tag8 {
+    background-color: darkgrey;
+    font-size: 160px;
+}
+.tag9 {
+    padding: 1px 1px;
+    background-color: orange;
+    font-size: 280px;
+}
+.tag10 {
+    background-color: cyan;
+    font-size: 200px;
+}

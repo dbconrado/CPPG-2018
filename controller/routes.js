@@ -4,6 +4,7 @@ var path = require('path');
 var express = require('express');
 var router = express.Router();
 var mysql = require('mysql');
+var tagCloud = require('tag-cloud');
 var env = process.env.NODE_ENV || 'development';
 var config = require('../model/config')[env];
 var con = mysql.createConnection({
@@ -15,20 +16,26 @@ var con = mysql.createConnection({
   });
 
 router.get('/', function(req, res, next) {
-	res.render(path.resolve(__dirname + '/../views/index.ejs'));
+	res.render('index.ejs');
 });
 
+/* DOCUMENTAÇÃO DA API https://www.npmjs.com/package/tag-cloud */
 router.get('/cloud', function(req, res, next) {
 	var tags = [
-		{tagName: 'js', count: 5},
-		{tagName: 'css', count: 9},
-		{tagName: 'less', count: 13},
-		{tagName: 'rest', count: 2}
+		{tagName: 'js', count: 2},
+		{tagName: 'css', count: 4},
+		{tagName: 'less', count: 6},
+		{tagName: 'rest', count: 8}
 	];
 	 
 	/* Option 1 */
 	tagCloud.tagCloud(tags, function (err, data) {
 		console.log(err, data);
+		res.render('cloud', { tags: data } );
+	}, {
+		classPrefix: 'btn tag tag',
+		numBuckets: 10,
+		htmlTag: 'span'
 	});
 	 
 	/* Option 2 */
@@ -64,7 +71,7 @@ router.get('/cloud', function(req, res, next) {
 
 router.post('/search', function(req, res, next) {
 	searchValue = req.body.searchValue;
-	
+
 	try
 	{
 		if(con.state === 'disconnected')
@@ -78,12 +85,11 @@ router.post('/search', function(req, res, next) {
 		
 		runQueries(searchValue).then(function(result)
 		{
-			res.render(path.resolve(__dirname + '/../views/searchProceedings.ejs'), { proceedingsByName: result[0][0], proceedingsByAuthor: result[1][0], proceedingsByStudents: result[2][0] }, function(err, html)
+			res.render('searchProceedings.ejs', { proceedingsByName: result[0][0], proceedingsByAuthor: result[1][0], proceedingsByStudents: result[2][0] }, function(err, html)
 			{
 				if(err)
 				{
-					req.session.error = err.message;
-					res.redirect('/404');
+					throw err;
 				} else {
 					res.send(html);
 				}
@@ -266,8 +272,7 @@ router.get('/publicacoes/:nomePub', function (req, res) {
 
 	res.sendFile(path.resolve(__dirname + req.params.nomePub), function(err, html) {
 		if(err) {
-			req.session.error = err.message;
-			res.redirect('/404');
+			throw err;
 		} else {
 			if(!res.status(200))
 			{
@@ -280,8 +285,7 @@ router.get('/publicacoes/:nomePub', function (req, res) {
 router.get('/pub-discentes/compilados/2014-2016.pdf', function(req, res, next) {
 	res.sendFile(path.resolve(__dirname + '/../public/publicacoes-discentes/compilados/2014-2016.pdf'), function(err, html) {
 		if(err) {
-			req.session.error = err.message;
-			res.redirect('/404');
+			throw err;
 		} else {
 			if(!res.status(200))
 			{
@@ -397,7 +401,7 @@ router.get('/stackedBar', function(req, res, next) {
 				yearData.push(years[i].anoEdital);
 			}
 
-			res.render(path.resolve(__dirname + '/../views/stackedBar.ejs'), {
+			res.render('stackedBar.ejs', {
 				years: yearData,
 				pibicAssistance: pibicAssistance,
 				pibicJrAssistance: pibicJrAssistance,
@@ -406,8 +410,7 @@ router.get('/stackedBar', function(req, res, next) {
 				volunteerAssistance: volunteerAssistance
 			}, function(err, html) {
 				if(err) {
-					req.session.error = err.message;
-					res.redirect('/404');
+					throw err;
 				} else {
 					res.send(html);
 				}
