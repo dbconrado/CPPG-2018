@@ -30,44 +30,46 @@ router.get('/cloud', function(req, res, next) {
 	 
 	/* Option 1 */
 	tagCloud.tagCloud(tags, function (err, data) {
-		console.log(err, data);
+		getData();
 		res.render('cloud', { tags: data } );
 	}, {
 		classPrefix: 'btn tag tag',
-		ramdomize: false,
+		randomize: false,
 		numBuckets: 5,
 		htmlTag: 'span'
 	});
-	 
-	/* Option 2 */
-	tagCloud.tagCloud(tags, function (err, data) {
-		console.log(err, data);
-	}, {
-		randomize: false
-	});
-	 
-	var promise = require('bluebird');
-	promise.promisifyAll(tagCloud);
-	 
-	/* Option 3 */
-	tagCloud.tagCloudAsync(tags)
-		.then( function (html) {
-			console.log(html);
-		})
-		.catch( function (err) {
-			console.log(err);
+
+	function getData()
+	{
+		sql = "SELECT palavra AS word FROM palavras_chave_publicacao";
+		keywordsByUse = [];
+		return new Promise(function(resolve, reject)
+		{
+			con.query(sql, function (err, results, fields)
+			{
+				results.forEach(function(keyword)
+				{
+					keywordToBeInserted = keyword["word"];
+					wordExists = false;
+					keywordsByUse.every(function(keyword)
+					{
+						if(keyword[0] == keywordToBeInserted)
+						{
+							wordExists = true;
+							keyword[1] += 1;
+							return;
+						}
+					});
+					auxArray = [];
+					auxArray.push(keywordToBeInserted);
+					auxArray.push(0);
+					if(!wordExists) keywordsByUse.push(auxArray);
+					wordExists = false;
+				});
+				console.log(keywordsByUse);
+			});
 		});
-	 
-	/* Option 4 */
-	tagCloud.tagCloudAsync(tags, {
-		randomize: false
-	})
-		.then( function (html) {
-			console.log(html);
-		})
-		.catch( function (err) {
-			console.log(err);
-		});
+	}
 });
 
 router.post('/search', function(req, res, next) {
