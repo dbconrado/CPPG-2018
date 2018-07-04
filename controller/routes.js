@@ -21,23 +21,18 @@ router.get('/', function(req, res, next) {
 
 /* DOCUMENTAÇÃO DA API https://www.npmjs.com/package/tag-cloud */
 router.get('/cloud', function(req, res, next) {
-	array = [];
-	array.push({tagName: 'js', count: 2});
-	console.log(array);
-	var tags = [
-		[array]
-	];
-	 
-	/* Option 1 */
-	tagCloud.tagCloud(tags, function (err, data) {
-		getData();
-		res.render('cloud', { tags: data } );
-	}, {
-		classPrefix: 'btn tag tag',
-		randomize: false,
-		numBuckets: 5,
-		htmlTag: 'span'
-	});
+
+	getData().then(function(tags)
+	{
+		tagCloud.tagCloud(tags, function (err, data) {
+			res.render('cloud', { tags: data } );
+		}, {
+			classPrefix: 'btn tag tag',
+			randomize: false,
+			numBuckets: 5,
+			htmlTag: 'span'
+		});
+	}).catch((err) => setImmediate(() => { throw err; }));
 
 	function getData()
 	{
@@ -47,16 +42,17 @@ router.get('/cloud', function(req, res, next) {
 		{
 			con.query(sql, function (err, results, fields)
 			{
+				var cloud = [];
 				results.forEach(function(result)
 				{
-					auxArray = [];
-					auxArray.push(result["keyword"]);
-					auxArray.push(result["totalUsage"]);
-					keywordsByUse.push(auxArray);
+					cloud.push({
+						tagName: result["keyword"], count: result["totalUsage"]
+					});
 				});
-				console.log(keywordsByUse);
+				console.log(cloud);
+				resolve(cloud);
 			});
-		});
+		});		
 	}
 });
 
@@ -89,8 +85,6 @@ router.post('/search', function(req, res, next) {
 	}
 	catch(err)
 	{
-		req.session.error = err.message;
-		res.redirect('/404');
 		throw err;
 	}
 
