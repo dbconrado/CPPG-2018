@@ -21,12 +21,24 @@ router.get('/', function(req, res, next) {
 
 /* DOCUMENTAÇÃO DA API https://www.npmjs.com/package/tag-cloud */
 router.get('/cloud', function(req, res, next) {
-	array = [];
-	array.push({tagName: 'js', count: 2});
-	console.log(array);
-	var tags = [
-		[array]
-	];
+	 
+	// var tags = [
+	// 	{tagName: 'js', count: 5},
+	// 	{tagName: 'css', count: 9},
+	// 	{tagName: 'less', count: 13},
+	// 	{tagName: 'rest', count: 2}
+	// ];
+	// console.log(tags);
+
+	var tags = [];
+	tags.push( {
+		tagName: 'js', count: 5
+	} );
+	console.log(tags);
+
+	// var tags = [
+	// 	data
+	// ];
 	 
 	/* Option 1 */
 	tagCloud.tagCloud(tags, function (err, data) {
