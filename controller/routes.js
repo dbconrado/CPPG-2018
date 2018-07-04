@@ -21,11 +21,11 @@ router.get('/', function(req, res, next) {
 
 /* DOCUMENTAÇÃO DA API https://www.npmjs.com/package/tag-cloud */
 router.get('/cloud', function(req, res, next) {
+	array = [];
+	array.push({tagName: 'js', count: 2});
+	console.log(array);
 	var tags = [
-		{tagName: 'js', count: 2},
-		{tagName: 'css', count: 4},
-		{tagName: 'less', count: 6},
-		{tagName: 'rest', count: 8}
+		[array]
 	];
 	 
 	/* Option 1 */
@@ -41,30 +41,18 @@ router.get('/cloud', function(req, res, next) {
 
 	function getData()
 	{
-		sql = "SELECT palavra AS word FROM palavras_chave_publicacao";
+		sql = "SELECT palavra AS keyword, COUNT(*) AS totalUsage FROM palavras_chave_publicacao GROUP BY palavra";
 		keywordsByUse = [];
 		return new Promise(function(resolve, reject)
 		{
 			con.query(sql, function (err, results, fields)
 			{
-				results.forEach(function(keyword)
+				results.forEach(function(result)
 				{
-					keywordToBeInserted = keyword["word"];
-					wordExists = false;
-					keywordsByUse.every(function(keyword)
-					{
-						if(keyword[0] == keywordToBeInserted)
-						{
-							wordExists = true;
-							keyword[1] += 1;
-							return;
-						}
-					});
 					auxArray = [];
-					auxArray.push(keywordToBeInserted);
-					auxArray.push(0);
-					if(!wordExists) keywordsByUse.push(auxArray);
-					wordExists = false;
+					auxArray.push(result["keyword"]);
+					auxArray.push(result["totalUsage"]);
+					keywordsByUse.push(auxArray);
 				});
 				console.log(keywordsByUse);
 			});
