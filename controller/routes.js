@@ -22,9 +22,9 @@ router.get('/', function(req, res, next) {
 /* DOCUMENTAÇÃO DA API https://www.npmjs.com/package/tag-cloud */
 router.get('/cloud', function(req, res, next) {
 
-	getData().then(function(tags)
+	getData().then(function(cloud)
 	{
-		tagCloud.tagCloud(tags, function (err, data) {
+		tagCloud.tagCloud(cloud, function (err, data) {
 			res.render('cloud', { tags: data } );
 		}, {
 			classPrefix: 'btn tag tag',
