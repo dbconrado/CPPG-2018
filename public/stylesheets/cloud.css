@@ -2,7 +2,8 @@
     border-radius: 15px !important;
     color: white;
     background-color: green;
-    padding: 0 1em;
+    padding: 0 0.5em;
+    margin: 0.1em 0.15em;
 }
 
 .tag0 {
