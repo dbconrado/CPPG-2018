@@ -214,41 +214,6 @@ router.post('/search', function(req, res, next) {
 			});
 		});
 	}
-	
-	
-
-	/* 
-		Function to search in a vector of an matrix for determinate value
-		important note: this function don't search the entire matrix, but one subvector of it!
-		param 1: matrix (i called it vector, because it is a vector of vectors)
-		param 2: value to be searched
-		param 3: op is the operator that represents the subvector for the matrix that will be target of search
-		return: element-index if value is found, -1 otherwise.
-	*/
-	function searchInVector(vectorToSearch, value, op)
-	{
-		var exists = -1;
-		vectorToSearch.every(function(element, i)
-		{
-			if(op == 0)
-			{
-				if(element[0] == value)
-				{
-					exists = element[0];
-					return;
-				}
-			}
-		});
-		
-		if(exists != -1)
-		{
-			return exists;
-		}
-		else
-		{
-			return -1;
-		}
-	}
 });
 
 router.get('/publicacoes/:nomePub', function (req, res) {
