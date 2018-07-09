@@ -21,7 +21,6 @@ router.get('/', function(req, res, next) {
 
 /* DOCUMENTAÇÃO DA API https://www.npmjs.com/package/tag-cloud */
 router.get('/cloud', function(req, res, next) {
-
 	getData().then(function(cloud)
 	{
 		tagCloud.tagCloud(cloud, function (err, data) {
