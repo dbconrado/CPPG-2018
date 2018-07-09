@@ -24,7 +24,7 @@ router.get('/cloud', function(req, res, next) {
 	getData().then(function(cloud)
 	{
 		tagCloud.tagCloud(cloud, function (err, data) {
-			res.render('cloud', { tags: data } );
+			res.render('cloud', { cloud: data } );
 		}, {
 			classPrefix: 'btn tag tag',
 			randomize: true,
@@ -68,18 +68,22 @@ router.post('/search', function(req, res, next) {
 		}
 		
 		searchValue = '%' + searchValue + '%'; // Apenas escapa as aspas simples
-		
+
 		runQueries(searchValue).then(function(result)
 		{
-			res.render('searchProceedings.ejs', { proceedingsByName: result[0][0], proceedingsByAuthor: result[1][0], proceedingsByStudents: result[2][0] }, function(err, html)
+			teacherByName(searchValue).then(function(cloud)
 			{
-				if(err)
+				tagCloud.tagCloud(cloud, function (err, data)
 				{
-					throw err;
-				} else {
-					res.send(html);
-				}
-			});
+					console.log(cloud);
+					res.render('searchProceedings', { proceedingsByName: result[0][0], proceedingsByAuthor: result[1][0], proceedingsByStudents: result[2][0], cloud: data } );
+				}, {
+					classPrefix: 'btn tag tag',
+					randomize: true,
+					numBuckets: 5,
+					htmlTag: 'span'
+				});
+			}).catch((err) => setImmediate(() => { throw err; }));
 		}).catch((err) => setImmediate(() => { throw err; }));
 	}
 	catch(err)
@@ -87,6 +91,57 @@ router.post('/search', function(req, res, next) {
 		throw err;
 	}
 
+	function teacherByName(teacherName)
+	{
+		try
+		{
+			sql = "SELECT nomeServidor AS teacherName FROM servidor WHERE nomeServidor LIKE '" + teacherName + "'";
+			return new Promise(function(resolve, reject)
+			{
+				con.query(sql, function (err, results, fields)
+				{
+					var cloud = [];
+					results.forEach(function(result)
+					{
+						cloud.push({
+							tagName: result["teacherName"], count: 1
+						});
+					});
+					resolve(cloud);
+				});
+			});
+		}
+		catch(err)
+		{
+			throw err;
+		}
+	}
+
+	function treatKeywordsForTeacher(teacherName)
+	{
+		try
+		{
+			sql = "SELECT palavra AS keyword, COUNT(*) AS totalUsage FROM palavras_chave_publicacao PCP JOIN servidor_publica SP ON SP.codPublicacao = PCP.fk_codPublicacao JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.nomeServidor LIKE '" + teacherName + "' GROUP BY palavra";
+			return new Promise(function(resolve, reject)
+			{
+				con.query(sql, function (err, results, fields)
+				{
+					var cloud = [];
+					results.forEach(function(result)
+					{
+						cloud.push({
+							tagName: result["keyword"], count: result["totalUsage"]
+						});
+					});
+					resolve(cloud);
+				});
+			});
+		}
+		catch(err)
+		{
+			throw err;
+		}
+	}
 	function runQueries(toSearchValue)
 	{
 		var proceedingName, proceedingPath, index;
