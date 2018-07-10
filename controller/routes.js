@@ -21,37 +21,105 @@ router.get('/', function(req, res, next) {
 
 /* DOCUMENTAÇÃO DA API https://www.npmjs.com/package/tag-cloud */
 router.get('/cloud', function(req, res, next) {
-	getData().then(function(cloud)
+	try
 	{
-		tagCloud.tagCloud(cloud, function (err, data) {
-			res.render('cloud', { cloud: data } );
-		}, {
-			classPrefix: 'btn tag tag',
-			randomize: true,
-			numBuckets: 5,
-			htmlTag: 'span'
-		});
-	}).catch((err) => setImmediate(() => { throw err; }));
+		getData().then(function(cloud)
+		{
+			tagCloud.tagCloud(cloud, function (err, data) {
+				res.render('cloud', { cloud: data } );
+			}, {
+				classPrefix: 'btn tag tag',
+				randomize: true,
+				numBuckets: 5,
+				htmlTag: 'span'
+			});
+		}).catch((err) => setImmediate(() => { throw err; }));
+	}
+	catch(err)
+	{
+		throw err;
+	}
 
 	function getData()
 	{
-		sql = "SELECT palavra AS keyword, COUNT(*) AS totalUsage FROM palavras_chave_publicacao GROUP BY palavra";
-		keywordsByUse = [];
-		return new Promise(function(resolve, reject)
+		try
 		{
-			con.query(sql, function (err, results, fields)
+			sql = "SELECT palavra AS keyword, COUNT(*) AS totalUsage FROM palavras_chave_publicacao GROUP BY palavra";
+			keywordsByUse = [];
+			return new Promise(function(resolve, reject)
 			{
-				var cloud = [];
-				results.forEach(function(result)
+				con.query(sql, function (err, results, fields)
 				{
-					cloud.push({
-						tagName: result["keyword"], count: result["totalUsage"]
+					var cloud = [];
+					results.forEach(function(result)
+					{
+						cloud.push({
+							tagName: result["keyword"], count: result["totalUsage"]
+						});
 					});
+					console.log(cloud);
+					resolve(cloud);
 				});
-				console.log(cloud);
-				resolve(cloud);
 			});
-		});		
+		}
+		catch(err)
+		{
+			throw err;
+		}
+	}
+});
+
+router.get('/search/proceedingsOfTeacher=:teacherName', function(req, res, next) {
+	teacherName = req.params.teacherName;
+	res.send(teacherName);
+});
+
+router.get('/search/teacher=:teacherName', function(req, res, next) {
+	var teacherName = req.params.teacherName;
+
+	try
+	{
+		treatKeywordsForTeacher(teacherName).then(function(cloud)
+		{
+			tagCloud.tagCloud(cloud, function (err, data) {
+				res.render('cloud', { cloud: data } );
+			}, {
+				classPrefix: 'btn tag tag',
+				randomize: true,
+				numBuckets: 5,
+				htmlTag: 'span'
+			});
+		}).catch((err) => setImmediate(() => { throw err; }));
+	}
+	catch(err)
+	{
+		throw err;
+	}
+	function treatKeywordsForTeacher(teacherName)
+	{
+		try
+		{
+			sql = "SELECT palavra AS keyword, COUNT(*) AS totalUsage FROM palavras_chave_publicacao PCP JOIN servidor_publica SP ON SP.codPublicacao = PCP.fk_codPublicacao JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.nomeServidor = '" + teacherName + "' GROUP BY palavra";
+			return new Promise(function(resolve, reject)
+			{
+				con.query(sql, function (err, results, fields)
+				{
+					console.log(this.sql);
+					var cloud = [];
+					results.forEach(function(result)
+					{
+						cloud.push({
+							tagName: result["keyword"], count: result["totalUsage"]
+						});
+					});
+					resolve(cloud);
+				});
+			});
+		}
+		catch(err)
+		{
+			throw err;
+		}
 	}
 });
 
@@ -81,7 +149,8 @@ router.post('/search', function(req, res, next) {
 					classPrefix: 'btn tag tag',
 					randomize: true,
 					numBuckets: 5,
-					htmlTag: 'span'
+					htmlTag: 'a',
+					additionalAttributes: {href: 'http://' + config.server.host + ':' + config.server.port +'/search/teacher={{tag}}'}
 				});
 			}).catch((err) => setImmediate(() => { throw err; }));
 		}).catch((err) => setImmediate(() => { throw err; }));
@@ -95,7 +164,7 @@ router.post('/search', function(req, res, next) {
 	{
 		try
 		{
-			sql = "SELECT nomeServidor AS teacherName FROM servidor WHERE nomeServidor LIKE '" + teacherName + "'";
+			sql = "SELECT nomeServidor AS teacherName FROM servidor WHERE nomeServidor LIKE '" + teacherName + "' AND tipo = 'DOCENTE'";
 			return new Promise(function(resolve, reject)
 			{
 				con.query(sql, function (err, results, fields)
@@ -117,31 +186,6 @@ router.post('/search', function(req, res, next) {
 		}
 	}
 
-	function treatKeywordsForTeacher(teacherName)
-	{
-		try
-		{
-			sql = "SELECT palavra AS keyword, COUNT(*) AS totalUsage FROM palavras_chave_publicacao PCP JOIN servidor_publica SP ON SP.codPublicacao = PCP.fk_codPublicacao JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.nomeServidor LIKE '" + teacherName + "' GROUP BY palavra";
-			return new Promise(function(resolve, reject)
-			{
-				con.query(sql, function (err, results, fields)
-				{
-					var cloud = [];
-					results.forEach(function(result)
-					{
-						cloud.push({
-							tagName: result["keyword"], count: result["totalUsage"]
-						});
-					});
-					resolve(cloud);
-				});
-			});
-		}
-		catch(err)
-		{
-			throw err;
-		}
-	}
 	function runQueries(toSearchValue)
 	{
 		var proceedingName, proceedingPath, index;
