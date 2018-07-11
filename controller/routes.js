@@ -15,6 +15,7 @@ var con = mysql.createConnection({
 	database: config.database.db,
 	multipleStatements: true
   });
+var proceeding = require('../model/proceedingClass.js');
 
 router.get('/', function(req, res, next) {
 	res.render('index.ejs');
@@ -104,6 +105,7 @@ router.get('/search/teacher=:teacherName', function(req, res, next) {
 	{
 		throw err;
 	}
+	
 	function treatKeywordsForTeacher(teacherName)
 	{
 		try
