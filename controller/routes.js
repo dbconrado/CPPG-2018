@@ -1,5 +1,6 @@
 // FAZER NUVEM DE TAGS SEPARANDO EM TRES SETORES (TITULO, AUTOR E ALUNO) NA MESMA TELA DOS RESULTADOS
 // DA PESQUISA
+'use strict';
 var path = require('path');
 var express = require('express');
 var router = express.Router();
@@ -71,7 +72,15 @@ router.get('/cloud', function(req, res, next) {
 
 router.get('/search/proceedingsOfTeacher=:teacherName', function(req, res, next) {
 	teacherName = req.params.teacherName;
-	res.send(teacherName);
+
+	try
+	{
+		res.send(teacherName);
+	}
+	catch(err)
+	{
+		throw err;
+	}
 });
 
 router.get('/search/teacher=:teacherName', function(req, res, next) {
@@ -99,7 +108,7 @@ router.get('/search/teacher=:teacherName', function(req, res, next) {
 	{
 		try
 		{
-			sql = "SELECT palavra AS keyword, COUNT(*) AS totalUsage FROM palavras_chave_publicacao PCP JOIN servidor_publica SP ON SP.codPublicacao = PCP.fk_codPublicacao JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.nomeServidor = '" + teacherName + "' GROUP BY palavra";
+			var sql = "SELECT palavra AS keyword, COUNT(*) AS totalUsage FROM palavras_chave_publicacao PCP JOIN servidor_publica SP ON SP.codPublicacao = PCP.fk_codPublicacao JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.nomeServidor = '" + teacherName + "' GROUP BY palavra";
 			return new Promise(function(resolve, reject)
 			{
 				con.query(sql, function (err, results, fields)
@@ -124,7 +133,7 @@ router.get('/search/teacher=:teacherName', function(req, res, next) {
 });
 
 router.post('/search', function(req, res, next) {
-	searchValue = req.body.searchValue;
+	var searchValue = req.body.searchValue;
 
 	try
 	{
@@ -164,7 +173,7 @@ router.post('/search', function(req, res, next) {
 	{
 		try
 		{
-			sql = "SELECT nomeServidor AS teacherName FROM servidor WHERE nomeServidor LIKE '" + teacherName + "' AND tipo = 'DOCENTE'";
+			var sql = "SELECT nomeServidor AS teacherName FROM servidor WHERE nomeServidor LIKE '" + teacherName + "' AND tipo = 'DOCENTE'";
 			return new Promise(function(resolve, reject)
 			{
 				con.query(sql, function (err, results, fields)
@@ -190,10 +199,10 @@ router.post('/search', function(req, res, next) {
 	{
 		var proceedingName, proceedingPath, index;
 		var treatedResults = [];
-		queryGetProceedingsByTitle = "SELECT codPublicacao AS proceedingCode FROM publicacao WHERE nomePublicacao LIKE '" + toSearchValue + "'";
-		queryGetProceedingsByTeachers = "SELECT P.codPublicacao AS proceedingCode, nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath, nomeServidor AS proceedingAuthor FROM publicacao P JOIN servidor_publica SP ON SP.codPublicacao = P.codPublicacao  JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.nomeServidor LIKE '" + toSearchValue + "'";
-		queryGetProceedingsByStudents = "SELECT P.codPublicacao AS proceedingCode FROM publicacao P JOIN aluno_publica AP ON AP.codPublicacao = P.codPublicacao JOIN aluno A ON A.matriculaAluno = AP.matriculaAluno WHERE A.nomeAluno LIKE '" + toSearchValue + "'";
-		sql = queryGetProceedingsByTitle + ";" + queryGetProceedingsByTeachers + ";" + queryGetProceedingsByStudents;
+		var queryGetProceedingsByTitle = "SELECT codPublicacao AS proceedingCode FROM publicacao WHERE nomePublicacao LIKE '" + toSearchValue + "'";
+		var queryGetProceedingsByTeachers = "SELECT P.codPublicacao AS proceedingCode, nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath, nomeServidor AS proceedingAuthor FROM publicacao P JOIN servidor_publica SP ON SP.codPublicacao = P.codPublicacao  JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.nomeServidor LIKE '" + toSearchValue + "'";
+		var queryGetProceedingsByStudents = "SELECT P.codPublicacao AS proceedingCode FROM publicacao P JOIN aluno_publica AP ON AP.codPublicacao = P.codPublicacao JOIN aluno A ON A.matriculaAluno = AP.matriculaAluno WHERE A.nomeAluno LIKE '" + toSearchValue + "'";
+		var sql = queryGetProceedingsByTitle + ";" + queryGetProceedingsByTeachers + ";" + queryGetProceedingsByStudents;
 
 		try
 		{
@@ -201,14 +210,14 @@ router.post('/search', function(req, res, next) {
 			{
 				con.query(sql, [1, 2, 3], function (err, results, fields)
 				{
-					if (err)
+					if(err)
 					{
-						return reject(err);
+						return Promise.reject(err);
 					}
 
 					//Trata cada resultado obtido
 					//Trata a busca por nome de publicação
-					proceedingsByName = [];
+					var proceedingsByName = [];
 					var promises = [];
 					results[0].forEach(function(result)
 					{
@@ -224,11 +233,11 @@ router.post('/search', function(req, res, next) {
 							proceedingsByName.push(proceeding);
 							treatedResults.push(proceedingsByName);
 							
-							proceedingsByAuthor = [];
+							var proceedingsByAuthor = [];
 							promises = [];
 							results[1].forEach(function(result)
 							{
-								proceedingCode = result["proceedingCode"];
+								var proceedingCode = result["proceedingCode"];
 								const promise = getProceedingInfo(proceedingCode);
 								promises.push(promise);
 							});
@@ -239,7 +248,7 @@ router.post('/search', function(req, res, next) {
 								proceedingsByAuthor.push(proceeding);
 								treatedResults.push(proceedingsByAuthor);
 
-								proceedingsByStudents = [];
+								var proceedingsByStudents = [];
 								promises = [];
 								results[2].forEach(function(result)
 								{
@@ -290,7 +299,7 @@ router.post('/search', function(req, res, next) {
 		{
 			con.query(sql, [1, 2], function (err, results, fields)
 			{
-				proceedingInfo = [];
+				var proceedingInfo = [];
 				proceedingInfo.push(proceedingCode);
 				proceedingInfo.push(results[0][0]["proceedingName"]);
 				proceedingInfo.push([]);
@@ -299,7 +308,7 @@ router.post('/search', function(req, res, next) {
 				else proceedingInfo.push('null');
 				results[0].forEach(function(result)
 				{
-					proceedingAuthor = toTitleCase(result["proceedingAuthor"]);
+					var proceedingAuthor = toTitleCase(result["proceedingAuthor"]);
 					proceedingInfo[2].push(proceedingAuthor);
 				});
 
