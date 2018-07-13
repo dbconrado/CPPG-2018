@@ -16,6 +16,7 @@ var con = mysql.createConnection({
 	multipleStatements: true
   });
 var proceeding = require('../model/proceedingClass.js');
+var sort = require('srtr');
 
 router.get('/', function(req, res, next) {
 	res.render('index.ejs');
@@ -25,7 +26,7 @@ router.get('/', function(req, res, next) {
 router.get('/cloud', function(req, res, next) {
 	try
 	{
-		getData().then(function(cloud)
+		getTeacherCloud().then(function(cloud)
 		{
 			tagCloud.tagCloud(cloud, function (err, data) {
 				res.render('cloud', { cloud: data } );
@@ -42,7 +43,7 @@ router.get('/cloud', function(req, res, next) {
 		throw err;
 	}
 
-	function getData()
+	function getTeacherCloud()
 	{
 		try
 		{
@@ -59,7 +60,6 @@ router.get('/cloud', function(req, res, next) {
 							tagName: result["keyword"], count: result["totalUsage"]
 						});
 					});
-					console.log(cloud);
 					resolve(cloud);
 				});
 			});
@@ -92,10 +92,10 @@ router.get('/search/teacher=:teacherName', function(req, res, next) {
 		treatKeywordsForTeacher(teacherName).then(function(cloud)
 		{
 			tagCloud.tagCloud(cloud, function (err, data) {
-				res.render('cloud', { cloud: data } );
+				res.render('teacher', { cloud: data } );
 			}, {
 				classPrefix: 'btn tag tag',
-				randomize: true,
+				randomize: false,
 				numBuckets: 5,
 				htmlTag: 'span'
 			});
@@ -115,7 +115,6 @@ router.get('/search/teacher=:teacherName', function(req, res, next) {
 			{
 				con.query(sql, function (err, results, fields)
 				{
-					console.log(this.sql);
 					var cloud = [];
 					results.forEach(function(result)
 					{
@@ -123,7 +122,8 @@ router.get('/search/teacher=:teacherName', function(req, res, next) {
 							tagName: result["keyword"], count: result["totalUsage"]
 						});
 					});
-					resolve(cloud);
+					var sorted = sort.quicksort(cloud, (a, b) => b.count - a.count);
+					resolve(sorted);
 				});
 			});
 		}
@@ -154,7 +154,6 @@ router.post('/search', function(req, res, next) {
 			{
 				tagCloud.tagCloud(cloud, function (err, data)
 				{
-					console.log(cloud);
 					res.render('searchProceedings', { proceedingsByName: result[0][0], proceedingsByAuthor: result[1][0], proceedingsByStudents: result[2][0], cloud: data } );
 				}, {
 					classPrefix: 'btn tag tag',
@@ -199,11 +198,10 @@ router.post('/search', function(req, res, next) {
 
 	function runQueries(toSearchValue)
 	{
-		var proceedingName, proceedingPath, index;
 		var treatedResults = [];
 		var queryGetProceedingsByTitle = "SELECT codPublicacao AS proceedingCode FROM publicacao WHERE nomePublicacao LIKE '" + toSearchValue + "'";
 		var queryGetProceedingsByTeachers = "SELECT P.codPublicacao AS proceedingCode, nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath, nomeServidor AS proceedingAuthor FROM publicacao P JOIN servidor_publica SP ON SP.codPublicacao = P.codPublicacao  JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.nomeServidor LIKE '" + toSearchValue + "'";
-		var queryGetProceedingsByStudents = "SELECT P.codPublicacao AS proceedingCode FROM publicacao P JOIN aluno_publica AP ON AP.codPublicacao = P.codPublicacao JOIN aluno A ON A.matriculaAluno = AP.matriculaAluno WHERE A.nomeAluno LIKE '" + toSearchValue + "'";
+		var queryGetProceedingsByStudents = "SELECT P.codPublicacao AS proceedingCode FROM publicacao P JOIN aluno_publica AP ON AP.codPublicacao = P.codPublicacao JOIN aluno A ON A.matriculaAluno = AP.matriculaAluno WHERE A.nomeAluno LIKE '" + toSearchValue + "'";	
 		var sql = queryGetProceedingsByTitle + ";" + queryGetProceedingsByTeachers + ";" + queryGetProceedingsByStudents;
 
 		try
