@@ -71,7 +71,7 @@ router.get('/cloud', function(req, res, next) {
 	}
 });
 
-router.get('/search/teacher=:teacherName', function(req, res, next) {
+router.get('/teacher=:teacherName', function(req, res, next) {
 	var teacherName = req.params.teacherName;
 
 	try
@@ -84,7 +84,8 @@ router.get('/search/teacher=:teacherName', function(req, res, next) {
 				classPrefix: 'btn tag tag',
 				randomize: false,
 				numBuckets: 5,
-				htmlTag: 'span'
+				htmlTag: 'a',
+				additionalAttributes: {href: 'http://' + config.server.host + ':' + config.server.port +'/keyword={{tag}}'}
 			});
 		}).catch((err) => setImmediate(() => { throw err; }));
 	}
@@ -121,6 +122,83 @@ router.get('/search/teacher=:teacherName', function(req, res, next) {
 	}
 });
 
+router.get('/keyword=:word', function(req, res, next) {
+	function getProceedingInfo(toSearchValue)
+	{
+		var treatedResults = [];
+		var queryGetProceedingsByTitle = "SELECT codPublicacao AS proceedingCode FROM publicacao WHERE nomePublicacao LIKE '" + toSearchValue + "'";
+
+		try
+		{
+			return new Promise(function(resolve, reject)
+			{
+				con.query(sql, [1, 2, 3], function (err, results, fields)
+				{
+					if(err)
+					{
+						return Promise.reject(err);
+					}
+
+					//Trata cada resultado obtido
+					//Trata a busca por nome de publicação
+					var proceedingsByName = [];
+					var promises = [];
+					results[0].forEach(function(result)
+					{
+						var proceedingCode = result["proceedingCode"];
+						const promise = getProceedingInfo(proceedingCode);
+						promises.push(promise);
+					});
+
+					//Trata cada resultado obtido
+					//Trata a busca por nome de autor
+					Promise.all(promises).then(proceeding =>
+						{
+							proceedingsByName.push(proceeding);
+							treatedResults.push(proceedingsByName);
+							
+							var proceedingsByAuthor = [];
+							promises = [];
+							results[1].forEach(function(result)
+							{
+								var proceedingCode = result["proceedingCode"];
+								const promise = getProceedingInfo(proceedingCode);
+								promises.push(promise);
+							});
+							//Trata cada resultado obtido
+							//Trata a busca por nome de aluno
+							Promise.all(promises).then(proceeding =>
+							{
+								proceedingsByAuthor.push(proceeding);
+								treatedResults.push(proceedingsByAuthor);
+
+								var proceedingsByStudents = [];
+								promises = [];
+								results[2].forEach(function(result)
+								{
+									var proceedingCode = result["proceedingCode"];
+									const promise = getProceedingInfo(proceedingCode);
+									promises.push(promise);
+								});
+
+								Promise.all(promises).then(proceeding =>
+								{
+									proceedingsByStudents.push(proceeding);
+									treatedResults.push(proceedingsByStudents);
+									resolve(treatedResults);
+								});
+							});
+					});
+				});
+			});
+		}
+		catch(e)
+		{
+			throw e;
+		}
+	}
+});
+
 router.post('/search', function(req, res, next) {
 	var searchValue = req.body.searchValue;
 
@@ -147,7 +225,7 @@ router.post('/search', function(req, res, next) {
 					randomize: true,
 					numBuckets: 5,
 					htmlTag: 'a',
-					additionalAttributes: {href: 'http://' + config.server.host + ':' + config.server.port +'/search/teacher={{tag}}'}
+					additionalAttributes: {href: 'http://' + config.server.host + ':' + config.server.port +'/teacher={{tag}}'}
 				});
 			}).catch((err) => setImmediate(() => { throw err; }));
 		}).catch((err) => setImmediate(() => { throw err; }));
@@ -311,20 +389,7 @@ router.post('/search', function(req, res, next) {
 	}
 });
 
-router.get('/publicacoes/:nomePub', function (req, res) {
-	req.params.nomePub = '/../public/publicacoes-discentes/2014/Conferencias/Nacional/Resumo/01_CNMAC2014_Welton.pdf';
 
-	res.sendFile(path.resolve(__dirname + req.params.nomePub), function(err, html) {
-		if(err) {
-			throw err;
-		} else {
-			if(!res.status(200))
-			{
-				res.send(html);
-			}
-		}
-	});
-});
 
 router.get('/pub-discentes/compilados/2014-2016.pdf', function(req, res, next) {
 	res.sendFile(path.resolve(__dirname + '/../public/publicacoes-discentes/compilados/2014-2016.pdf'), function(err, html) {
