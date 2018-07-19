@@ -221,7 +221,7 @@ router.post('/search', function(req, res, next) {
 					var promises = [];
 					results[0].forEach(function(result)
 					{
-						proceedingCode = result["proceedingCode"];
+						var proceedingCode = result["proceedingCode"];
 						const promise = getProceedingInfo(proceedingCode);
 						promises.push(promise);
 					});
