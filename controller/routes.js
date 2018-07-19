@@ -71,19 +71,6 @@ router.get('/cloud', function(req, res, next) {
 	}
 });
 
-router.get('/search/proceedingsOfTeacher=:teacherName', function(req, res, next) {
-	teacherName = req.params.teacherName;
-
-	try
-	{
-		res.send(teacherName);
-	}
-	catch(err)
-	{
-		throw err;
-	}
-});
-
 router.get('/search/teacher=:teacherName', function(req, res, next) {
 	var teacherName = req.params.teacherName;
 
