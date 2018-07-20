@@ -1,0 +1,72 @@
+<script>
+        $(function()
+        {
+            <%- include ../../highcharts-themes/sand-signika.js %>
+    
+            Highcharts.chart('container1', {
+                chart: {
+                    type: 'column'
+                },
+                title: {
+                    text: 'Bolsas Estudantis'
+                },
+                xAxis: {
+                    categories: [<%= years %>]
+                },
+                yAxis: {
+                    min: 0,
+                    tickInterval: 5,
+                    title: {
+                        text: 'Modalidades de Bolsas Estudantis'
+                    },
+                    stackLabels: {
+                        enabled: true,
+                        style: {
+                            fontWeight: 'bold',
+                            color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+                        }
+                    }
+                },
+                legend: {
+                    align: 'right',
+                    x: -60,
+                    verticalAlign: 'top',
+                    y: 25,
+                    floating: true,
+                    backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
+                    borderColor: '#CCC',
+                    borderWidth: 1,
+                    shadow: false
+                },
+                tooltip: {
+                    headerFormat: '<b>{point.x}</b><br/>',
+                    pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
+                },
+                plotOptions: {
+                    column: {
+                        stacking: 'normal',
+                        dataLabels: {
+                            enabled: true,
+                            color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
+                        }
+                    }
+                },
+                series: [{
+                    name: 'PIBIC',
+                    data: [<%= pibicAssistance %>]
+                }, {
+                    name: 'PIBIC-JR',
+                    data: [<%= pibicJrAssistance %>]
+                }, {
+                    name: 'PIBIT',
+                    data: [<%= pibitAssistance %>]
+                }, {
+                    name: 'PIBEX',
+                    data: [<%= pibexAssistance %>]
+                }, {
+                    name: 'Voluntário',
+                    data: [<%= volunteerAssistance %>]
+                }]
+            });
+        });
+      </script>
