@@ -1,22 +1,11 @@
-// FAZER NUVEM DE TAGS SEPARANDO EM TRES SETORES (TITULO, AUTOR E ALUNO) NA MESMA TELA DOS RESULTADOS
-// DA PESQUISA
 'use strict';
 var path = require('path');
 var express = require('express');
 var router = express.Router();
-var mysql = require('mysql');
 var tagCloud = require('tag-cloud');
-var env = process.env.NODE_ENV || 'development';
-var config = require('../model/config')[env];
-var con = mysql.createConnection({
-	host: config.database.host,
-	user: config.database.user,
-	password: config.database.pass,
-	database: config.database.db,
-	multipleStatements: true
-  });
-var proceeding = require('../model/proceedingClass.js');
 var sort = require('srtr');
+var vars = require('../model/variables.js');
+var proceeding = require('../model/functions.js');
 
 router.get('/', function(req, res, next) {
 	res.render('index.ejs');
@@ -51,7 +40,7 @@ router.get('/cloud', function(req, res, next) {
 			keywordsByUse = [];
 			return new Promise(function(resolve, reject)
 			{
-				con.query(sql, function (err, results, fields)
+				vars.con.query(sql, function (err, results, fields)
 				{
 					var cloud = [];
 					results.forEach(function(result)
@@ -79,13 +68,13 @@ router.get('/teacher=:teacherName', function(req, res, next) {
 		treatKeywordsForTeacher(teacherName).then(function(cloud)
 		{
 			tagCloud.tagCloud(cloud, function (err, data) {
-				res.render('teacher', { cloud: data } );
+				res.render('teacherPage', { cloud: data } );
 			}, {
 				classPrefix: 'btn tag tag',
 				randomize: false,
 				numBuckets: 5,
 				htmlTag: 'a',
-				additionalAttributes: {href: 'http://' + config.server.host + ':' + config.server.port +'/keyword={{tag}}'}
+				additionalAttributes: {href: 'http://' + vars.config.server.host + ':' + vars.config.server.port +'/keyword={{tag}}'}
 			});
 		}).catch((err) => setImmediate(() => { throw err; }));
 	}
@@ -101,7 +90,7 @@ router.get('/teacher=:teacherName', function(req, res, next) {
 			var sql = "SELECT palavra AS keyword, COUNT(*) AS totalUsage FROM palavras_chave_publicacao PCP JOIN servidor_publica SP ON SP.codPublicacao = PCP.fk_codPublicacao JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.nomeServidor = '" + teacherName + "' GROUP BY palavra";
 			return new Promise(function(resolve, reject)
 			{
-				con.query(sql, function (err, results, fields)
+				vars.con.query(sql, function (err, results, fields)
 				{
 					var cloud = [];
 					results.forEach(function(result)
@@ -123,80 +112,21 @@ router.get('/teacher=:teacherName', function(req, res, next) {
 });
 
 router.get('/keyword=:word', function(req, res, next) {
-	function getProceedingInfo(toSearchValue)
+	var keyword = req.params.word;
+	proceeding.getProceedingCodeByKeyword(keyword).then(function(proceedingsCodes)
 	{
-		var treatedResults = [];
-		var queryGetProceedingsByTitle = "SELECT codPublicacao AS proceedingCode FROM publicacao WHERE nomePublicacao LIKE '" + toSearchValue + "'";
-
-		try
+		var promises = [];
+		proceedingsCodes.forEach(function(proceedingCode)
 		{
-			return new Promise(function(resolve, reject)
-			{
-				con.query(sql, [1, 2, 3], function (err, results, fields)
-				{
-					if(err)
-					{
-						return Promise.reject(err);
-					}
+			const promise = proceeding.getProceedingInfo(proceedingCode);
+			promises.push(promise);
+		});
 
-					//Trata cada resultado obtido
-					//Trata a busca por nome de publicação
-					var proceedingsByName = [];
-					var promises = [];
-					results[0].forEach(function(result)
-					{
-						var proceedingCode = result["proceedingCode"];
-						const promise = getProceedingInfo(proceedingCode);
-						promises.push(promise);
-					});
-
-					//Trata cada resultado obtido
-					//Trata a busca por nome de autor
-					Promise.all(promises).then(proceeding =>
-						{
-							proceedingsByName.push(proceeding);
-							treatedResults.push(proceedingsByName);
-							
-							var proceedingsByAuthor = [];
-							promises = [];
-							results[1].forEach(function(result)
-							{
-								var proceedingCode = result["proceedingCode"];
-								const promise = getProceedingInfo(proceedingCode);
-								promises.push(promise);
-							});
-							//Trata cada resultado obtido
-							//Trata a busca por nome de aluno
-							Promise.all(promises).then(proceeding =>
-							{
-								proceedingsByAuthor.push(proceeding);
-								treatedResults.push(proceedingsByAuthor);
-
-								var proceedingsByStudents = [];
-								promises = [];
-								results[2].forEach(function(result)
-								{
-									var proceedingCode = result["proceedingCode"];
-									const promise = getProceedingInfo(proceedingCode);
-									promises.push(promise);
-								});
-
-								Promise.all(promises).then(proceeding =>
-								{
-									proceedingsByStudents.push(proceeding);
-									treatedResults.push(proceedingsByStudents);
-									resolve(treatedResults);
-								});
-							});
-					});
-				});
-			});
-		}
-		catch(e)
+		Promise.all(promises).then(proceedings =>
 		{
-			throw e;
-		}
-	}
+			res.render('keywordPage', { proceedingsByKeyword: proceedings, word: keyword } );
+		});
+	}).catch((err) => setImmediate(() => { throw err; }));;
 });
 
 router.post('/search', function(req, res, next) {
@@ -204,9 +134,9 @@ router.post('/search', function(req, res, next) {
 
 	try
 	{
-		if(con.state === 'disconnected')
+		if(vars.con.state === 'disconnected')
 		{
-			con.connect(function(err) {
+			vars.con.connect(function(err) {
 				if (err) throw err;
 			});
 		}
@@ -225,7 +155,7 @@ router.post('/search', function(req, res, next) {
 					randomize: true,
 					numBuckets: 5,
 					htmlTag: 'a',
-					additionalAttributes: {href: 'http://' + config.server.host + ':' + config.server.port +'/teacher={{tag}}'}
+					additionalAttributes: {href: 'http://' + vars.config.server.host + ':' + vars.config.server.port +'/teacher={{tag}}'}
 				});
 			}).catch((err) => setImmediate(() => { throw err; }));
 		}).catch((err) => setImmediate(() => { throw err; }));
@@ -242,7 +172,7 @@ router.post('/search', function(req, res, next) {
 			var sql = "SELECT nomeServidor AS teacherName FROM servidor WHERE nomeServidor LIKE '" + teacherName + "' AND tipo = 'DOCENTE'";
 			return new Promise(function(resolve, reject)
 			{
-				con.query(sql, function (err, results, fields)
+				vars.con.query(sql, function (err, results, fields)
 				{
 					var cloud = [];
 					results.forEach(function(result)
@@ -273,7 +203,7 @@ router.post('/search', function(req, res, next) {
 		{
 			return new Promise(function(resolve, reject)
 			{
-				con.query(sql, [1, 2, 3], function (err, results, fields)
+				vars.con.query(sql, [1, 2, 3], function (err, results, fields)
 				{
 					if(err)
 					{
@@ -287,48 +217,48 @@ router.post('/search', function(req, res, next) {
 					results[0].forEach(function(result)
 					{
 						var proceedingCode = result["proceedingCode"];
-						const promise = getProceedingInfo(proceedingCode);
+						const promise = proceeding.getProceedingInfo(proceedingCode);
 						promises.push(promise);
 					});
 
 					//Trata cada resultado obtido
 					//Trata a busca por nome de autor
-					Promise.all(promises).then(proceeding =>
+					Promise.all(promises).then(proceedings =>
+					{
+						proceedingsByName.push(proceedings);
+						treatedResults.push(proceedingsByName);
+						
+						var proceedingsByAuthor = [];
+						promises = [];
+						results[1].forEach(function(result)
 						{
-							proceedingsByName.push(proceeding);
-							treatedResults.push(proceedingsByName);
-							
-							var proceedingsByAuthor = [];
+							var proceedingCode = result["proceedingCode"];
+							const promise = proceeding.getProceedingInfo(proceedingCode);
+							promises.push(promise);
+						});
+						//Trata cada resultado obtido
+						//Trata a busca por nome de aluno
+						Promise.all(promises).then(proceeding =>
+						{
+							proceedingsByAuthor.push(proceeding);
+							treatedResults.push(proceedingsByAuthor);
+
+							var proceedingsByStudents = [];
 							promises = [];
-							results[1].forEach(function(result)
+							results[2].forEach(function(result)
 							{
 								var proceedingCode = result["proceedingCode"];
-								const promise = getProceedingInfo(proceedingCode);
+								const promise = proceeding.getProceedingInfo(proceedingCode);
 								promises.push(promise);
 							});
-							//Trata cada resultado obtido
-							//Trata a busca por nome de aluno
+
 							Promise.all(promises).then(proceeding =>
 							{
-								proceedingsByAuthor.push(proceeding);
-								treatedResults.push(proceedingsByAuthor);
-
-								var proceedingsByStudents = [];
-								promises = [];
-								results[2].forEach(function(result)
-								{
-									var proceedingCode = result["proceedingCode"];
-									const promise = getProceedingInfo(proceedingCode);
-									promises.push(promise);
-								});
-
-								Promise.all(promises).then(proceeding =>
-								{
-									proceedingsByStudents.push(proceeding);
-									treatedResults.push(proceedingsByStudents);
-									resolve(treatedResults);
-								});
+								proceedingsByStudents.push(proceeding);
+								treatedResults.push(proceedingsByStudents);
+								resolve(treatedResults);
 							});
+						});
 					});
 				});
 			});
@@ -337,56 +267,7 @@ router.post('/search', function(req, res, next) {
 		{
 			throw e;
 		}
-	}
-	
-	/*
-		Function to capitalize the first letter of each string
-		params: string to treat, maybe an author full name, etc
-		return: string with firts letters of each word capitalized
-	*/
-	function toTitleCase(str) {
-		return str.replace(/\w\S*/g, function(txt){
-			return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
-		});
-	}
-
-	/* Function to get info of a proceeding by it's code
-	   params: code of proceeding to be searched
-	   return: array containing proceeding code, it's name and authors
-	*/
-	function getProceedingInfo(proceedingCode)
-	{
-		const getProceedingInfo = "SELECT S.nomeServidor AS proceedingAuthor, P.nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath FROM servidor S JOIN servidor_publica SP ON S.siapeServidor = SP.siapeServidor JOIN publicacao P ON P.codPublicacao = SP.codPublicacao WHERE P.codPublicacao = " + proceedingCode + "";
-		const getProceedingStudents = "SELECT nomeAluno AS proceedingStudent FROM aluno_publica AP JOIN aluno A ON AP.matriculaAluno = A.matriculaAluno JOIN publicacao P ON P.codPublicacao = AP.codPublicacao WHERE P.codPublicacao = " + proceedingCode + "";
-		const sql = getProceedingInfo +";"+ getProceedingStudents +";";
-		
-		return new Promise(function(resolve, reject)
-		{
-			con.query(sql, [1, 2], function (err, results, fields)
-			{
-				var proceedingInfo = [];
-				proceedingInfo.push(proceedingCode);
-				proceedingInfo.push(results[0][0]["proceedingName"]);
-				proceedingInfo.push([]);
-				
-				if(results[0]["proceedingPath"] != null) proceedingInfo.push(results[0]["proceedingPath"]);
-				else proceedingInfo.push('null');
-				results[0].forEach(function(result)
-				{
-					var proceedingAuthor = toTitleCase(result["proceedingAuthor"]);
-					proceedingInfo[2].push(proceedingAuthor);
-				});
-
-				// Itera entre os alunos envolvidos
-				proceedingInfo.push([]);
-				results[1].forEach(function(student)
-				{
-					proceedingInfo[4].push(student["proceedingStudent"]);
-				});
-				resolve(proceedingInfo);
-			});
-		});
-	}
+	}	
 });
 
 
@@ -409,8 +290,8 @@ router.get('/stackedBar', function(req, res, next) {
 	var years;
 
 	try {
-		if(con.state === 'disconnected'){
-			con.connect(function(err) {
+		if(vars.con.state === 'disconnected'){
+			vars.con.connect(function(err) {
 				if (err) throw err;
 			});
 		}
@@ -418,7 +299,7 @@ router.get('/stackedBar', function(req, res, next) {
 		// Recupera os três últimos anos nos quais hajam dados no banco
 		sql = "SELECT anoEdital FROM aluno_participa_projeto AP JOIN projeto P ON P.idProjeto = AP.idProjeto GROUP BY P.anoEdital ORDER BY P.anoEdital DESC";
 
-		con.query(sql, function (er, result, fields)
+		vars.con.query(sql, function (er, result, fields)
 		{
 		if (er) throw er;
 		else
@@ -456,7 +337,7 @@ router.get('/stackedBar', function(req, res, next) {
 			
 			return new Promise(function(resolve,reject)
 			{
-				con.query(sql, [actualYear], function (er, result, fields)
+				vars.con.query(sql, [actualYear], function (er, result, fields)
 				{
 					if(er) return reject(er);
 					for(var j = 0; j<result.length; j++)
