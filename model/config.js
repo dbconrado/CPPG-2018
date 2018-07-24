@@ -23,6 +23,8 @@ var config = {
         database: {
             host: '127.0.0.1',
             port: '27017',
+            user:   'root',
+            pass:   'root',
             db:     'cppg'
         },
         //server details
