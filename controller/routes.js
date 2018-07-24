@@ -12,7 +12,7 @@ router.get('/', function(req, res, next) {
 });
 
 /* DOCUMENTAÇÃO DA API https://www.npmjs.com/package/tag-cloud */
-router.get('/cloud', function(req, res, next) {
+router.get('/CPPG/cloud', function(req, res, next) {
 	try
 	{
 		getTeacherCloud().then(function(cloud)
