@@ -6,7 +6,6 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var expressSession = require('express-session');
 var routes = require('./controller/routes');
-var compression = require('compression');
 
 var app = express();
 app.use(compression());
