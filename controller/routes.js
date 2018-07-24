@@ -74,7 +74,7 @@ router.get('/teacher=:teacherName', function(req, res, next) {
 				randomize: false,
 				numBuckets: 5,
 				htmlTag: 'a',
-				additionalAttributes: {href: 'http://' + vars.config.url +'/keyword={{tag}}'}
+				additionalAttributes: {href: vars.config.url +'/keyword={{tag}}'}
 			});
 		}).catch((err) => setImmediate(() => { throw err; }));
 	}
@@ -155,7 +155,7 @@ router.post('/search', function(req, res, next) {
 					randomize: true,
 					numBuckets: 5,
 					htmlTag: 'a',
-					additionalAttributes: {href: 'http://' + vars.config.url +'/teacher={{tag}}'}
+					additionalAttributes: {href: vars.config.url +'/teacher={{tag}}'}
 				});
 			}).catch((err) => setImmediate(() => { throw err; }));
 		}).catch((err) => setImmediate(() => { throw err; }));
