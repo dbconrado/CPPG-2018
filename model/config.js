@@ -1,7 +1,7 @@
 var config = {
     development: {
         //url to be used in link generation
-        url: 'http://localhost:8000/',
+        url: 'http://localhost:8000',
         //database connection settings
         database: {
             host:   'localhost',
@@ -18,7 +18,7 @@ var config = {
     },
     production: {
         //url to be used in link generation
-        url: 'http://200.18.128.48/CPPG/',
+        url: 'http://200.18.128.48/CPPG',
         //database connection settings
         database: {
             host: '127.0.0.1',
