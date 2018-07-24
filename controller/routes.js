@@ -92,6 +92,11 @@ router.get('/teacher=:teacherName', function(req, res, next) {
 			{
 				vars.con.query(sql, function (err, results, fields)
 				{
+					if(err)
+					{
+						return Promise.reject(err);
+					}
+					
 					var cloud = [];
 					results.forEach(function(result)
 					{
