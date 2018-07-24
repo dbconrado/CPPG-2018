@@ -1,4 +1,4 @@
-var env = process.env.NODE_ENV || 'development';
+var env = process.env.NODE_ENV || 'production';
 var config = require('../model/config')[env];
 var mysql = require('mysql');
 var con = mysql.createConnection({
