@@ -8,22 +8,18 @@ var vars = require('../model/variables.js');
 var proceeding = require('../model/functions.js');
 
 router.get('/', function(req, res, next) {
-	res.render('index.ejs');
-});
-
-/* DOCUMENTAÇÃO DA API https://www.npmjs.com/package/tag-cloud */
-router.get('/CPPG/cloud', function(req, res, next) {
 	try
 	{
 		getTeacherCloud().then(function(cloud)
 		{
 			tagCloud.tagCloud(cloud, function (err, data) {
-				res.render('cloud', { cloud: data } );
+				res.render('index', { cloud: data } );
 			}, {
 				classPrefix: 'btn tag tag',
-				randomize: true,
+				randomize: false,
 				numBuckets: 5,
-				htmlTag: 'span'
+				htmlTag: 'a',
+				additionalAttributes: {href: vars.config.url +'/keyword={{tag}}'}
 			});
 		}).catch((err) => setImmediate(() => { throw err; }));
 	}
@@ -36,8 +32,8 @@ router.get('/CPPG/cloud', function(req, res, next) {
 	{
 		try
 		{
-			sql = "SELECT palavra AS keyword, COUNT(*) AS totalUsage FROM palavras_chave_publicacao GROUP BY palavra";
-			keywordsByUse = [];
+			var sql = "SELECT palavra AS keyword, COUNT(*) AS totalUsage FROM palavras_chave_publicacao GROUP BY palavra";
+			var keywordsByUse = [];
 			return new Promise(function(resolve, reject)
 			{
 				vars.con.query(sql, function (err, results, fields)
@@ -49,7 +45,8 @@ router.get('/CPPG/cloud', function(req, res, next) {
 							tagName: result["keyword"], count: result["totalUsage"]
 						});
 					});
-					resolve(cloud);
+					var sorted = sort.quicksort(cloud, (a, b) => b.count - a.count);
+					resolve(sorted);
 				});
 			});
 		}
@@ -58,6 +55,11 @@ router.get('/CPPG/cloud', function(req, res, next) {
 			throw err;
 		}
 	}
+});
+
+/* DOCUMENTAÇÃO DA API https://www.npmjs.com/package/tag-cloud */
+router.get('/cloud', function(req, res, next) {
+	
 });
 
 router.get('/teacher=:teacherName', function(req, res, next) {
