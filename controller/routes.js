@@ -85,7 +85,7 @@ router.get('/', function(req, res, next){
 			yearData.push(years[i].anoEdital);
 		}
 
-		getTeacherCloud().then(function(cloud)
+		getKeywordsCloud().then(function(cloud)
 		{
 			tagCloud.tagCloud(cloud, function (err, data) {
 				res.render('index', {
@@ -107,7 +107,7 @@ router.get('/', function(req, res, next){
 		}).catch((err) => setImmediate(() => { throw err; }));
 	}
 
-	function getTeacherCloud()
+	function getKeywordsCloud()
 	{
 		try
 		{
