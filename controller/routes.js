@@ -62,28 +62,28 @@ router.get('/', function(req, res, next){
 		});
 	}
 
-		function getCol(matrix, col)
-		{
-			var column = [];
-			for(var i=0; i<matrix.length; i++){
-				column.push(matrix[i][col]);
-			}
-			return column;
-		 }
+	function getCol(matrix, col)
+	{
+		var column = [];
+		for(var i=0; i<matrix.length; i++){
+			column.push(matrix[i][col]);
+		}
+		return column;
+	}
 
-		function sendToView(years, typesOfAssistance)
-		{
-			var pibicAssistance 	= getCol(typesOfAssistance, 0);
-			var pibicJrAssistance 	= getCol(typesOfAssistance, 1);
-			var pibitAssistance 	= getCol(typesOfAssistance, 2);
-			var pibexAssistance 	= getCol(typesOfAssistance, 3);
-			var volunteerAssistance = getCol(typesOfAssistance, 4);
+	function sendToView(years, typesOfAssistance)
+	{
+		var pibicAssistance 	= getCol(typesOfAssistance, 0);
+		var pibicJrAssistance 	= getCol(typesOfAssistance, 1);
+		var pibitAssistance 	= getCol(typesOfAssistance, 2);
+		var pibexAssistance 	= getCol(typesOfAssistance, 3);
+		var volunteerAssistance = getCol(typesOfAssistance, 4);
 
-			var yearData = [];
-			for(var i=(years.length-1); i>=0; i--)
-			{
-				yearData.push(years[i].anoEdital);
-			}
+		var yearData = [];
+		for(var i=(years.length-1); i>=0; i--)
+		{
+			yearData.push(years[i].anoEdital);
+		}
 
 		getTeacherCloud().then(function(cloud)
 		{
@@ -105,7 +105,7 @@ router.get('/', function(req, res, next){
 				additionalAttributes: {href: vars.config.url +'/keyword={{tag}}'}
 			});
 		}).catch((err) => setImmediate(() => { throw err; }));
-		}
+	}
 
 	function getTeacherCloud()
 	{
