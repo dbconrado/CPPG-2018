@@ -6,6 +6,8 @@ var tagCloud = require('tag-cloud');
 var sort = require('srtr');
 var vars = require('../model/variables.js');
 var proceeding = require('../model/functions.js');
+var base64 = require('base-64');
+var fs = require('fs');
 
 router.get('/', function(req, res, next){
 	try
@@ -169,8 +171,44 @@ router.get('/', function(req, res, next){
 	}
 });
 
+function base64_encode(file) {
+    // read binary data
+    var bitmap = fs.readFileSync(file);
+    // convert binary data to base64 encoded string
+    return new Buffer(bitmap).toString('base64');
+}
+
 /* DOCUMENTAÇÃO DA API https://www.npmjs.com/package/tag-cloud */
-router.get('/cloud', function(req, res, next) {
+router.get('/pdf', function(req, res, next) {
+	try
+	{
+		global.atob = require("atob");
+		global.window = {document: {createElementNS: () => {return {}} }};
+		global.navigator = {};
+		global.btoa = () => {};
+		
+		//var imgData = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs';
+		//var imgData = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAj/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AI5AB//Z';
+		// res.send(imgData);
+
+		var PDF = require('pdfkit');
+		var text = 'ANY_TEXT_YOU_WANT_TO_WRITE_IN_PDF_DOC';        //define a dummy text to be written in the file
+		var request = require('request');		
+
+		var doc = new PDF();
+		doc.pipe(fs.createWriteStream(path.resolve(__dirname + '/../public/certificados/document.pdf')));
+
+		doc.text('HOLIDAYS - 125 Fortime',80,165,{align:'center'});
+		doc.text('Hello this is a demo file',100,200);
+		doc.image('./public/certificados/modelos/ex2.jpeg', 0, 15).text('Proportional to width', 0, 0);
+
+		doc.end();
+		res.sendFile(path.resolve(__dirname + '/../public/certificados/document.pdf'));
+	}
+	catch(e)
+	{
+		throw e;
+	}
 	
 });
 
