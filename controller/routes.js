@@ -192,18 +192,36 @@ router.get('/pdf', function(req, res, next) {
 		// res.send(imgData);
 
 		var PDF = require('pdfkit');
-		var text = 'ANY_TEXT_YOU_WANT_TO_WRITE_IN_PDF_DOC';        //define a dummy text to be written in the file
-		var request = require('request');		
+		
+		var doc = new PDF({
+			layout: 'landscape',
+			margin: -6,
+			size: [786,1108]
+		});
 
-		var doc = new PDF();
-		doc.pipe(fs.createWriteStream(path.resolve(__dirname + '/../public/certificados/document.pdf')));
+		doc.fontSize(20);
+		var writer = fs.createWriteStream(path.resolve(__dirname + '/../public/certificados/document.pdf'));
+		doc.pipe(writer);
 
-		doc.text('HOLIDAYS - 125 Fortime',80,165,{align:'center'});
-		doc.text('Hello this is a demo file',100,200);
-		doc.image('./public/certificados/modelos/ex2.jpeg', 0, 15).text('Proportional to width', 0, 0);
+		doc.image('public/certificados/modelos/modelo1.jpg',
+		{
+			fit: [doc.page.width, doc.page.height],
+			align: 'center',
+			valign: 'center'
+		});
+
+		var certificatedPerson = "Cristiane Norbiato Targa";
+		var certificateMessage = "Declaro para os devidos fins que o/a discente " + certificatedPerson + " é coorientadora da discente Lara Cadar Cunha no projeto de pesquisa “Plataforma para classificação da 		amigabilidade de gênero das empresas de tecnologia da informação do município de Belo Horizonte” aprovado no Edital 19/2017 do Instituto Federal de Minas Gerais campus Sabará, com período de vigência de dezembro de 2017 à novembro de 2018.";
+		doc.text(certificateMessage,280,350,
+		{
+			align: 'justify',
+			width: doc.page.width/2
+		});
 
 		doc.end();
-		res.sendFile(path.resolve(__dirname + '/../public/certificados/document.pdf'));
+		writer.on('finish', function() {
+			res.sendFile(path.resolve(__dirname + '/../public/certificados/document.pdf'));
+		});
 	}
 	catch(e)
 	{

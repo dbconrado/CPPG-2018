@@ -5,10 +5,11 @@ module.exports = {
     env: {
       NODE_ENV: 'development'
     },
+    watch: true,
+    ignore_watch: ['public','node-modules'],
     env_production : {
       NODE_ENV: 'production'
-    },
-    watch: true
+    }
   }],
 
   deploy : {

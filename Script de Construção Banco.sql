@@ -1,10 +1,10 @@
 CREATE DATABASE  IF NOT EXISTS `cppg` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `cppg`;
--- MySQL dump 10.13  Distrib 5.7.22, for Linux (x86_64)
+-- MySQL dump 10.13  Distrib 5.7.23, for Linux (x86_64)
 --
 -- Host: localhost    Database: cppg
 -- ------------------------------------------------------
--- Server version	5.7.22-0ubuntu0.16.04.1
+-- Server version	5.7.23-0ubuntu0.16.04.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -116,6 +116,35 @@ LOCK TABLES `aluno_publica` WRITE;
 /*!40000 ALTER TABLE `aluno_publica` DISABLE KEYS */;
 INSERT INTO `aluno_publica` VALUES (1,12668,1,'XXXV',NULL,NULL,2014,'Natal','RN','BRASIL'),(2,12623,2,'I',NULL,NULL,2014,'São Paulo','SP','BRASIL'),(3,12668,2,'I',NULL,NULL,2014,'São Paulo','SP','BRASIL'),(4,14515,3,'XLVII',NULL,NULL,2015,'Porto de Galinhas','PE','BRASIL'),(5,14515,5,'III',NULL,NULL,2015,'Vitória','ES','BRASIL'),(6,14515,4,'XXXVI',NULL,NULL,2015,'Rio de Janeiro','RJ','BRASIL'),(7,12623,4,'XXXVI',NULL,NULL,2015,'Rio de Janeiro','RJ','BRASIL'),(8,14515,6,'V',NULL,NULL,2016,'Bambuí','MG','BRASIL'),(9,12561,6,'V',NULL,NULL,2016,'Bambuí','MG','BRASIL'),(9,12567,6,'V',NULL,NULL,2016,'Bambuí','MG','BRASIL'),(9,12623,6,'V',NULL,NULL,2016,'Bambuí','MG','BRASIL'),(10,12294,4,'XXXVI',NULL,NULL,2015,'Rio de Janeiro','RJ','BRASIL'),(11,12376,3,'XLVIII',NULL,NULL,2016,'Vitória','ES','BRASIL'),(12,12376,4,'XXXVII',NULL,NULL,2016,'Brasília','DF','BRASIL'),(13,12623,3,'XLVII',NULL,NULL,2015,'Porto de Galinhas','PE','BRASIL'),(14,12623,6,'V',NULL,NULL,2016,'Bambuí','MG','BRASIL'),(15,30136,7,'12',NULL,NULL,2017,'Lisboa',NULL,'Portugal'),(16,12294,8,'2017',NULL,NULL,2017,'São José do Rio Preto','SP','Brasil');
 /*!40000 ALTER TABLE `aluno_publica` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `certificados`
+--
+
+DROP TABLE IF EXISTS `certificados`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `certificados` (
+  `hashValidacao` varchar(255) NOT NULL,
+  `siapeServidor` int(11) NOT NULL,
+  `idProjeto` char(10) DEFAULT NULL,
+  PRIMARY KEY (`hashValidacao`),
+  KEY `siapeServidor` (`siapeServidor`),
+  KEY `idProjeto` (`idProjeto`),
+  CONSTRAINT `certificados_ibfk_1` FOREIGN KEY (`siapeServidor`) REFERENCES `servidor` (`siapeServidor`),
+  CONSTRAINT `certificados_ibfk_2` FOREIGN KEY (`idProjeto`) REFERENCES `projeto` (`idProjeto`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `certificados`
+--
+
+LOCK TABLES `certificados` WRITE;
+/*!40000 ALTER TABLE `certificados` DISABLE KEYS */;
+INSERT INTO `certificados` VALUES ('698dc19d489c4e4db73e28a713eab07b',1964494,'2015CPPG05');
+/*!40000 ALTER TABLE `certificados` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -443,4 +472,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-07-02 16:50:05
+-- Dump completed on 2018-08-13 18:10:53
