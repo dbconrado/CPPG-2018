@@ -52,7 +52,7 @@ var functions = {
         params: Proceeding keyword (string)
         return: Proceeding code (int) 
     */
-   getProceedingCodeByKeyword(keywordToBeSearched)
+   getProceedingCodeByKeyword: function (keywordToBeSearched)
    {
         const sql = "SELECT P.codPublicacao AS code FROM palavras_chave_publicacao PCP JOIN publicacao P ON P.codPublicacao = PCP.fk_codPublicacao WHERE PCP.palavra = '" + keywordToBeSearched + "'";
        
@@ -69,6 +69,38 @@ var functions = {
                         proceedingsCodes.push(proceedingCode["code"]);
                     });
                     resolve(proceedingsCodes);
+                }
+			});
+        });
+   },
+   getTeachersOnDatabase: function()
+   {
+	   const sql = "SELECT nomeServidor AS teacherName FROM servidor WHERE cargo LIKE '%Professor%' ORDER BY nomeServidor ASC";
+
+	   return new Promise(function(resolve, reject)
+        {
+			vars.con.query(sql, function (err, results, fields)
+			{
+                if(err) return reject(err);
+                else
+                {
+                    resolve(results);
+                }
+			});
+        });
+   },
+   getInternalResearchWorksInfo: function()
+   {
+	   const sql = "SELECT nomeProjeto AS projectName FROM projeto";
+
+	   return new Promise(function(resolve, reject)
+        {
+			vars.con.query(sql, function (err, results, fields)
+			{
+                if(err) return reject(err);
+                else
+                {
+                    resolve(results);
                 }
 			});
         });

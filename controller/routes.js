@@ -5,8 +5,8 @@ var router = express.Router();
 var tagCloud = require('tag-cloud');
 var sort = require('srtr');
 var vars = require('../model/variables.js');
-var proceeding = require('../model/functions.js');
-var base64 = require('base-64');
+var functions = require('../model/functions.js');
+// var base64 = require('base-64');
 var fs = require('fs');
 
 router.get('/', function(req, res, next){
@@ -171,14 +171,28 @@ router.get('/', function(req, res, next){
 	}
 });
 
-function base64_encode(file) {
-    // read binary data
-    var bitmap = fs.readFileSync(file);
-    // convert binary data to base64 encoded string
-    return new Buffer(bitmap).toString('base64');
-}
+router.get('/gerarCertificado', function(req, res, next){
+	var teachers = [];
 
-/* DOCUMENTAÇÃO DA API https://www.npmjs.com/package/tag-cloud */
+	var jsdom = require("jsdom");
+	const { JSDOM } = jsdom;
+	const { window } = new JSDOM();
+	const { document } = (new JSDOM('')).window;
+	global.document = document;
+	var $ = require("jquery")(window);
+	
+	functions.getTeachersOnDatabase().then(function(results)
+	{
+		results.forEach(function(result)
+		{
+			teachers.push(result.teacherName);
+		});
+
+		res.render('geraCertificado', { teachers: teachers });
+		$('#t1').load('asdf');
+	}).catch((err) => setImmediate(() => { throw err; }));;
+});
+
 router.get('/pdf', function(req, res, next) {
 	try
 	{
@@ -186,10 +200,6 @@ router.get('/pdf', function(req, res, next) {
 		global.window = {document: {createElementNS: () => {return {}} }};
 		global.navigator = {};
 		global.btoa = () => {};
-		
-		//var imgData = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs';
-		//var imgData = 'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/2wBDAQUFBQcGBw4ICA4eFBEUHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh4eHh7/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAj/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFAEBAAAAAAAAAAAAAAAAAAAAAP/EABQRAQAAAAAAAAAAAAAAAAAAAAD/2gAMAwEAAhEDEQA/AI5AB//Z';
-		// res.send(imgData);
 
 		var PDF = require('pdfkit');
 		
@@ -227,7 +237,6 @@ router.get('/pdf', function(req, res, next) {
 	{
 		throw e;
 	}
-	
 });
 
 router.get('/teacher=:teacherName', function(req, res, next) {
@@ -288,12 +297,12 @@ router.get('/teacher=:teacherName', function(req, res, next) {
 
 router.get('/keyword=:word', function(req, res, next) {
 	var keyword = req.params.word;
-	proceeding.getProceedingCodeByKeyword(keyword).then(function(proceedingsCodes)
+	functions.getProceedingCodeByKeyword(keyword).then(function(proceedingsCodes)
 	{
 		var promises = [];
 		proceedingsCodes.forEach(function(proceedingCode)
 		{
-			const promise = proceeding.getProceedingInfo(proceedingCode);
+			const promise = functions.getProceedingInfo(proceedingCode);
 			promises.push(promise);
 		});
 
@@ -392,7 +401,7 @@ router.post('/search', function(req, res, next) {
 					results[0].forEach(function(result)
 					{
 						var proceedingCode = result["proceedingCode"];
-						const promise = proceeding.getProceedingInfo(proceedingCode);
+						const promise = functions.getProceedingInfo(proceedingCode);
 						promises.push(promise);
 					});
 
@@ -408,7 +417,7 @@ router.post('/search', function(req, res, next) {
 						results[1].forEach(function(result)
 						{
 							var proceedingCode = result["proceedingCode"];
-							const promise = proceeding.getProceedingInfo(proceedingCode);
+							const promise = functions.getProceedingInfo(proceedingCode);
 							promises.push(promise);
 						});
 						//Trata cada resultado obtido
@@ -423,7 +432,7 @@ router.post('/search', function(req, res, next) {
 							results[2].forEach(function(result)
 							{
 								var proceedingCode = result["proceedingCode"];
-								const promise = proceeding.getProceedingInfo(proceedingCode);
+								const promise = functions.getProceedingInfo(proceedingCode);
 								promises.push(promise);
 							});
 
