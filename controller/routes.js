@@ -189,8 +189,9 @@ router.get('/gerarCertificado', function(req, res, next){
 		});
 
 		res.render('geraCertificado', { teachers: teachers });
+		
 		$('#t1').load('asdf');
-	}).catch((err) => setImmediate(() => { throw err; }));;
+	}).catch((err) => setImmediate(() => { throw err; }));
 });
 
 router.get('/pdf', function(req, res, next) {
