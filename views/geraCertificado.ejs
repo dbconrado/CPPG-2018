@@ -10,13 +10,30 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.js"></script>
+
+		<link rel="stylesheet" href="/CPPG/stylesheets/geraCertificado.css">
 		
 		<script>
-			$(function()
+			$(document).ready(function()
 			{
-				$("#selTeacher").on ('change', function()
+				$("#selTeacher").on('change', function()
 				{
-					$(this).load("../model/fillSelectTeachers.php");
+					var data = {};
+					data.teacherName = "message";
+					
+					$.ajax({
+						type: 'POST',
+						data: JSON.stringify(data),
+				        contentType: 'application/json',
+                        url: 'http://localhost/CPPG/endpoint',
+						success: function(data)
+						{
+                            console.log('success');
+							console.log(JSON.stringify(data));
+							// $('#selYear').html("<option data-tokens= '2018'>2018</option>");
+							$("#selectYear").css("display", "block");
+                        }
+                    });
 				});
 			});
 		</script>
@@ -32,15 +49,26 @@
 							<table class="table table-filter">
 								<tbody>
 										<h1>Gere um certificado:</h1>
-										<div id="t1">teste</div>
+										<h4>Professor:</h4>
                                         <form action="/CPPG/pdf" method="POST">
-                                            <select class="selectpicker" id="selTeacher" data-live-search="true" title="Selecione um discente..">
-                                                <% for (teacher of teachers){%>
-                                                    <option data-tokens= "<%= teacher %> "> <%= teacher %></option>
-                                                <% } %>
-                                            </select>
+                                            <div id="selectTeacher">
+												<select class="selectpicker" id="selTeacher" data-live-search="true" title="Selecione um discente..">
+													<% for (teacher of teachers){%>
+														<option data-tokens= "<%= teacher %> "> <%= teacher %></option>
+													<% } %>
+												</select>
+											</div>
+											<br>
+											<div id="selectYear">
+												<h4>Ano:</h4>
+												<select class="selectpicker" id="selYear" data-live-search="true" title="Selecione um discente..">
+													<% for (teacher of teachers){%>
+														<option data-tokens= "<%= teacher %> "> <%= teacher %></option>
+													<% } %>
+												</select>
+											</div>
 
-                                            <button type="button" class="btn btn-default navbar-btn">Gerar</button>
+                                            <button type="button" class="btn btn-default navbar-btn center-block">Gerar</button>
                                         </form>
 								</tbody>
 							</table>

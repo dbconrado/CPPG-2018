@@ -194,6 +194,11 @@ router.get('/gerarCertificado', function(req, res, next){
 	}).catch((err) => setImmediate(() => { throw err; }));
 });
 
+router.post('/endpoint', function(req, res, next) {
+	var obj = {};
+	console.log('body: ' + JSON.stringify(req.body));
+	res.send("tste");
+});
 router.get('/pdf', function(req, res, next) {
 	try
 	{
