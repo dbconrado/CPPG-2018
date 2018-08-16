@@ -170,7 +170,13 @@ router.get('/', function(res){
 	}
 });
 
-router.get('/gerarCertificado', function(res){
+router.all('/gerarCertificado', function(req, res){
+	if(req.body["teacherName"])
+	{
+		functions.getYearsAvailableByTeacher(req.body["teacherName"]);
+	}
+	// res.send("tste");
+	
 	var teachers = [];
 
 	var jsdom = require("jsdom");
@@ -193,11 +199,7 @@ router.get('/gerarCertificado', function(res){
 	}).catch((err) => setImmediate(() => { throw err; }));
 });
 
-router.post('/endpoint', function(req, res) {
-	console.log('body: ' + JSON.stringify(req.body));
-	res.send("tste");
-});
-router.get('/pdf', function(res) {
+router.get('/pdf', function(req, res) {
 	try
 	{
 		global.atob = require("atob");

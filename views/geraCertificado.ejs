@@ -19,17 +19,15 @@
 				$("#selTeacher").on('change', function()
 				{
 					var data = {};
-					data.teacherName = "message";
+					data.teacherName = $(this).val();
 					
 					$.ajax({
 						type: 'POST',
 						data: JSON.stringify(data),
 				        contentType: 'application/json',
-                        url: 'http://localhost/CPPG/endpoint',
+                        url: '/CPPG/gerarCertificado',
 						success: function(data)
 						{
-                            console.log('success');
-							console.log(JSON.stringify(data));
 							// $('#selYear').html("<option data-tokens= '2018'>2018</option>");
 							$("#selectYear").css("display", "block");
                         }
