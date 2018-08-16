@@ -9,7 +9,7 @@ var functions = require('../model/functions.js');
 // var base64 = require('base-64');
 var fs = require('fs');
 
-router.get('/', function(req, res, next){
+router.get('/', function(res){
 	try
 	{
 		if(vars.con.state === 'disconnected'){
@@ -33,7 +33,7 @@ router.get('/', function(req, res, next){
 		
 		return new Promise(function(resolve,reject)
 		{
-			vars.con.query(sql, [actualYear], function (er, result, fields)
+			vars.con.query(sql, [actualYear], function (er, result)
 			{
 				if(er) return reject(er);
 				for(var j = 0; j<result.length; j++)
@@ -89,7 +89,7 @@ router.get('/', function(req, res, next){
 
 		getKeywordsCloud().then(function(cloud)
 		{
-			tagCloud.tagCloud(cloud, function (err, data) {
+			tagCloud.tagCloud(cloud, function (data) {
 				res.render('index', {
 					cloud: data,
 					years: yearData,
@@ -114,10 +114,9 @@ router.get('/', function(req, res, next){
 		try
 		{
 			var sql = "SELECT palavra AS keyword, COUNT(*) AS totalUsage FROM palavras_chave_publicacao GROUP BY palavra";
-			var keywordsByUse = [];
-			return new Promise(function(resolve, reject)
+			return new Promise(function(resolve)
 			{
-				vars.con.query(sql, function (err, results, fields)
+				vars.con.query(sql, function (results)
 				{
 					var cloud = [];
 					results.forEach(function(result)
@@ -142,7 +141,7 @@ router.get('/', function(req, res, next){
 		// Recupera os três últimos anos nos quais hajam dados no banco
 		var sql = "SELECT anoEdital FROM aluno_participa_projeto AP JOIN projeto P ON P.idProjeto = AP.idProjeto GROUP BY P.anoEdital ORDER BY P.anoEdital DESC";
 
-		vars.con.query(sql, function (er, result, fields)
+		vars.con.query(sql, function (er, result)
 		{
 			if (er) throw er;
 			else
@@ -171,7 +170,7 @@ router.get('/', function(req, res, next){
 	}
 });
 
-router.get('/gerarCertificado', function(req, res, next){
+router.get('/gerarCertificado', function(res){
 	var teachers = [];
 
 	var jsdom = require("jsdom");
@@ -194,12 +193,11 @@ router.get('/gerarCertificado', function(req, res, next){
 	}).catch((err) => setImmediate(() => { throw err; }));
 });
 
-router.post('/endpoint', function(req, res, next) {
-	var obj = {};
+router.post('/endpoint', function(req, res) {
 	console.log('body: ' + JSON.stringify(req.body));
 	res.send("tste");
 });
-router.get('/pdf', function(req, res, next) {
+router.get('/pdf', function(res) {
 	try
 	{
 		global.atob = require("atob");
@@ -245,14 +243,14 @@ router.get('/pdf', function(req, res, next) {
 	}
 });
 
-router.get('/teacher=:teacherName', function(req, res, next) {
+router.get('/teacher=:teacherName', function(req, res) {
 	var teacherName = req.params.teacherName;
 
 	try
 	{
 		treatKeywordsForTeacher(teacherName).then(function(cloud)
 		{
-			tagCloud.tagCloud(cloud, function (err, data) {
+			tagCloud.tagCloud(cloud, function (data) {
 				res.render('teacherPage', { cloud: data } );
 			}, {
 				classPrefix: 'btn tag tag',
@@ -273,9 +271,9 @@ router.get('/teacher=:teacherName', function(req, res, next) {
 		try
 		{
 			var sql = "SELECT palavra AS keyword, COUNT(*) AS totalUsage FROM palavras_chave_publicacao PCP JOIN servidor_publica SP ON SP.codPublicacao = PCP.fk_codPublicacao JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.nomeServidor = '" + teacherName + "' GROUP BY palavra";
-			return new Promise(function(resolve, reject)
+			return new Promise(function(resolve)
 			{
-				vars.con.query(sql, function (err, results, fields)
+				vars.con.query(sql, function (err, results)
 				{
 					if(err)
 					{
@@ -301,7 +299,7 @@ router.get('/teacher=:teacherName', function(req, res, next) {
 	}
 });
 
-router.get('/keyword=:word', function(req, res, next) {
+router.get('/keyword=:word', function(req, res) {
 	var keyword = req.params.word;
 	functions.getProceedingCodeByKeyword(keyword).then(function(proceedingsCodes)
 	{
@@ -319,7 +317,7 @@ router.get('/keyword=:word', function(req, res, next) {
 	}).catch((err) => setImmediate(() => { throw err; }));;
 });
 
-router.post('/search', function(req, res, next) {
+router.post('/search', function(req, res) {
 	var searchValue = req.body.searchValue;
 
 	try
@@ -337,7 +335,7 @@ router.post('/search', function(req, res, next) {
 		{
 			teacherByName(searchValue).then(function(cloud)
 			{
-				tagCloud.tagCloud(cloud, function (err, data)
+				tagCloud.tagCloud(cloud, function (data)
 				{
 					res.render('searchProceedings', { proceedingsByName: result[0][0], proceedingsByAuthor: result[1][0], proceedingsByStudents: result[2][0], cloud: data } );
 				}, {
@@ -360,9 +358,9 @@ router.post('/search', function(req, res, next) {
 		try
 		{
 			var sql = "SELECT nomeServidor AS teacherName FROM servidor WHERE nomeServidor LIKE '" + teacherName + "' AND tipo = 'DOCENTE'";
-			return new Promise(function(resolve, reject)
+			return new Promise(function(resolve)
 			{
-				vars.con.query(sql, function (err, results, fields)
+				vars.con.query(sql, function (results)
 				{
 					var cloud = [];
 					results.forEach(function(result)
@@ -391,9 +389,9 @@ router.post('/search', function(req, res, next) {
 
 		try
 		{
-			return new Promise(function(resolve, reject)
+			return new Promise(function(resolve)
 			{
-				vars.con.query(sql, [1, 2, 3], function (err, results, fields)
+				vars.con.query(sql, [1, 2, 3], function (err, results)
 				{
 					if(err)
 					{
@@ -462,7 +460,7 @@ router.post('/search', function(req, res, next) {
 
 
 
-router.get('/pub-discentes/compilados/2014-2016.pdf', function(req, res, next) {
+router.get('/pub-discentes/compilados/2014-2016.pdf', function(res) {
 	res.sendFile(path.resolve(__dirname + '/../public/publicacoes-discentes/compilados/2014-2016.pdf'), function(err, html) {
 		if(err) {
 			throw err;
