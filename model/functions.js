@@ -4,8 +4,8 @@ var functions = {
 	getYearsAvailableByTeacher: function(teacherName)
 	{
 		var sql1 = "SELECT siapeServidor FROM servidor WHERE nomeServidor = '" + teacherName + "';";
-		var sql2 = "SELECT DATE_FORMAT(P.dataInicio, '%y') AS data_inicio, DATE_FORMAT(P.dataTermino, '%y') AS data_fim FROM servidor_participa_projeto SP JOIN servidor S ON SP.siapeServidor = S.siapeServidor JOIN projeto P ON P.idProjeto = SP.idProjeto WHERE S.siapeServidor = ?";
 		
+		var sql2 = "SELECT DATE_FORMAT(P.dataInicio, '%y') AS data_inicio, DATE_FORMAT(P.dataTermino, '%y') AS data_fim FROM servidor_participa_projeto SP JOIN servidor S ON SP.siapeServidor = S.siapeServidor JOIN projeto P ON P.idProjeto = SP.idProjeto WHERE S.siapeServidor = ?";
 		return new Promise(function(resolve, reject)
 		{
 			vars.con.query(sql1, function (err, result, fields)

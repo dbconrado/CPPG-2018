@@ -9,7 +9,7 @@ var functions = require('../model/functions.js');
 // var base64 = require('base-64');
 var fs = require('fs');
 
-router.get('/', function(res){
+router.get('/', function(req, res){
 	try
 	{
 		if(vars.con.state === 'disconnected'){
@@ -89,7 +89,7 @@ router.get('/', function(res){
 
 		getKeywordsCloud().then(function(cloud)
 		{
-			tagCloud.tagCloud(cloud, function (data) {
+			tagCloud.tagCloud(cloud, function (err, data) {
 				res.render('index', {
 					cloud: data,
 					years: yearData,
@@ -116,9 +116,10 @@ router.get('/', function(res){
 			var sql = "SELECT palavra AS keyword, COUNT(*) AS totalUsage FROM palavras_chave_publicacao GROUP BY palavra";
 			return new Promise(function(resolve)
 			{
-				vars.con.query(sql, function (results)
+				vars.con.query(sql, function (err, results)
 				{
 					var cloud = [];
+					
 					results.forEach(function(result)
 					{
 						cloud.push({
