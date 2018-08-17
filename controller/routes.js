@@ -6,7 +6,6 @@ var tagCloud = require('tag-cloud');
 var sort = require('srtr');
 var vars = require('../model/variables.js');
 var functions = require('../model/functions.js');
-// var base64 = require('base-64');
 var fs = require('fs');
 
 router.get('/', function(req, res){
@@ -174,30 +173,46 @@ router.get('/', function(req, res){
 router.all('/gerarCertificado', function(req, res){
 	if(req.body["teacherName"])
 	{
-		functions.getYearsAvailableByTeacher(req.body["teacherName"]);
-	}
-	// res.send("tste");
-	
-	var teachers = [];
-
-	var jsdom = require("jsdom");
-	const { JSDOM } = jsdom;
-	const { window } = new JSDOM();
-	const { document } = (new JSDOM('')).window;
-	global.document = document;
-	var $ = require("jquery")(window);
-	
-	functions.getTeachersOnDatabase().then(function(results)
-	{
-		results.forEach(function(result)
+		functions.getYearsAvailableByTeacher(req.body["teacherName"]).then(function(yearsAvailable)
 		{
-			teachers.push(result.teacherName);
-		});
+			var initialYears = [];
+			var finalYears = [];
 
-		res.render('geraCertificado', { teachers: teachers });
+			yearsAvailable.forEach(function(year)
+			{
+				if(year["initialData"] != null && year["finalData"] != null)
+				{
+					initialYears.push(parseInt(year["initialData"]));
+					finalYears.push(year["finalData"]);
+				}
+			});
+
+			var min = Math.min.apply(null,initialYears);
+			var max = Math.max.apply(null,finalYears);
+			res.send([min,max]);
+		}).catch((err) => setImmediate(() => { throw err; }));
+	}
+	else
+	{
+		var teachers = [];
+
+		var jsdom = require("jsdom");
+		const { JSDOM } = jsdom;
+		const { window } = new JSDOM();
+		const { document } = (new JSDOM('')).window;
+		global.document = document;
+		var $ = require("jquery")(window);
 		
-		$('#t1').load('asdf');
-	}).catch((err) => setImmediate(() => { throw err; }));
+		functions.getTeachersOnDatabase().then(function(results)
+		{
+			results.forEach(function(result)
+			{
+				teachers.push(result.teacherName);
+			});
+
+			res.render('geraCertificado', { teachers: teachers });
+		}).catch((err) => setImmediate(() => { throw err; }));
+	}
 });
 
 router.get('/pdf', function(req, res) {

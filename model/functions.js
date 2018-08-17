@@ -3,9 +3,8 @@ var vars = require('./variables.js');
 var functions = {
 	getYearsAvailableByTeacher: function(teacherName)
 	{
-		var sql1 = "SELECT siapeServidor FROM servidor WHERE nomeServidor = '" + teacherName + "';";
-		
-		var sql2 = "SELECT DATE_FORMAT(P.dataInicio, '%y') AS data_inicio, DATE_FORMAT(P.dataTermino, '%y') AS data_fim FROM servidor_participa_projeto SP JOIN servidor S ON SP.siapeServidor = S.siapeServidor JOIN projeto P ON P.idProjeto = SP.idProjeto WHERE S.siapeServidor = ?";
+		var sql1 = "SELECT siapeServidor FROM servidor WHERE nomeServidor = '" + teacherName + "';";	
+		var sql2 = "SELECT DATE_FORMAT(P.dataInicio, '%Y') AS initialData, DATE_FORMAT(P.dataTermino, '%Y') AS finalData FROM servidor_participa_projeto SP JOIN servidor S ON SP.siapeServidor = S.siapeServidor JOIN projeto P ON P.idProjeto = SP.idProjeto WHERE S.siapeServidor = ?";
 		return new Promise(function(resolve, reject)
 		{
 			vars.con.query(sql1, function (err, result, fields)
@@ -13,7 +12,6 @@ var functions = {
 				var siapeServidor = result[0]["siapeServidor"];
 				vars.con.query(sql2, siapeServidor, function (err, results, fields)
 				{
-					console.log(results);
 					resolve(results);
 				});
 			});

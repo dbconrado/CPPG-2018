@@ -13,65 +13,39 @@
 
 		<link rel="stylesheet" href="/CPPG/stylesheets/geraCertificado.css">
 		
-		<script>
-			$(document).ready(function()
-			{
-				$("#selTeacher").on('change', function()
-				{
-					var data = {};
-					data.teacherName = $(this).val();
-					
-					$.ajax({
-						type: 'POST',
-						data: JSON.stringify(data),
-				        contentType: 'application/json',
-                        url: '/CPPG/gerarCertificado',
-						success: function(data)
-						{
-							// $('#selYear').html("<option data-tokens= '2018'>2018</option>");
-							$("#selectYear").css("display", "block");
-                        }
-                    });
-				});
-			});
-		</script>
+		<script src="/CPPG/js/geraCertificado.js"></script>
     </head>
 
 <div class="container">
 	<div class="row">
-		<section class="content center-block">
+		<section class="content center-block text-center">
 			<br>
-			<div class="col-12">
-				<div class="panel panel-default">
-						<div class="table-container">
-							<table class="table table-filter">
-								<tbody>
-										<h1>Gere um certificado:</h1>
-										<h4>Professor:</h4>
-                                        <form action="/CPPG/pdf" method="POST">
-                                            <div id="selectTeacher">
-												<select class="selectpicker" id="selTeacher" data-live-search="true" title="Selecione um discente..">
-													<% for (teacher of teachers){%>
-														<option data-tokens= "<%= teacher %> "> <%= teacher %></option>
-													<% } %>
-												</select>
-											</div>
-											<br>
-											<div id="selectYear">
-												<h4>Ano:</h4>
-												<select class="selectpicker" id="selYear" data-live-search="true" title="Selecione um discente..">
-													<% for (teacher of teachers){%>
-														<option data-tokens= "<%= teacher %> "> <%= teacher %></option>
-													<% } %>
-												</select>
-											</div>
+			<div>
+					<div class="panel panel-success">
+					<div class="panel-heading">
+					  <h3 class="panel-title">Gere um certificado:</h3>
+					</div>
+					<div class="panel-body">
+							<h4>Professor:</h4>
+							<form action="/CPPG/pdf" method="POST">
+								<div>
+									<select class="selectpicker" id="selTeacher" data-live-search="true" title="Selecione um discente..">
+										<% for (teacher of teachers){%>
+											<option data-tokens= "<%= teacher %> "> <%= teacher %></option>
+										<% } %>
+									</select>
+								</div>
+								<br>
+								<div id="selectMinYear">
+									<h4>Ano referente ao início do projeto:</h4>
+									<select class="selectpicker" id="selYearMin" data-live-search="true" title="Primeiro, selecione o professor" multiple>													
+									</select>
+								</div>
 
-                                            <button type="button" class="btn btn-default navbar-btn center-block">Gerar</button>
-                                        </form>
-								</tbody>
-							</table>
-						</div>
-				</div>
+								<button type="button" class="btn btn-default navbar-btn">Gerar</button>
+							</form>
+					</div>
+				  </div>
 				<div class="content-footer">
 					<p>
 						Page © - 2016 <br>
