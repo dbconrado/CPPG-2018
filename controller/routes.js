@@ -195,13 +195,6 @@ router.all('/gerarCertificado', function(req, res){
 	else
 	{
 		var teachers = [];
-
-		var jsdom = require("jsdom");
-		const { JSDOM } = jsdom;
-		const { window } = new JSDOM();
-		const { document } = (new JSDOM('')).window;
-		global.document = document;
-		var $ = require("jquery")(window);
 		
 		functions.getTeachersOnDatabase().then(function(results)
 		{

@@ -9,51 +9,54 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/css/bootstrap-select.css" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-		<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.12.1/js/bootstrap-select.js"></script>
+		<script src="/CPPG/js/bootstrap-select-modified.js"></script>
 
 		<link rel="stylesheet" href="/CPPG/stylesheets/geraCertificado.css">
 		
 		<script src="/CPPG/js/geraCertificado.js"></script>
     </head>
 
-<div class="container">
-	<div class="row">
-		<section class="content center-block text-center">
-			<br>
-			<div>
-					<div class="panel panel-success">
-					<div class="panel-heading">
-					  <h3 class="panel-title">Gere um certificado:</h3>
-					</div>
-					<div class="panel-body">
-							<h4>Professor:</h4>
-							<form action="/CPPG/pdf" method="POST">
-								<div>
-									<select class="selectpicker" id="selTeacher" data-live-search="true" title="Selecione um discente..">
-										<% for (teacher of teachers){%>
-											<option data-tokens= "<%= teacher %> "> <%= teacher %></option>
-										<% } %>
-									</select>
-								</div>
-								<br>
-								<div id="selectMinYear">
-									<h4>Ano referente ao início do projeto:</h4>
-									<select class="selectpicker" id="selYear" data-live-search="true" title="Primeiro, selecione o professor" multiple>													
-									</select>
-								</div>
+<body>
+	<div class="container">
+		<div class="row">
+			<section class="content center-block text-center">
+				<br>
+				<div>
+						<div class="panel panel-success">
+						<div class="panel-heading">
+						<h3 class="panel-title">Gere um certificado:</h3>
+						</div>
+						<div class="panel-body">
+								<h4>Professor:</h4>
+								<form action="/CPPG/pdf" method="POST">
+									<div>
+										<select class="selectpicker" id="selTeacher" data-live-search="true" title="Selecione um discente..">
+											<% for (teacher of teachers){%>
+												<option data-tokens= "<%= teacher %> "> <%= teacher %></option>
+											<% } %>
+										</select>
+									</div>
+									<br>
+									<div id="selectMinYear">
+										<h4>Ano referente ao início do projeto:</h4>
+										<select class="selectpicker" id="selYear" data-live-search="true" title="Primeiro, selecione o professor" multiple>
+										</select>
+									</div>
 
-								<button type="button" class="btn btn-default navbar-btn">Gerar</button>
-							</form>
+									<button type="button" class="btn btn-default navbar-btn">Gerar</button>
+								</form>
+						</div>
 					</div>
-				  </div>
-				<div class="content-footer">
-					<p>
-						Page © - 2016 <br>
-						Powered By <a href="https://www.facebook.com/tavo.qiqe.lucero" target="_blank">TavoQiqe</a>
-					</p>
+					<div class="content-footer">
+						<p>
+							Page © - 2016 <br>
+							Powered By <a href="https://www.facebook.com/tavo.qiqe.lucero" target="_blank">TavoQiqe</a>
+						</p>
+					</div>
 				</div>
-			</div>
-		</section>
-		
+			</section>
+			
+		</div>
 	</div>
-</div>
+	</body>
+</html>

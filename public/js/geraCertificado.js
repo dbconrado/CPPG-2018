@@ -1,35 +1,26 @@
 $(document).ready(function()
 {
-    $("#selYear").on('change', function()
+    $('#selYear').on('changed.bs.select', function(e, clickedIndex)
     {
-        console.log($('#selYear:checked'));
-        if ($('#selYear:checked').length == $('#selYear').length)
-        {
-            console.log("cai22");
-        }
+        var selectedOption = $(this).find('option').eq(clickedIndex).text();
+        var nOptionsAvailable = $('#selYear > option').length;
+        var nOptionsSelected = $("#selYear").val().length;
 
-        var id = $(this).find("option:selected").attr("id");
-        console.log(id);
-        if(id == "allOptions")
+        if(selectedOption == 'Todos os anos')
         {
-            var allSelected = $("#selectID option:not(:selected)").length == 1;
-            console.log(allSelected);
-            if(allSelected)
-            {
-                console.log("cai1");
-                $('#idSelect option').attr("selected",false);
-                $('#idSelect').selectpicker('refresh');
-            }
-            else
-            {
-                console.log("cai2");
-                $('#selYear option').attr("selected","selected");
-                $('#allOptions').text("Nenhuma das opções")
-                $('#selYear').selectpicker('refresh');
-            }
+            $(this).selectpicker('selectAll');
+            $('#allOptions').text("Nenhuma das opções");
+            $('#selYear').selectpicker('refresh');
         }
+        else if(selectedOption == 'Nenhuma das opções')
+        {
+            $(this).selectpicker('deselectAll');
+            $('#allOptions').text("Todos os anos");
+            $('#selYear').selectpicker('refresh');            
+        }
+            
     });
-
+    
     $("#selTeacher").on('change', function()
     {
         var data = {};
