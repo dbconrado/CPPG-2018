@@ -211,11 +211,6 @@ router.all('/gerarCertificado', function(req, res){
 router.get('/pdf', function(req, res) {
 	try
 	{
-		global.atob = require("atob");
-		global.window = {document: {createElementNS: () => {return {}} }};
-		global.navigator = {};
-		global.btoa = () => {};
-
 		var PDF = require('pdfkit');
 		
 		var doc = new PDF({
