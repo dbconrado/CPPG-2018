@@ -171,44 +171,59 @@ router.get('/', function(req, res){
 });
 
 router.all('/gerarCertificado', function(req, res){
+	console.log(req.headers);
+	
 	if(req.body["teacherName"])
 	{
-		functions.getYearsAvailableByTeacher(req.body["teacherName"]).then(function(yearsAvailable)
+		try
 		{
-			var initialYears = [];
-			var finalYears = [];
+			var trim = req.body["teacherName"].indexOf("SIAPE");
+			var postMessage = req.body["teacherName"];
+			var teacherName = postMessage.substring(trim+7, postMessage.length-1);
+			teacherName = postMessage.substring(0, trim-2);
 
-			yearsAvailable.forEach(function(year)
+			functions.getYearsAvailableByTeacher(teacherName).then(function(yearsAvailable)
 			{
-				if(year["initialData"] != null && year["finalData"] != null)
-				{
-					initialYears.push(parseInt(year["initialData"]));
-					finalYears.push(year["finalData"]);
-				}
-			});
+				var initialYears = [];
+				var finalYears = [];
 
-			var min = Math.min.apply(null,initialYears);
-			var max = Math.max.apply(null,finalYears);
-			res.send([min,max]);
-		}).catch((err) => setImmediate(() => { throw err; }));
+				yearsAvailable.forEach(function(year)
+				{
+					if(year["initialData"] != null && year["finalData"] != null)
+					{
+						initialYears.push(parseInt(year["initialData"]));
+						finalYears.push(year["finalData"]);
+					}
+				});
+
+				var min = Math.min.apply(null,initialYears);
+				var max = Math.max.apply(null,finalYears);
+				res.send([min,max]);
+			}).catch((err) => setImmediate(() => { throw err; }));
+		}
+		catch(e)
+		{
+			throw e;
+		}
 	}
 	else
 	{
 		var teachers = [];
-		
 		functions.getTeachersOnDatabase().then(function(results)
 		{
 			results.forEach(function(result)
 			{
-				teachers.push(result.teacherName);
+				teachers.push([result.teacherName] + " (SIAPE: " + [result.teacherCod] + ")");
 			});
-
-			res.render('geraCertificado', { teachers: teachers });
+			
+			var noResearchs = false;
+			if(req.body["noResearchs"]) noResearchs = true;
+			res.render('geraCertificado', { teachers: teachers, noResearchs: noResearchs });
 		}).catch((err) => setImmediate(() => { throw err; }));
 	}
 });
 
-router.get('/pdf', function(req, res) {
+router.post('/pdf', function(req, res) {
 	try
 	{
 		var PDF = require('pdfkit');
@@ -230,18 +245,37 @@ router.get('/pdf', function(req, res) {
 			valign: 'center'
 		});
 
-		var certificatedPerson = "Cristiane Norbiato Targa";
-		var certificateMessage = "Declaro para os devidos fins que o/a discente " + certificatedPerson + " é coorientadora da discente Lara Cadar Cunha no projeto de pesquisa “Plataforma para classificação da 		amigabilidade de gênero das empresas de tecnologia da informação do município de Belo Horizonte” aprovado no Edital 19/2017 do Instituto Federal de Minas Gerais campus Sabará, com período de vigência de dezembro de 2017 à novembro de 2018.";
-		doc.text(certificateMessage,280,350,
-		{
-			align: 'justify',
-			width: doc.page.width/2
-		});
+		var postMessage = req.body.teacherName;
+		var trim = postMessage.indexOf("SIAPE");
+		var certificatedPerson = postMessage.substring(0, trim-2);
+		var certificatedPersonCod = postMessage.substring(trim+7, postMessage.length-1);
 
-		doc.end();
-		writer.on('finish', function() {
-			res.sendFile(path.resolve(__dirname + '/../public/certificados/document.pdf'));
-		});
+
+		var certificateMessage = "Declaro para os devidos fins que o/a discente " + certificatedPerson + " de matrícula SIAPE " + certificatedPersonCod + " é coorientadora da discente Lara Cadar Cunha no projeto de pesquisa “Plataforma para classificação da 		amigabilidade de gênero das empresas de tecnologia da informação do município de Belo Horizonte” aprovado no Edital 19/2017 do Instituto Federal de Minas Gerais campus Sabará, com período de vigência de dezembro de 2017 à novembro de 2018.";
+		
+		postMessage = req.body;
+		var yearsRange = postMessage.researchYearsRange;
+		functions.getResearchWorksByYearRangeAndTeacher(yearsRange, certificatedPersonCod).then(function(results)
+		{
+			if(results = [])
+			{
+				return res.redirect(307, '/CPPG/gerarCertificado');
+			}
+			else
+			{
+				doc.text(certificateMessage,280,350,
+				{
+					align: 'justify',
+					width: doc.page.width/2
+				});
+		
+				doc.end();
+				writer.on('finish', function() {
+					res.sendFile(path.resolve(__dirname + '/../public/certificados/document.pdf'));
+				});
+			}
+			console.log("terminei");
+		}).catch((err) => setImmediate(() => { throw err; }));
 	}
 	catch(e)
 	{

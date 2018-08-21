@@ -7,6 +7,7 @@ module.exports = {
     },
     watch: true,
     ignore_watch: ['public','node-modules'],
+    followAllRedirects: true,
     env_production : {
       NODE_ENV: 'production'
     }

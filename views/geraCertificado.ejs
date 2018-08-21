@@ -30,7 +30,7 @@
 								<h4>Professor:</h4>
 								<form action="/CPPG/pdf" method="POST">
 									<div>
-										<select class="selectpicker" id="selTeacher" data-live-search="true" title="Selecione um discente..">
+										<select name="teacherName" class="selectpicker" id="selTeacher" data-live-search="true" title="Selecione um discente..">
 											<% for (teacher of teachers){%>
 												<option data-tokens= "<%= teacher %> "> <%= teacher %></option>
 											<% } %>
@@ -39,11 +39,10 @@
 									<br>
 									<div id="selectMinYear">
 										<h4>Ano referente ao início do projeto:</h4>
-										<select class="selectpicker" id="selYear" data-live-search="true" title="Primeiro, selecione o professor" multiple>
+										<select name="researchYearsRange" class="selectpicker" id="selYear" data-live-search="true" title="Primeiro, selecione o professor" multiple>
 										</select>
 									</div>
-
-									<button type="button" class="btn btn-default navbar-btn">Gerar</button>
+									<button type="submit" class="btn btn-default navbar-btn">Gerar</button>
 								</form>
 						</div>
 					</div>

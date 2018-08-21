@@ -1,6 +1,45 @@
 var vars = require('./variables.js');
 
 var functions = {
+	getResearchWorksByYearRangeAndTeacher: function(yearRange, teacherCod)
+	{
+		try
+		{
+			var years = "";
+			var sql;
+
+			if(typeof yearRange == 'string')
+			{
+				years = yearRange;
+			}
+			else
+			{
+				yearRange.forEach(function (year)
+				{
+					if(year != 'Nenhuma das opções') years += year + ",";
+				});
+
+				years = years.substring(0, years.length-1);
+			}
+
+			sql = "SELECT nomeProjeto AS researchName, DATE_FORMAT(dataInicio, '%d-%m-%y') AS initialData, DATE_FORMAT(dataTermino, '%d-%m-%y') AS finalData FROM projeto P JOIN servidor_participa_projeto SP ON P.idProjeto = SP.idProjeto JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.siapeServidor = " + teacherCod + " AND DATE_FORMAT(P.dataInicio, '%Y') IN (" + years + ")";
+
+			return new Promise(function(resolve, reject)
+			{
+				vars.con.query(sql, function(err, results, fields)
+				{
+					if(err) reject(results);
+					console.log(this.sql);
+					console.log(results);
+					resolve(results);
+				});
+			});
+		}
+		catch(e)
+		{
+			throw e;
+		}
+	},
 	getYearsAvailableByTeacher: function(teacherName)
 	{
 		var sql1 = "SELECT siapeServidor FROM servidor WHERE nomeServidor = '" + teacherName + "';";	
@@ -91,7 +130,7 @@ var functions = {
    },
    getTeachersOnDatabase: function()
    {
-	   const sql = "SELECT nomeServidor AS teacherName FROM servidor WHERE cargo LIKE '%Professor%' ORDER BY nomeServidor ASC";
+	   const sql = "SELECT nomeServidor AS teacherName, siapeServidor AS teacherCod FROM servidor WHERE cargo LIKE '%Professor%' ORDER BY nomeServidor ASC";
 
 	   return new Promise(function(resolve, reject)
         {
