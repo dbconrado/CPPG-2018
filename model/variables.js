@@ -7,9 +7,13 @@ var con = mysql.createConnection({
 	password: config.database.pass,
 	database: config.database.db,
 	multipleStatements: true
-  });
+	});
+const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+  "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+];
 
 module.exports = {
 		con: con,
-		config: config
+		config: config,
+		monthNames: monthNames
 }

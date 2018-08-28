@@ -22,15 +22,13 @@ var functions = {
 				years = years.substring(0, years.length-1);
 			}
 
-			sql = "SELECT nomeProjeto AS researchName, DATE_FORMAT(dataInicio, '%d-%m-%y') AS initialData, DATE_FORMAT(dataTermino, '%d-%m-%y') AS finalData FROM projeto P JOIN servidor_participa_projeto SP ON P.idProjeto = SP.idProjeto JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.siapeServidor = " + teacherCod + " AND DATE_FORMAT(P.dataInicio, '%Y') IN (" + years + ")";
+			sql = "SELECT SP.Função AS function, nomeProjeto AS researchName, DATE_FORMAT(dataInicio, '%d-%m-%Y') AS initialData, DATE_FORMAT(dataTermino, '%d-%m-%y') AS finalData FROM projeto P JOIN servidor_participa_projeto SP ON P.idProjeto = SP.idProjeto JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.siapeServidor = " + teacherCod + " AND DATE_FORMAT(P.dataInicio, '%Y') IN (" + years + ")";
 
 			return new Promise(function(resolve, reject)
 			{
 				vars.con.query(sql, function(err, results, fields)
 				{
 					if(err) reject(results);
-					console.log(this.sql);
-					console.log(results);
 					resolve(results);
 				});
 			});
@@ -43,7 +41,7 @@ var functions = {
 	getYearsAvailableByTeacher: function(teacherName)
 	{
 		var sql1 = "SELECT siapeServidor FROM servidor WHERE nomeServidor = '" + teacherName + "';";	
-		var sql2 = "SELECT DATE_FORMAT(P.dataInicio, '%Y') AS initialData, DATE_FORMAT(P.dataTermino, '%Y') AS finalData FROM servidor_participa_projeto SP JOIN servidor S ON SP.siapeServidor = S.siapeServidor JOIN projeto P ON P.idProjeto = SP.idProjeto WHERE S.siapeServidor = ?";
+		var sql2 = "SELECT DATE_FORMAT(P.dataInicio, '%Y') AS initialData FROM servidor_participa_projeto SP JOIN servidor S ON SP.siapeServidor = S.siapeServidor JOIN projeto P ON P.idProjeto = SP.idProjeto WHERE S.siapeServidor = ? ORDER BY initialData DESC";
 		return new Promise(function(resolve, reject)
 		{
 			vars.con.query(sql1, function (err, result, fields)

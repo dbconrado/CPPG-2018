@@ -148,7 +148,7 @@ router.get('/', function(req, res){
 			{
 				var years = result;
 				var numberOfYears = 0;
-				var conta=[];
+				var conta = [];
 				var typesOfAssistance = [];
 
 				for(var i=0; i<years.length; i++)
@@ -171,34 +171,28 @@ router.get('/', function(req, res){
 });
 
 router.all('/gerarCertificado', function(req, res){
-	console.log(req.headers);
-	
-	if(req.body["teacherName"])
+	if(req.body["teacherInfo"])
 	{
 		try
 		{
-			var trim = req.body["teacherName"].indexOf("SIAPE");
-			var postMessage = req.body["teacherName"];
+			var trim = req.body["teacherInfo"].indexOf("SIAPE");
+			var postMessage = req.body["teacherInfo"];
 			var teacherName = postMessage.substring(trim+7, postMessage.length-1);
 			teacherName = postMessage.substring(0, trim-2);
 
-			functions.getYearsAvailableByTeacher(teacherName).then(function(yearsAvailable)
+			functions.getYearsAvailableByTeacher(teacherName).then(function(yearsData)
 			{
-				var initialYears = [];
-				var finalYears = [];
-
-				yearsAvailable.forEach(function(year)
+				var yearsAvailable = [];
+				yearsData.forEach(function(year)
 				{
-					if(year["initialData"] != null && year["finalData"] != null)
+					if(!year.initialData) return;
+					else
 					{
-						initialYears.push(parseInt(year["initialData"]));
-						finalYears.push(year["finalData"]);
+						if(!yearsAvailable.includes(year.initialData)) yearsAvailable.push(year.initialData);
 					}
 				});
-
-				var min = Math.min.apply(null,initialYears);
-				var max = Math.max.apply(null,finalYears);
-				res.send([min,max]);
+				
+				res.send(yearsAvailable);
 			}).catch((err) => setImmediate(() => { throw err; }));
 		}
 		catch(e)
@@ -245,36 +239,53 @@ router.post('/pdf', function(req, res) {
 			valign: 'center'
 		});
 
-		var postMessage = req.body.teacherName;
-		var trim = postMessage.indexOf("SIAPE");
-		var certificatedPerson = postMessage.substring(0, trim-2);
-		var certificatedPersonCod = postMessage.substring(trim+7, postMessage.length-1);
+		var postMessage = req.body;
+		var certificatedPersonInfo = req.body["teacherInfo"];
+		var trim = certificatedPersonInfo.indexOf("SIAPE");
+		var certificatedPersonCod = certificatedPersonInfo.substring(trim+7, certificatedPersonInfo.length-1);
 
-
-		var certificateMessage = "Declaro para os devidos fins que o/a discente " + certificatedPerson + " de matrícula SIAPE " + certificatedPersonCod + " é coorientadora da discente Lara Cadar Cunha no projeto de pesquisa “Plataforma para classificação da 		amigabilidade de gênero das empresas de tecnologia da informação do município de Belo Horizonte” aprovado no Edital 19/2017 do Instituto Federal de Minas Gerais campus Sabará, com período de vigência de dezembro de 2017 à novembro de 2018.";
-		
-		postMessage = req.body;
 		var yearsRange = postMessage.researchYearsRange;
 		functions.getResearchWorksByYearRangeAndTeacher(yearsRange, certificatedPersonCod).then(function(results)
 		{
-			if(results = [])
+			if(results.length == 0 || results == undefined)
 			{
 				return res.redirect(307, '/CPPG/gerarCertificado');
 			}
 			else
 			{
+				console.log(results);
+				var certificatedPersonName = certificatedPersonInfo.substring(0, trim-2);
+				var certificatedPersonFunction = results[0]["function"];
+				var certificatedWork = results[0]["researchName"];
+				var certificateInitialData = results[0]["initialData"];
+				var certificateFinalData  = results[0]["finalData"];
+				
+				var date = certificateInitialData.split("-");
+				certificateInitialData = new Date();
+				certificateInitialData.setDate(date[0]);
+				certificateInitialData.setMonth(date[1]);
+				certificateInitialData.setFullYear(date[2]);
+
+				var date = certificateFinalData.split("-");
+				certificateFinalData = new Date();
+				certificateFinalData.setDate(date[0]);
+				certificateFinalData.setMonth(date[1]);
+				certificateFinalData.setFullYear(date[2]);
+
+				var certificateMessage = "Declaro para os devidos fins que o/a discente " + certificatedPersonName + " de matrícula SIAPE " + certificatedPersonCod + " atuou como " + certificatedPersonFunction.toLowerCase() + " no projeto de pesquisa '" + certificatedWork + "	' aprovado no Edital 19/2017 do Instituto Federal de Minas Gerais campus Sabará, com período de vigência de " +  vars.monthNames[certificateInitialData.getMonth()-1] + " de " + certificateInitialData.getFullYear() + " à " + vars.monthNames[certificateFinalData.getMonth()-1] + " de " + certificateFinalData.getFullYear() + ".";
+
 				doc.text(certificateMessage,280,350,
 				{
 					align: 'justify',
 					width: doc.page.width/2
 				});
-		
+
 				doc.end();
-				writer.on('finish', function() {
+				writer.on('finish', function()
+				{
 					res.sendFile(path.resolve(__dirname + '/../public/certificados/document.pdf'));
 				});
 			}
-			console.log("terminei");
 		}).catch((err) => setImmediate(() => { throw err; }));
 	}
 	catch(e)

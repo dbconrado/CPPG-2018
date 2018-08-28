@@ -30,7 +30,7 @@
 								<h4>Professor:</h4>
 								<form action="/CPPG/pdf" method="POST">
 									<div>
-										<select name="teacherName" class="selectpicker" id="selTeacher" data-live-search="true" title="Selecione um discente..">
+										<select name="teacherInfo" class="selectpicker" id="selTeacher" data-live-search="true" title="Selecione um discente..">
 											<% for (teacher of teachers){%>
 												<option data-tokens= "<%= teacher %> "> <%= teacher %></option>
 											<% } %>

@@ -38,7 +38,7 @@ $(document).ready(function()
     $("#selTeacher").on('change', function()
     {
         var data = {};
-        data.teacherName = $(this).val();
+        data.teacherInfo = $(this).val();
         
         $.ajax(
         {
@@ -48,17 +48,14 @@ $(document).ready(function()
             url: '/CPPG/gerarCertificado',
             success: function(data)
             {
-                var min = data[0];
-                var max = data[1];
-                
-                if(min)
+                if(data.length != 0 || data != undefined)
                 {
                     $('#selYear').empty();
                     $("#selYear").append("<option data-tokens= 'Todos os anos' id='allOptions'>Todos os anos</option>");
-                    for(var i = min; i<=max; i++)
+                    data.forEach(function(year)
                     {
-                        $("#selYear").append("<option data-tokens= '" + i + "'> " + i + " </option>");	
-                    }
+                        $("#selYear").append("<option data-tokens= '" + year + "'> " + year + " </option>");	
+                    });
                     $('.selectpicker').selectpicker('refresh');
                     $('#selectMinYear').show();
                 }
