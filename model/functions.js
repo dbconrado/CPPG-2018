@@ -22,12 +22,13 @@ var functions = {
 				years = years.substring(0, years.length-1);
 			}
 
-			sql = "SELECT SP.Função AS function, nomeProjeto AS researchName, DATE_FORMAT(dataInicio, '%d-%m-%Y') AS initialData, DATE_FORMAT(dataTermino, '%d-%m-%y') AS finalData FROM projeto P JOIN servidor_participa_projeto SP ON P.idProjeto = SP.idProjeto JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.siapeServidor = " + teacherCod + " AND DATE_FORMAT(P.dataInicio, '%Y') IN (" + years + ")";
+			sql = "SELECT DATE_FORMAT(dataInicio, '%Y') AS date, SP.Função AS function, nomeProjeto AS researchName, DATE_FORMAT(dataInicio, '%d-%m-%Y') AS initialData, DATE_FORMAT(dataTermino, '%d-%m-%Y') AS finalData, P.anoEdital AS edictYear, P.numEdital AS edictNumber FROM projeto P JOIN servidor_participa_projeto SP ON P.idProjeto = SP.idProjeto JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.siapeServidor = " + teacherCod + " AND DATE_FORMAT(P.dataInicio, '%Y') IN (" + years + ") ORDER BY date ASC";
 
 			return new Promise(function(resolve, reject)
 			{
 				vars.con.query(sql, function(err, results, fields)
 				{
+					console.log(this.sql);
 					if(err) reject(results);
 					resolve(results);
 				});

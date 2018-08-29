@@ -232,13 +232,6 @@ router.post('/pdf', function(req, res) {
 		var writer = fs.createWriteStream(path.resolve(__dirname + '/../public/certificados/document.pdf'));
 		doc.pipe(writer);
 
-		doc.image('public/certificados/modelos/modelo1.jpg',
-		{
-			fit: [doc.page.width, doc.page.height],
-			align: 'center',
-			valign: 'center'
-		});
-
 		var postMessage = req.body;
 		var certificatedPersonInfo = req.body["teacherInfo"];
 		var trim = certificatedPersonInfo.indexOf("SIAPE");
@@ -253,31 +246,43 @@ router.post('/pdf', function(req, res) {
 			}
 			else
 			{
-				console.log(results);
-				var certificatedPersonName = certificatedPersonInfo.substring(0, trim-2);
-				var certificatedPersonFunction = results[0]["function"];
-				var certificatedWork = results[0]["researchName"];
-				var certificateInitialData = results[0]["initialData"];
-				var certificateFinalData  = results[0]["finalData"];
-				
-				var date = certificateInitialData.split("-");
-				certificateInitialData = new Date();
-				certificateInitialData.setDate(date[0]);
-				certificateInitialData.setMonth(date[1]);
-				certificateInitialData.setFullYear(date[2]);
-
-				var date = certificateFinalData.split("-");
-				certificateFinalData = new Date();
-				certificateFinalData.setDate(date[0]);
-				certificateFinalData.setMonth(date[1]);
-				certificateFinalData.setFullYear(date[2]);
-
-				var certificateMessage = "Declaro para os devidos fins que o/a discente " + certificatedPersonName + " de matrícula SIAPE " + certificatedPersonCod + " atuou como " + certificatedPersonFunction.toLowerCase() + " no projeto de pesquisa '" + certificatedWork + "	' aprovado no Edital 19/2017 do Instituto Federal de Minas Gerais campus Sabará, com período de vigência de " +  vars.monthNames[certificateInitialData.getMonth()-1] + " de " + certificateInitialData.getFullYear() + " à " + vars.monthNames[certificateFinalData.getMonth()-1] + " de " + certificateFinalData.getFullYear() + ".";
-
-				doc.text(certificateMessage,280,350,
+				results.forEach(function(research, index)
 				{
-					align: 'justify',
-					width: doc.page.width/2
+					doc.image('public/certificados/modelos/modelo1.jpg',
+					{
+						fit: [doc.page.width, doc.page.height],
+						align: 'center',
+						valign: 'center'
+					});
+
+					var certificatedPersonName = certificatedPersonInfo.substring(0, trim-2);
+					var certificatedPersonFunction = research["function"];
+					var certificatedWork = research["researchName"];
+					var certificateInitialData = research["initialData"];
+					var certificateFinalData  = research["finalData"];
+					var certificateEdictNumber  = research["edictNumber"];
+					var certificateEdictYear  = research["edictYear"];
+					
+					var date = certificateInitialData.split("-");
+					certificateInitialData = new Date();
+					certificateInitialData.setDate(date[0]);
+					certificateInitialData.setMonth(date[1]);
+					certificateInitialData.setFullYear(date[2]);
+
+					var date = certificateFinalData.split("-");
+					certificateFinalData = new Date();
+					certificateFinalData.setDate(date[0]);
+					certificateFinalData.setMonth(date[1]);
+					certificateFinalData.setFullYear(date[2]);
+
+					var certificateMessage = "Declaro para os devidos fins que o/a discente " + certificatedPersonName + " de matrícula SIAPE " + certificatedPersonCod + " atuou como " + certificatedPersonFunction.toLowerCase() + " no projeto de pesquisa '" + certificatedWork + "	' aprovado no Edital " + certificateEdictNumber + "/" + certificateEdictYear + " do Instituto Federal de Minas Gerais campus Sabará, com período de vigência de " +  vars.monthNames[certificateInitialData.getMonth()-1] + " de " + certificateInitialData.getFullYear() + " à " + vars.monthNames[certificateFinalData.getMonth()-1] + " de " + certificateFinalData.getFullYear() + ".";						
+					doc.text(certificateMessage,280,350,
+					{
+						align: 'justify',
+						width: doc.page.width/2
+					});
+					
+					if(index != results.length-1) doc.addPage();
 				});
 
 				doc.end();
