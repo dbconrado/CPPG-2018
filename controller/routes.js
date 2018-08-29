@@ -228,7 +228,6 @@ router.post('/pdf', function(req, res) {
 			size: [786,1108]
 		});
 
-		doc.fontSize(20);
 		var writer = fs.createWriteStream(path.resolve(__dirname + '/../public/certificados/document.pdf'));
 		doc.pipe(writer);
 
@@ -246,6 +245,7 @@ router.post('/pdf', function(req, res) {
 			}
 			else
 			{
+				var fileName = ""
 				results.forEach(function(research, index)
 				{
 					doc.image('public/certificados/modelos/modelo1.jpg',
@@ -254,6 +254,8 @@ router.post('/pdf', function(req, res) {
 						align: 'center',
 						valign: 'center'
 					});
+
+					doc.fontSize(20);
 
 					var certificatedPersonName = certificatedPersonInfo.substring(0, trim-2);
 					var certificatedPersonFunction = research["function"];
@@ -280,6 +282,15 @@ router.post('/pdf', function(req, res) {
 					{
 						align: 'justify',
 						width: doc.page.width/2
+					});
+
+					var currentDate = new Date();
+					var certificateDate = "Gerado em: " + currentDate.getDate() + "/" + parseInt(currentDate.getMonth()+1) + "/" + currentDate.getFullYear() + " às " + currentDate.getHours() + "h" + currentDate.getMinutes();
+
+					doc.fontSize(15);
+					doc.text(certificateDate, 800,690,
+					{
+						align: 'justify'
 					});
 					
 					if(index != results.length-1) doc.addPage();
