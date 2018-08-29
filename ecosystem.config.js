@@ -20,7 +20,7 @@ module.exports = {
       ref  : 'origin/master',
       repo : 'joseluiz98@github.com:CPPG-2018.git',
       path : '/var/www/html/CPPG/',
-      post_deploy : 'pm2 startOrRestart ecosystem.config.js --env production'
+      post_deploy : 'pm2 startOrRestart ecosystem.config.js'
     }
   }
 };
