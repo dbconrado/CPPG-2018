@@ -45,7 +45,7 @@ router.get('/', function(req, res){
 					{
 						typesOfAssistance[countYears][1]++;
 					}
-					else if(result[j].tipoBolsa == "PIBIT")
+					else if(result[j].tipoBolsa == "PIBITI")
 					{
 						typesOfAssistance[countYears][2]++;
 					}
@@ -151,7 +151,7 @@ router.get('/', function(req, res){
 				var conta = [];
 				var typesOfAssistance = [];
 
-				for(var i=0; i<years.length; i++)
+				for(var i=(years.length-1); i>=0; i--)
 				{
 					lookForProjectsPerYear(years[i].anoEdital, numberOfYears, typesOfAssistance).then(function()
 					{
