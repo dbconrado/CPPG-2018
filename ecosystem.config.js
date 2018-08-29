@@ -17,7 +17,7 @@ module.exports = {
     production : {
       user : 'josecarmo',
       host : '200.18.128.48',
-      ref  : 'live/master',
+      ref  : 'origin/master',
       repo : 'joseluiz98@github.com:CPPG-2018.git',
       path : '/var/www/html/CPPG/'
     }
