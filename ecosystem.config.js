@@ -19,7 +19,8 @@ module.exports = {
       host : '200.18.128.48',
       ref  : 'origin/master',
       repo : 'joseluiz98@github.com:CPPG-2018.git',
-      path : '/var/www/html/CPPG/'
+      path : '/var/www/html/CPPG/',
+      post-deploy : "pm2 startOrRestart ecosystem.json --env production"
     }
   }
 };
