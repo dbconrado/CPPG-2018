@@ -28,7 +28,6 @@ var functions = {
 			{
 				vars.con.query(sql, function(err, results, fields)
 				{
-					console.log(this.sql);
 					if(err) reject(results);
 					resolve(results);
 				});
