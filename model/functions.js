@@ -22,7 +22,7 @@ var functions = {
 				years = years.substring(0, years.length-1);
 			}
 
-			sql = "SELECT DATE_FORMAT(dataInicio, '%Y') AS date, SP.Função AS function, nomeProjeto AS researchName, DATE_FORMAT(dataInicio, '%d-%m-%Y') AS initialData, DATE_FORMAT(dataTermino, '%d-%m-%Y') AS finalData, P.anoEdital AS edictYear, P.numEdital AS edictNumber FROM projeto P JOIN servidor_participa_projeto SP ON P.idProjeto = SP.idProjeto JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.siapeServidor = " + teacherCod + " AND DATE_FORMAT(P.dataInicio, '%Y') IN (" + years + ") ORDER BY date ASC";
+			sql = "SELECT DATE_FORMAT(dataInicio, '%Y') AS date, SP.Função AS function, nomeProjeto AS researchName, P.idProjeto AS researchCod, DATE_FORMAT(dataInicio, '%d-%m-%Y') AS initialData, DATE_FORMAT(dataTermino, '%d-%m-%Y') AS finalData, P.anoEdital AS edictYear, P.numEdital AS edictNumber FROM projeto P JOIN servidor_participa_projeto SP ON P.idProjeto = SP.idProjeto JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.siapeServidor = " + teacherCod + " AND DATE_FORMAT(P.dataInicio, '%Y') IN (" + years + ") ORDER BY date ASC";
 
 			return new Promise(function(resolve, reject)
 			{
@@ -38,6 +38,19 @@ var functions = {
 			throw e;
 		}
 	},
+	recordGeneratedCertificate: function(certificatedPersonCod, certificateWorkCod)
+	{
+		var sql = "INSERT INTO certificados (siapeServidor, idProjeto) VALUES (" + certificatedPersonCod + "," + "'" + certificateWorkCod + "')";
+
+		// return new Promise(function(resolve, reject)
+		// {
+			vars.con.query(sql, function (err, results)
+			{
+				if(err && err.message.substring(0,err.message.indexOf(' ')) != 'ER_BAD_NULL_ERROR:') throw err;
+				return results;
+			});
+        // });
+	},
 	getYearsAvailableByTeacher: function(teacherName)
 	{
 		var sql1 = "SELECT siapeServidor FROM servidor WHERE nomeServidor = '" + teacherName + "';";	
@@ -52,7 +65,7 @@ var functions = {
 					resolve(results);
 				});
 			});
-        });		
+        });
 	},
     /*
 		Function to capitalize the first letter of each string

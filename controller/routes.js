@@ -235,7 +235,6 @@ router.post('/pdf', function(req, res) {
 		var certificatedPersonInfo = req.body["teacherInfo"];
 		var trim = certificatedPersonInfo.indexOf("SIAPE");
 		var certificatedPersonCod = certificatedPersonInfo.substring(trim+7, certificatedPersonInfo.length-1);
-
 		var yearsRange = postMessage.researchYearsRange;
 		functions.getResearchWorksByYearRangeAndTeacher(yearsRange, certificatedPersonCod).then(function(results)
 		{
@@ -245,8 +244,6 @@ router.post('/pdf', function(req, res) {
 			}
 			else
 			{
-				functions.recordGeneratedCertificate(certificatedPersonCod, certificateWorkCod);
-				
 				results.forEach(function(research, index)
 				{
 					doc.image('public/certificados/modelos/modelo1.jpg',
@@ -265,8 +262,9 @@ router.post('/pdf', function(req, res) {
 					var certificateFinalData  = research["finalData"];
 					var certificateEdictNumber  = research["edictNumber"];
 					var certificateEdictYear  = research["edictYear"];
-					
+					var certificateWorkCod = research["researchCod"];
 					var date = certificateInitialData.split("-");
+					
 					certificateInitialData = new Date();
 					certificateInitialData.setDate(date[0]);
 					certificateInitialData.setMonth(date[1]);
@@ -277,7 +275,11 @@ router.post('/pdf', function(req, res) {
 					certificateFinalData.setDate(date[0]);
 					certificateFinalData.setMonth(date[1]);
 					certificateFinalData.setFullYear(date[2]);
-
+					
+					console.log("cai");
+					functions.recordGeneratedCertificate(certificatedPersonCod, certificateWorkCod);
+					console.log("cai");
+					
 					var certificateMessage = "Declaro para os devidos fins que o/a discente " + certificatedPersonName + " de matrícula SIAPE " + certificatedPersonCod + " atuou como " + certificatedPersonFunction.toLowerCase() + " no projeto de pesquisa '" + certificatedWork + "	' aprovado no Edital " + certificateEdictNumber + "/" + certificateEdictYear + " do Instituto Federal de Minas Gerais campus Sabará, com período de vigência de " +  vars.monthNames[certificateInitialData.getMonth()-1] + " de " + certificateInitialData.getFullYear() + " à " + vars.monthNames[certificateFinalData.getMonth()-1] + " de " + certificateFinalData.getFullYear() + ".";						
 					doc.text(certificateMessage,280,350,
 					{
