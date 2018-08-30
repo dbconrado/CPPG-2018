@@ -245,7 +245,8 @@ router.post('/pdf', function(req, res) {
 			}
 			else
 			{
-				var fileName = ""
+				functions.recordGeneratedCertificate(certificatedPersonCod, certificateWorkCod);
+				
 				results.forEach(function(research, index)
 				{
 					doc.image('public/certificados/modelos/modelo1.jpg',
