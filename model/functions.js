@@ -46,7 +46,6 @@ var functions = {
 		{
 			vars.con.query(sql, function (err, results)
 			{
-				console.log(this.sql);
 				if(err && err.message.substring(0,err.message.indexOf(' ')) != 'ER_BAD_NULL_ERROR:') reject(err);
 				resolve(results);
 			});

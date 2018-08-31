@@ -131,7 +131,7 @@ CREATE TABLE `certificados` (
   `idProjeto` char(10) NOT NULL,
   `hashCertificado` char(10) DEFAULT NULL,
   `idCertificado` int(11) NOT NULL AUTO_INCREMENT,
-  `generationDate` datetime DEFAULT NULL,
+  `generationDate` TIMESTAMP NOT NULL,
   PRIMARY KEY (`idCertificado`),
   KEY `siapeServidor` (`siapeServidor`),
   KEY `idProjeto` (`idProjeto`),
