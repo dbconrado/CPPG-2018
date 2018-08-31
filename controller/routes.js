@@ -236,6 +236,7 @@ router.post('/pdf', function(req, res) {
 		var trim = certificatedPersonInfo.indexOf("SIAPE");
 		var certificatedPersonCod = certificatedPersonInfo.substring(trim+7, certificatedPersonInfo.length-1);
 		var yearsRange = postMessage.researchYearsRange;
+
 		functions.getResearchWorksByYearRangeAndTeacher(yearsRange, certificatedPersonCod).then(function(results)
 		{
 			if(results.length == 0 || results == undefined)
@@ -246,61 +247,66 @@ router.post('/pdf', function(req, res) {
 			{
 				results.forEach(function(research, index)
 				{
-					doc.image('public/certificados/modelos/modelo1.jpg',
-					{
-						fit: [doc.page.width, doc.page.height],
-						align: 'center',
-						valign: 'center'
-					});
-
-					doc.fontSize(20);
-
-					var certificatedPersonName = certificatedPersonInfo.substring(0, trim-2);
-					var certificatedPersonFunction = research["function"];
-					var certificatedWork = research["researchName"];
-					var certificateInitialData = research["initialData"];
-					var certificateFinalData  = research["finalData"];
-					var certificateEdictNumber  = research["edictNumber"];
-					var certificateEdictYear  = research["edictYear"];
 					var certificateWorkCod = research["researchCod"];
-					var date = certificateInitialData.split("-");
 					
-					certificateInitialData = new Date();
-					certificateInitialData.setDate(date[0]);
-					certificateInitialData.setMonth(date[1]);
-					certificateInitialData.setFullYear(date[2]);
-
-					var date = certificateFinalData.split("-");
-					certificateFinalData = new Date();
-					certificateFinalData.setDate(date[0]);
-					certificateFinalData.setMonth(date[1]);
-					certificateFinalData.setFullYear(date[2]);
-
-					functions.recordGeneratedCertificate(certificatedPersonCod, certificateWorkCod);
-					
-					var certificateMessage = "Declaro para os devidos fins que o/a discente " + certificatedPersonName + " de matrícula SIAPE " + certificatedPersonCod + " atuou como " + certificatedPersonFunction.toLowerCase() + " no projeto de pesquisa '" + certificatedWork + "	' aprovado no Edital " + certificateEdictNumber + "/" + certificateEdictYear + " do Instituto Federal de Minas Gerais campus Sabará, com período de vigência de " +  vars.monthNames[certificateInitialData.getMonth()-1] + " de " + certificateInitialData.getFullYear() + " à " + vars.monthNames[certificateFinalData.getMonth()-1] + " de " + certificateFinalData.getFullYear() + ".";						
-					doc.text(certificateMessage,280,350,
+					functions.recordGeneratedCertificate(certificatedPersonCod, certificateWorkCod).then(function(result)
 					{
-						align: 'justify',
-						width: doc.page.width/2
-					});
+						doc.image('public/certificados/modelos/modelo1.jpg',
+						{
+							fit: [doc.page.width, doc.page.height],
+							align: 'center',
+							valign: 'center'
+						});
 
-					var currentDate = new Date();
-					var certificateDate = "Gerado em: " + currentDate.getDate() + "/" + parseInt(currentDate.getMonth()+1) + "/" + currentDate.getFullYear() + " às " + currentDate.getHours() + "h" + currentDate.getMinutes();
+						doc.fontSize(20);
 
-					doc.fontSize(15);
-					doc.text(certificateDate, 800,690,
-					{
-						align: 'justify'
-					});
-					
-					if(index != results.length-1) doc.addPage();
-				});
+						var certificatedPersonName = certificatedPersonInfo.substring(0, trim-2);
+						var certificatedPersonFunction = research["function"];
+						var certificatedWork = research["researchName"];
+						var certificateInitialData = research["initialData"];
+						var certificateFinalData  = research["finalData"];
+						var certificateEdictNumber  = research["edictNumber"];
+						var certificateEdictYear  = research["edictYear"];
+						var date = certificateInitialData.split("-");
+						
+						certificateInitialData = new Date();
+						certificateInitialData.setDate(date[0]);
+						certificateInitialData.setMonth(date[1]);
+						certificateInitialData.setFullYear(date[2]);
 
-				doc.end();
-				writer.on('finish', function()
-				{
-					res.sendFile(path.resolve(__dirname + '/../public/certificados/document.pdf'));
+						var date = certificateFinalData.split("-");
+						certificateFinalData = new Date();
+						certificateFinalData.setDate(date[0]);
+						certificateFinalData.setMonth(date[1]);
+						certificateFinalData.setFullYear(date[2]);
+						
+						var certificateMessage = "Declaro para os devidos fins que o/a discente " + certificatedPersonName + " de matrícula SIAPE " + certificatedPersonCod + " atuou como " + certificatedPersonFunction.toLowerCase() + " no projeto de pesquisa '" + certificatedWork + "	' aprovado no Edital " + certificateEdictNumber + "/" + certificateEdictYear + " do Instituto Federal de Minas Gerais campus Sabará, com período de vigência de " +  vars.monthNames[certificateInitialData.getMonth()-1] + " de " + certificateInitialData.getFullYear() + " à " + vars.monthNames[certificateFinalData.getMonth()-1] + " de " + certificateFinalData.getFullYear() + ".";						
+						
+						doc.text(certificateMessage,280,350,
+						{
+							align: 'justify',
+							width: doc.page.width/2
+						});
+
+						var currentDate = new Date();
+						var certificateDate = "Gerado em: " + currentDate.getDate() + "/" + parseInt(currentDate.getMonth()+1) + "/" + currentDate.getFullYear() + " às " + currentDate.getHours() + "h" + currentDate.getMinutes();
+
+						doc.fontSize(15);
+						doc.text(certificateDate, 800,690,
+						{
+							align: 'justify'
+						});
+						
+						if(index != results.length-1) doc.addPage();
+						else
+						{
+							doc.end();
+							writer.on('finish', function()
+							{
+								res.sendFile(path.resolve(__dirname + '/../public/certificados/document.pdf'));
+							});
+						}
+					}).catch((err) => setImmediate(() => { throw err; }));
 				});
 			}
 		}).catch((err) => setImmediate(() => { throw err; }));
