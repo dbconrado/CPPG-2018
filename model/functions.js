@@ -42,14 +42,11 @@ var functions = {
 	{
 		var sql = "INSERT INTO certificados (siapeServidor, idProjeto) VALUES (" + certificatedPersonCod + "," + "'" + certificateWorkCod + "')";
 
-		// return new Promise(function(resolve, reject)
-		// {
-			vars.con.query(sql, function (err, results)
-			{
-				if(err && err.message.substring(0,err.message.indexOf(' ')) != 'ER_BAD_NULL_ERROR:') throw err;
-				return results;
-			});
-        // });
+		vars.con.query(sql, function (err, results)
+		{
+			if(err && err.message.substring(0,err.message.indexOf(' ')) != 'ER_BAD_NULL_ERROR:') throw err;
+			return results;
+		});
 	},
 	getYearsAvailableByTeacher: function(teacherName)
 	{
