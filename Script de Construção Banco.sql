@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `cppg` /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE `cppg`;
 -- MySQL dump 10.13  Distrib 5.7.23, for Linux (x86_64)
 --
 -- Host: localhost    Database: cppg
@@ -134,7 +136,7 @@ CREATE TABLE `certificados` (
   KEY `idProjeto` (`idProjeto`),
   CONSTRAINT `certificados_ibfk_1` FOREIGN KEY (`siapeServidor`) REFERENCES `servidor` (`siapeServidor`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `certificados_ibfk_2` FOREIGN KEY (`idProjeto`) REFERENCES `projeto` (`idProjeto`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -143,7 +145,7 @@ CREATE TABLE `certificados` (
 
 LOCK TABLES `certificados` WRITE;
 /*!40000 ALTER TABLE `certificados` DISABLE KEYS */;
-INSERT INTO `certificados` VALUES (1345394,'30012013','e87a19b188',2,NULL),(1964494,'30012013','39221417ba',3,NULL),(1964494,'20012013','39221417ba',4,NULL),(1964494,'2015CPPG03','39221417ba',5,NULL),(1964494,'2015CPPG05','39221417ba',6,NULL),(1680859,'30012013','5480b5d1f7',7,NULL),(1680859,'2013CPPG01','5480b5d1f7',8,NULL),(1680859,'20012013','5480b5d1f7',9,NULL);
+INSERT INTO `certificados` VALUES (2149237,'2017CPPG06','689cf061a4',1,NULL);
 /*!40000 ALTER TABLE `certificados` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!50003 SET @saved_cs_client      = @@character_set_client */ ;
@@ -158,7 +160,7 @@ DELIMITER ;;
 /*!50003 CREATE*/ /*!50017 DEFINER=`root`@`localhost`*/ /*!50003 TRIGGER tgr_geraCertificado BEFORE INSERT ON certificados
 FOR EACH ROW
 BEGIN
-	CALL proc_verificaSeRowExiste(NEW.siapeServidor,NEW.idProjeto,@existe);
+	CALL proc_verificaSeRowExiste(2149237,'2017CPPG06',@existe);
     IF(@existe = false) THEN
 		set @hash = RIGHT(MD5(concat(NEW.siapeServidor, NEW.idCertificado)),10);
 		SET NEW.hashCertificado = @hash;
@@ -478,6 +480,38 @@ LOCK TABLES `servidor_publica` WRITE;
 INSERT INTO `servidor_publica` VALUES (1,1964494,1,'XXXV',NULL,NULL,2014,'Natal','RN','BRASIL'),(2,1680859,2,'I',NULL,NULL,2014,'São Paulo','SP','BRASIL'),(3,1964494,2,'I',NULL,NULL,2014,'São Paulo','SP','BRASIL'),(4,1680859,3,'XLVII',NULL,NULL,2015,'Recife','PE','BRASIL'),(4,1964494,3,'XLVII',NULL,NULL,2015,'Recife','PE','BRASIL'),(5,1964494,5,'III',NULL,NULL,2015,'Vitória','ES','BRASIL'),(6,1964494,4,'XXXVI',NULL,NULL,2015,'Rio de Janeiro','RJ','BRASIL'),(7,1680859,4,'XXXVI',NULL,NULL,2015,'Rio de Janeiro','RJ','BRASIL'),(7,2180055,4,'XXXVI',NULL,NULL,2015,'Rio de Janeiro','RJ','BRASIL'),(8,1964494,6,'V',NULL,NULL,2016,'Bambuí','MG','BRASIL'),(9,1680859,6,'V',NULL,NULL,2016,'Bambuí','MG','BRASIL'),(9,1964494,6,'V',NULL,NULL,2016,'Bambuí','MG','BRASIL'),(9,2128330,6,'V',NULL,NULL,2016,'Bambuí','MG','BRASIL'),(10,1964494,1,'XXXVI',NULL,NULL,2016,'Gramado','RS','BRASIL'),(10,2211527,1,'XXXVI',NULL,NULL,2016,'Gramado','RS','BRASIL'),(11,1964494,3,'XLVIII',NULL,NULL,2016,'Vitória','ES','BRASIL'),(12,1964494,4,'XXXVII',NULL,NULL,2016,'Brasília','DF','BRASIL'),(13,1680859,3,'XLVII',NULL,NULL,2015,'Recife','PE','BRASIL'),(14,1680859,6,'V',NULL,NULL,2016,'Bambuí','MG','BRASIL'),(15,1345394,7,'12',NULL,NULL,2017,'Lisboa',NULL,'Portugal'),(15,1964494,7,'12',NULL,NULL,2017,'Lisboa',NULL,'Portugal'),(16,1964494,8,'2017',NULL,NULL,2017,'São José do Rio Preto','SP','Brasil'),(16,2211527,8,'2017',NULL,NULL,2017,'São José do Rio Preto','SP','Brasil');
 /*!40000 ALTER TABLE `servidor_publica` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Dumping events for database 'cppg'
+--
+
+--
+-- Dumping routines for database 'cppg'
+--
+/*!50003 DROP PROCEDURE IF EXISTS `proc_verificaSeRowExiste` */;
+/*!50003 SET @saved_cs_client      = @@character_set_client */ ;
+/*!50003 SET @saved_cs_results     = @@character_set_results */ ;
+/*!50003 SET @saved_col_connection = @@collation_connection */ ;
+/*!50003 SET character_set_client  = utf8 */ ;
+/*!50003 SET character_set_results = utf8 */ ;
+/*!50003 SET collation_connection  = utf8_general_ci */ ;
+/*!50003 SET @saved_sql_mode       = @@sql_mode */ ;
+/*!50003 SET sql_mode              = 'ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION' */ ;
+DELIMITER ;;
+CREATE DEFINER=`root`@`localhost` PROCEDURE `proc_verificaSeRowExiste`(IN siapeServidor INT, IN idProjeto CHAR(10), OUT resposta BOOL)
+BEGIN
+	IF '0' IN (
+		SELECT EXISTS (SELECT * FROM certificados C WHERE C.siapeServidor = siapeServidor AND C.idProjeto = idProjeto)
+        ) THEN
+			SET resposta = false;
+		ELSE SET resposta = true;
+	END IF;
+END ;;
+DELIMITER ;
+/*!50003 SET sql_mode              = @saved_sql_mode */ ;
+/*!50003 SET character_set_client  = @saved_cs_client */ ;
+/*!50003 SET character_set_results = @saved_cs_results */ ;
+/*!50003 SET collation_connection  = @saved_col_connection */ ;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -488,4 +522,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-31 13:25:06
+-- Dump completed on 2018-08-30 17:16:50
