@@ -24,12 +24,6 @@ var options = {
   database: vars.config.database.db
 };
 
-console.log(options.host);
-console.log(options.port);
-console.log(options.user);
-console.log(options.password);
-console.log(options.database);
-
 var sessionStore = new MySQLStore(options);
 
 app.use(session({
