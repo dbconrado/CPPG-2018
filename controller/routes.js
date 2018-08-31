@@ -275,10 +275,8 @@ router.post('/pdf', function(req, res) {
 					certificateFinalData.setDate(date[0]);
 					certificateFinalData.setMonth(date[1]);
 					certificateFinalData.setFullYear(date[2]);
-					
-					console.log("cai");
+
 					functions.recordGeneratedCertificate(certificatedPersonCod, certificateWorkCod);
-					console.log("cai");
 					
 					var certificateMessage = "Declaro para os devidos fins que o/a discente " + certificatedPersonName + " de matrícula SIAPE " + certificatedPersonCod + " atuou como " + certificatedPersonFunction.toLowerCase() + " no projeto de pesquisa '" + certificatedWork + "	' aprovado no Edital " + certificateEdictNumber + "/" + certificateEdictYear + " do Instituto Federal de Minas Gerais campus Sabará, com período de vigência de " +  vars.monthNames[certificateInitialData.getMonth()-1] + " de " + certificateInitialData.getFullYear() + " à " + vars.monthNames[certificateFinalData.getMonth()-1] + " de " + certificateFinalData.getFullYear() + ".";						
 					doc.text(certificateMessage,280,350,
