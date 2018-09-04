@@ -407,12 +407,13 @@ router.post('/search', function(req, res) {
 
 		runQueries(searchValue).then(function(result)
 		{
-			teacherByName(searchValue).then(function(cloud)
+			teacherInfoByItsName(searchValue).then(function(cloud)
 			{
 				tagCloud.tagCloud(cloud, function (data)
 				{
 					res.render('searchProceedings', { proceedingsByName: result[0][0], proceedingsByAuthor: result[1][0], proceedingsByStudents: result[2][0], cloud: data } );
-				}, {
+				},
+				{
 					classPrefix: 'btn tag tag',
 					randomize: true,
 					numBuckets: 5,
@@ -427,7 +428,7 @@ router.post('/search', function(req, res) {
 		throw err;
 	}
 
-	function teacherByName(teacherName)
+	function teacherInfoByItsName(teacherName)
 	{
 		try
 		{
@@ -436,13 +437,18 @@ router.post('/search', function(req, res) {
 			{
 				vars.con.query(sql, function (results)
 				{
+					console.log(this.sql);
 					var cloud = [];
-					results.forEach(function(result)
+
+					if(results)
 					{
-						cloud.push({
-							tagName: result["teacherName"], count: 1
+						results.forEach(function(result)
+						{
+							cloud.push({
+								tagName: result["teacherName"], count: 1
+							});
 						});
-					});
+					}
 					resolve(cloud);
 				});
 			});
