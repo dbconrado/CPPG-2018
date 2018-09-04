@@ -8,6 +8,9 @@ var vars = require('../model/variables.js');
 var functions = require('../model/functions.js');
 var fs = require('fs');
 
+router.get('/index', function(req, res){
+	res.render('index-novo');
+})
 router.get('/', function(req, res){
 	try
 	{
