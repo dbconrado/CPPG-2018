@@ -22,8 +22,8 @@
                     <h1>IFMG Campus Sabará</h1>
                     <p>Comissão de Pesquisa e Pós-Graduação</p>
                     
-                    <form class="justify-content-center form-group form-inline my-2 my-lg-0 py-sm-5">
-                        <input class="form-control mr-sm-2 col-6" type="search" placeholder="Procure por um projeto por nome, autor ou alunos envolvidos" aria-label="Search">
+                    <form class="justify-content-center form-group form-inline my-2 my-lg-0 py-sm-5" method="POST" action="/CPPG/search">
+                        <input name="searchValue" tabindex="2" class="form-control mr-sm-2 col-6" type="search" placeholder="Procure por um projeto por nome, autor ou alunos envolvidos" aria-label="Search" required>
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar</button>
                       </form>
                     
