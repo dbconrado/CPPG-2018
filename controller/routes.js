@@ -215,7 +215,7 @@ router.all('/gerarCertificado', function(req, res){
 			
 			var noResearchs = false;
 			if(req.body["noResearchs"]) noResearchs = true;
-			res.render('geraCertificado', { teachers: teachers, noResearchs: noResearchs });
+			res.render('pages/geraCertificado', { teachers: teachers, noResearchs: noResearchs });
 		}).catch((err) => setImmediate(() => { throw err; }));
 	}
 });

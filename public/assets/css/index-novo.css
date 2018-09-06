@@ -4,7 +4,6 @@
 body {
     padding-top: 3rem;
     padding-bottom: 3rem;
-    color: #5a5a5a;
 }
 
 /* Carousel Styles
@@ -49,6 +48,11 @@ body {
 .carousel-caption
 {
     text-shadow: 1px 2px black;
+}
+
+.input-group-prepend
+{
+    text-shadow: none;
 }
 
 /* MARKETING CONTENT
