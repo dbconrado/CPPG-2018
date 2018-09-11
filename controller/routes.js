@@ -8,10 +8,7 @@ var vars = require('../model/variables.js');
 var functions = require('../model/functions.js');
 var fs = require('fs');
 
-router.get('/index', function(req, res){
-	res.render('pages/index-novo');
-})
-router.get('/', function(req, res){
+router.get(['/','/index'], function(req, res){
 	try
 	{
 		if(vars.con.state === 'disconnected'){
@@ -91,8 +88,12 @@ router.get('/', function(req, res){
 
 		getKeywordsCloud().then(function(cloud)
 		{
+			console.log("cai");
+			var url;
+			if(req.url == "/index") url = "pages/index-novo";
+			else url = "index";
 			tagCloud.tagCloud(cloud, function (err, data) {
-				res.render('index', {
+				res.render(url, {
 					cloud: data,
 					years: yearData,
 					pibicAssistance: pibicAssistance,
