@@ -23,10 +23,10 @@
                     <h1>IFMG Campus Sabará</h1>
                     <p>Coordenação de Pesquisa, Inovação e Pós-Graduação</p>
 
-                    <form class="py-3 py-sm-4" method="POST" action="/CPPG/search">
+                    <form id="searchForm" class="py-3 py-sm-4" method="POST" action="/CPPG/search">
                       <div class="form-group form-inline justify-content-center">
-                          <input name="searchValue" tabindex="2" class="form-control mr-sm-2 col-6" type="search" placeholder="Procure por uma publicação por nome, autor ou alunos envolvidos" aria-label="Search" required>
-                          <button class="btn btn-success my-2 my-sm-0" type="submit" data-toogle="tooltip" title="Buscar projetos e/ou publicações">Buscar</button>
+                          <input id="searchTextBox" name="searchValue" tabindex="2" class="form-control mr-sm-2 col-6" type="search" placeholder="Procure por uma publicação por nome, autor ou alunos envolvidos" aria-label="Search" required>
+                          <button id="btnSearch" class="btn btn-success my-2 my-sm-0" type="submit" data-toogle="tooltip" title="Buscar projetos e/ou publicações">Buscar</button>
                       </div>
                       
                       <div class="input-group mb-3 justify-content-center">
@@ -39,9 +39,9 @@
                             <span class="input-group-text">Projetos</span>
                         </div>
 
-                        <div class="input-group-prepend pl-1">
+                        <div id="selSearchFields" class="input-group-prepend pl-1">
                             <div class="input-group-text">
-                              <input type="checkbox" aria-label="Cheque esta caixa se você deseja buscar por projetos">
+                              <input type="checkbox" aria-label="Cheque esta caixa se você deseja buscar por publicações">
                             </div>
                             <div class="input-group-prepend">
                                 <span class="input-group-text">Publicações</span>
@@ -49,6 +49,27 @@
                         </div>
                       </div>
                     </form>
+
+                    <div class="modal" tabindex="-1" role="dialog">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title">Modal title</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <p>Modal body text goes here.</p>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary">Save changes</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    
                     </div>
                 </div>
               </div>
@@ -141,7 +162,8 @@
         <!-- Bootstrap core JavaScript -->
         <script src="https://code.highcharts.com/highcharts.src.js"></script>
         <% include ../partials/footer %>
-        <%- include('../../../CPPG/public/assets/js/charts.ejs', 
+        <script src="/CPPG/assets/js/index-novo.js"></script>>
+        <%- include('../../public/assets/js/charts.ejs', 
           {
             cloud: cloud,
             years: years,
