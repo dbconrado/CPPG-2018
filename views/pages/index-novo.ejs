@@ -141,77 +141,16 @@
         <!-- Bootstrap core JavaScript -->
         <script src="https://code.highcharts.com/highcharts.src.js"></script>
         <% include ../partials/footer %>
-      
-        <script>
-            $(function ()
-            {
-                <%- include ../../highcharts-themes/dark-unica.js %>
-        
-                Highcharts.chart('studentsAssistanceChart', {
-                    chart: {
-                        type: 'column'
-                    },
-                    title: {
-                        text: 'Bolsas Estudantis'
-                    },
-                    xAxis: {
-                        categories: [<%= years %>]
-                    },
-                    yAxis: {
-                        min: 0,
-                        tickInterval: 5,
-                        title: {
-                            text: 'Modalidades de Bolsas Estudantis'
-                        },
-                        stackLabels: {
-                            enabled: true,
-                            style: {
-                                fontWeight: 'bold',
-                                color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-                            }
-                        }
-                    },
-                    legend: {
-                        align: 'left',
-                        verticalAlign: 'top',
-                        y: 25,
-                        floating: true,
-                        backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-                        borderColor: '#CCC',
-                        borderWidth: 1,
-                        shadow: false
-                    },
-                    tooltip: {
-                        headerFormat: '<b>{point.x}</b><br/>',
-                        pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
-                    },
-                    plotOptions: {
-                        column: {
-                            stacking: 'normal',
-                            dataLabels: {
-                                enabled: true,
-                                color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'white'
-                            }
-                        }
-                    },
-                    series: [{
-                        name: 'PIBIC',
-                        data: [<%= pibicAssistance %>]
-                    }, {
-                        name: 'PIBIC-JR',
-                        data: [<%= pibicJrAssistance %>]
-                    }, {
-                        name: 'PIBITI',
-                        data: [<%= pibitAssistance %>]
-                    }, {
-                        name: 'PIBEX',
-                        data: [<%= pibexAssistance %>]
-                    }, {
-                        name: 'Voluntário',
-                        data: [<%= volunteerAssistance %>]
-                    }]
-                });
-            });
-          </script>
+        <%- include('../../../CPPG/public/assets/js/charts.ejs', 
+          {
+            cloud: cloud,
+            years: years,
+            pibicAssistance: pibicAssistance,
+            pibicJrAssistance: pibicJrAssistance,
+            pibitAssistance: pibitAssistance,
+            pibexAssistance: pibexAssistance,
+            volunteerAssistance: volunteerAssistance
+          });
+        %>
     
     <svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500" preserveAspectRatio="none" style="display: none; visibility: hidden; position: absolute; top: -100%; left: -100%;"><defs><style type="text/css"></style></defs><text x="0" y="25" style="font-weight:bold;font-size:25pt;font-family:Arial, Helvetica, Open Sans, sans-serif">500x500</text></svg></body></html>
