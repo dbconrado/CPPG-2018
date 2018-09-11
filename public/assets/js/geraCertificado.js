@@ -9,6 +9,7 @@ $(document).ready(function()
         if($("#selYear").val() != null) var nOptionsSelected = $("#selYear").val().length;
         var hasNumber = /\d/;
 
+        // User selected one year in dropdown menu
         if(hasNumber.test(selectedOption) && (nOptionsSelected == nOptionsAvailable-1) && ($(this).val()[0] == 'Nenhuma das opções'))
         {
             var elements = document.getElementById("selYear").options;
@@ -18,6 +19,7 @@ $(document).ready(function()
             $(this).selectpicker("refresh");
         }
 
+        // User choosed to select all years on dropdown, do it and change option text
         if(selectedOption == 'Todos os anos')
         {
             allOptionsAreSelected = true;
@@ -25,12 +27,13 @@ $(document).ready(function()
             $('#allOptions').text("Nenhuma das opções");
             $('#selYear').selectpicker('refresh');
         }
+        // User choosed to unselect all years on dropdown, do it and change option text
         else if(selectedOption == 'Nenhuma das opções')
         {
             allOptionsAreSelected = false;
             $(this).selectpicker('deselectAll');
             $('#allOptions').text("Todos os anos");
-            $('#selYear').selectpicker('refresh');            
+            $('#selYear').selectpicker('refresh');
         }
             
     });

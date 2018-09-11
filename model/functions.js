@@ -1,6 +1,83 @@
 var vars = require('./variables.js');
 
 var functions = {
+	getProceedingsByItsNameTeacherOrStudents: function(toSearchValue)
+	{
+		var treatedResults = [];
+		var queryGetProceedingsByTitle = "SELECT codPublicacao AS proceedingCode FROM publicacao WHERE nomePublicacao LIKE '" + toSearchValue + "'";
+		var queryGetProceedingsByTeachers = "SELECT P.codPublicacao AS proceedingCode, nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath, nomeServidor AS proceedingAuthor FROM publicacao P JOIN servidor_publica SP ON SP.codPublicacao = P.codPublicacao  JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.nomeServidor LIKE '" + toSearchValue + "'";
+		var queryGetProceedingsByStudents = "SELECT P.codPublicacao AS proceedingCode FROM publicacao P JOIN aluno_publica AP ON AP.codPublicacao = P.codPublicacao JOIN aluno A ON A.matriculaAluno = AP.matriculaAluno WHERE A.nomeAluno LIKE '" + toSearchValue + "'";	
+		var sql = queryGetProceedingsByTitle + ";" + queryGetProceedingsByTeachers + ";" + queryGetProceedingsByStudents;
+
+		try
+		{
+			return new Promise(function(resolve)
+			{
+				vars.con.query(sql, [1, 2, 3], function (err, results)
+				{
+					if(err)
+					{
+						return Promise.reject(err);
+					}
+
+					//Trata cada resultado obtido
+					//Trata a busca por nome de publicação
+					var proceedingsByName = [];
+					var promises = [];
+					results[0].forEach(function(result)
+					{
+						var proceedingCode = result["proceedingCode"];
+						const promise = functions.getProceedingInfo(proceedingCode);
+						promises.push(promise);
+					});
+
+					//Trata cada resultado obtido
+					//Trata a busca por nome de autor
+					Promise.all(promises).then(proceedings =>
+					{
+						proceedingsByName.push(proceedings);
+						treatedResults.push(proceedingsByName);
+						
+						var proceedingsByAuthor = [];
+						promises = [];
+						results[1].forEach(function(result)
+						{
+							var proceedingCode = result["proceedingCode"];
+							const promise = functions.getProceedingInfo(proceedingCode);
+							promises.push(promise);
+						});
+						//Trata cada resultado obtido
+						//Trata a busca por nome de aluno
+						Promise.all(promises).then(proceeding =>
+						{
+							proceedingsByAuthor.push(proceeding);
+							treatedResults.push(proceedingsByAuthor);
+
+							var proceedingsByStudents = [];
+							promises = [];
+							results[2].forEach(function(result)
+							{
+								var proceedingCode = result["proceedingCode"];
+								const promise = functions.getProceedingInfo(proceedingCode);
+								promises.push(promise);
+							});
+
+							Promise.all(promises).then(proceeding =>
+							{
+								proceedingsByStudents.push(proceeding);
+								treatedResults.push(proceedingsByStudents);
+								resolve(treatedResults);
+							});
+						});
+					});
+				});
+			});
+		}
+		catch(e)
+		{
+			throw e;
+		}
+	},
 	getResearchWorksByYearRangeAndTeacher: function(yearRange, teacherCod)
 	{
 		try
@@ -29,6 +106,7 @@ var functions = {
 				vars.con.query(sql, function(err, results, fields)
 				{
 					if(err) reject(results);
+					console.log(this.sql);
 					resolve(results);
 				});
 			});
@@ -139,6 +217,36 @@ var functions = {
 			});
         });
    },
+   getTeacherInfoByItsName: function (teacherName)
+	{
+		try
+		{
+			var sql = "SELECT nomeServidor AS teacherName FROM servidor WHERE nomeServidor LIKE '" + teacherName + "' AND tipo = 'DOCENTE'";
+			return new Promise(function(resolve)
+			{
+				vars.con.query(sql, function (results)
+				{
+					console.log(this.sql);
+					var cloud = [];
+
+					if(results)
+					{
+						results.forEach(function(result)
+						{
+							cloud.push({
+								tagName: result["teacherName"], count: 1
+							});
+						});
+					}
+					resolve(cloud);
+				});
+			});
+		}
+		catch(err)
+		{
+			throw err;
+		}
+	},
    getTeachersOnDatabase: function()
    {
 	   const sql = "SELECT nomeServidor AS teacherName, siapeServidor AS teacherCod FROM servidor WHERE cargo LIKE '%Professor%' ORDER BY nomeServidor ASC";
