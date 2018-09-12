@@ -106,7 +106,6 @@ var functions = {
 				vars.con.query(sql, function(err, results, fields)
 				{
 					if(err) reject(results);
-					console.log(this.sql);
 					resolve(results);
 				});
 			});
@@ -226,7 +225,6 @@ var functions = {
 			{
 				vars.con.query(sql, function (results)
 				{
-					console.log(this.sql);
 					var cloud = [];
 
 					if(results)

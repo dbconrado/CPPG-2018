@@ -1,14 +1,15 @@
 $(document).ready(function (){
-    $("#btnSearch").on('click', function()
+    $("#searchForm").submit(function(e)
     {
         checked = $("input[type=checkbox]:checked").length;
-        if(!checked && $("#searchTextBox").val())
+        if(!checked)
         {
-            $("#searchForm").submit(function(e){
-                e.preventDefault();
-            });
-
             $(".modal").modal('toggle');
+            e.preventDefault();
+        }
+        else
+        {
+            $("#searchForm").submit();
         }
     });
 });

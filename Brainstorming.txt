@@ -1,0 +1,13 @@
+Funcionalidades que o site deverá possuir:
+
+- Geração e validação de certificados (mediante login)
+- Editais (abertos, convocações?, etc)
+- Novidades (algumas notícias, do Campus ou só relacionado a projetos?)
+- Informações de projetos, professores e publicações
+- Ferramenta de busca de projetos, professores e publicações
+- Página para apresentar gráficos ilustrativos do desempeno do Campus
+
+Idéias:
+
+- Página inicial enxuta, com o "Quem Somos" e apenas algumas notícias
+- Navbar nas cores do IFMG está presente em todas as páginas, como demonstração da identidade visual do site

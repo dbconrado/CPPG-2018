@@ -24,7 +24,7 @@ body {
 /* Declare heights because of positioning of img element */
 .carousel-item
 {
-    height: 32rem;
+    height: 27rem;
     background-color: #777;
 }
 
@@ -39,10 +39,10 @@ body {
 
 .campus-brand
 {
-    opacity: 0.8;
-    -webkit-transform: translate(-25%,-25%);
-    -ms-transform: translate(-50%,-50%);
-    transform: translateY(-25%);
+    opacity: 1;
+    /* -webkit-transform: translate(0%);
+    -ms-transform: translate(0%);
+    transform: translateY(0%); */
 }
 
 .carousel-caption

@@ -8,7 +8,7 @@ var vars = require('../model/variables.js');
 var functions = require('../model/functions.js');
 var fs = require('fs');
 
-router.get(['/','/index'], function(req, res){
+router.get('/indicadores', function(req, res){
 	try
 	{
 		if(vars.con.state === 'disconnected'){
@@ -88,12 +88,8 @@ router.get(['/','/index'], function(req, res){
 
 		getKeywordsCloud().then(function(cloud)
 		{
-			console.log("cai");
-			var url;
-			if(req.url == "/index") url = "pages/index-novo";
-			else url = "index";
 			tagCloud.tagCloud(cloud, function (err, data) {
-				res.render(url, {
+				res.render('pages/indicadores', {
 					cloud: data,
 					years: yearData,
 					pibicAssistance: pibicAssistance,
@@ -173,6 +169,9 @@ router.get(['/','/index'], function(req, res){
 		});
 	}
 });
+router.get('/', function(req, res){
+	res.render('pages/index-novo');
+});
 
 router.all('/gerarCertificado', function(req, res){
 	if(req.body["teacherInfo"])
@@ -243,14 +242,12 @@ router.post('/pdf', function(req, res) {
 		
 		functions.getResearchWorksByYearRangeAndTeacher(yearsRange, certificatedPersonCod).then(function(results)
 		{
-			console.log("cai");
 			if(results.length == 0 || results == undefined)
 			{
 				return res.redirect(307, '/CPPG/gerarCertificado');
 			}
 			else
 			{
-				console.log("cai");
 				results.forEach(function(research, index)
 				{
 					var certificateWorkCod = research["researchCod"];
