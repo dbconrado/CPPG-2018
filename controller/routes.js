@@ -394,7 +394,7 @@ router.get('/keyword=:word', function(req, res) {
 	}).catch((err) => setImmediate(() => { throw err; }));;
 });
 
-router.post('/search', function(req, res) {
+router.post('/antigo-search', function(req, res) {
 	var searchValue = req.body.searchValue;
 	try
 	{
@@ -428,7 +428,43 @@ router.post('/search', function(req, res) {
 	catch(err)
 	{
 		throw err;
-	}	
+	}
+});
+router.post('/search', function(req, res) {
+	var searchValue = req.body.searchValue;
+	try
+	{
+		if(vars.con.state === 'disconnected')
+		{
+			vars.con.connect(function(err) {
+				if (err) throw err;
+			});
+		}
+		
+		searchValue = '%' + searchValue + '%'; // Apenas escapa as aspas simples
+
+		functions.getProceedingsByItsNameTeacherOrStudents(searchValue).then(function(result)
+		{
+			functions.getTeacherInfoByItsName(searchValue).then(function(cloud)
+			{
+				tagCloud.tagCloud(cloud, function (data)
+				{
+					res.render('pages/searchProceedings', { proceedingsByName: result[0][0], proceedingsByAuthor: result[1][0], proceedingsByStudents: result[2][0], cloud: data } );
+				},
+				{
+					classPrefix: 'btn tag tag',
+					randomize: true,
+					numBuckets: 5,
+					htmlTag: 'a',
+					additionalAttributes: {href: vars.config.url +'/teacher={{tag}}'}
+				});
+			}).catch((err) => setImmediate(() => { throw err; }));
+		}).catch((err) => setImmediate(() => { throw err; }));
+	}
+	catch(err)
+	{
+		throw err;
+	}
 });
 
 

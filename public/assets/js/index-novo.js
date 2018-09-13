@@ -4,7 +4,7 @@ $(document).ready(function (){
         checked = $("input[type=checkbox]:checked").length;
         if(!checked)
         {
-            $(".modal").modal('toggle');
+            $("#fillCheckboxModal").modal('toggle');
             e.preventDefault();
         }
         else
