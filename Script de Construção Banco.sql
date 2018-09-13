@@ -1,4 +1,5 @@
 DROP DATABASE IF EXISTS `cppg`;
+CREATE DATABASE  `cppg`;
 CREATE DATABASE  IF NOT EXISTS `cppg` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `cppg`;
 -- MySQL dump 10.13  Distrib 5.7.23, for Linux (x86_64)
