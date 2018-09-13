@@ -48,7 +48,7 @@
         background-color: #eee;
     }
     .table-filter tr td:first-child {
-        width: 38px;
+        width: 10%;
     }
     .table-filter tr td:nth-child(2) {
         width: 35px;
