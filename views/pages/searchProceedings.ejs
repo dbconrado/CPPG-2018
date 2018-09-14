@@ -13,52 +13,90 @@
     
 		<main role="main" class="container">
 
-				<div class="card text-center">
-					<div class="card-header">
-						<h3>Resultados da busca</h3>
-						<h5 class="text-left">Buscou por: <span class="ml-3">"<i>STR</i>"</span></h5>
+			<div class="card text-center">
+				<div class="card-header">
+					<h3>Resultados da busca</h3>
+					<h5 class="text-left">Buscou por: <span class="ml-3">"<i>STR</i>"</span></h5>
+				</div>
+				<div class="card-body">
+					<h2 class="card-title">Professores</h2>
+					<h6>Clique para ver as áreas de conhecimento baseadas nas publicações</h6>
+					
+					<div class="dropdown-divider my-3"></div>
+
+					<div class="float-left px-4 my-3">
+						<h1>Trabalhos Relacionados</h1>
 					</div>
-					<div class="card-body">
-						<h2 class="card-title">Professores</h2>
-						<h6>Clique para ver as áreas de conhecimento baseadas nas publicações</h6>
-						
-						<div class="dropdown-divider my-3"></div>
+					<div class="btn-group float-right mr-5 my-3">
+						<button type="button" class="btn btn-success btn-filter" data-target="Tìtulo">Tìtulo</button>
+						<button type="button" class="btn btn-warning btn-filter" data-target="Autor">Autor</button>
+						<button type="button" class="btn btn-danger btn-filter" data-target="Aluno">Aluno</button>
+						<button type="button" class="btn btn-default btn-filter" data-target="all">Todos</button>
+					</div>
 
-						<div class="float-left px-4 my-3">
-							<h1>Trabalhos Relacionados</h1>
-						</div>
-						<div class="btn-group float-right mr-5 my-3">
-							<button type="button" class="btn btn-success btn-filter" data-target="Tìtulo">Tìtulo</button>
-							<button type="button" class="btn btn-warning btn-filter" data-target="Autor">Autor</button>
-							<button type="button" class="btn btn-danger btn-filter" data-target="Aluno">Aluno</button>
-							<button type="button" class="btn btn-default btn-filter" data-target="all">Todos</button>
-						</div>
+					<div class="dropdown-divider my-3"></div>
 
-						<div class="dropdown-divider my-3"></div>
+					<div class="table-container text-left">
+							<table class="table table-filter">
+								<tbody>
+										
+									<% for (proceeding of proceedingsByName){%>
+									<tr data-status="Tìtulo">
+										<td class="text-center mx-auto">
+											<div class="ckbox m-auto d-block">
+												<input type="checkbox" id="checkbox1">
+												<label for="checkbox1"></label>
+											</div
+										</td>
+										<td>
+												<div class="col-sm-4">
+												</div>
 
-						<div class="table-container">
-								<table class="table table-filter">
-									<tbody>
-											
-										<% for (proceeding of proceedingsByName){%>
-										<tr data-status="Tìtulo">
+												<div class="media d-block">
+													<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
+														<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
+													</a>
+													<div class="media-body">
+														<span class="media-meta float-right">Febrero 13, 2016</span>
+														<h4 class="title">
+															<%if (proceeding[3] == 'null') {%>
+																<%= proceeding[1] %>
+															<%} else {%>
+																<a href="<%= proceeding[3] %>" target="blank"> <%= proceeding[1] %> </a>
+															<%}%>
+
+															<span class="pull-right Tìtulo">(Tìtulo)</span>
+														</h4>
+														<p class="summary">Autores:
+															<% for (author of proceeding[2]){%>
+																<span><%= author %>;</span>
+															<%}%>
+														</p>
+														<p class="summary">Alunos Envolvidos:
+															<% for (student of proceeding[4]){%>
+																<span><%= student %>;</span>
+															<%}%>
+														</p>
+													</div>
+												</div>
+										</td>
+									</tr>
+									<% } %>
+
+									<% for (proceeding of proceedingsByAuthor){%>
+										<tr data-status="Autor">
 											<td>
 												<div class="ckbox">
 													<input type="checkbox" id="checkbox1">
 													<label for="checkbox1"></label>
 												</div>
-												<td>
-													<a href="javascript:;" class="star">
-														<i class="glyphicon glyphicon-star"></i>
-													</a>
-												</td>
 											</td>
 											<td>
 													<div class="col-sm-4">
 													</div>
 	
-													<div class="media d-table">
-														<a href="#" class="d-table-cell align-middle">
+													<div class="media">
+														<a href="#" class="pull-left">
 															<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
 														</a>
 														<div class="media-body">
@@ -87,258 +125,58 @@
 											</td>
 										</tr>
 										<% } %>
-	
-										<% for (proceeding of proceedingsByAuthor){%>
-											<tr data-status="Autor">
-												<td>
-													<div class="ckbox">
-														<input type="checkbox" id="checkbox1">
-														<label for="checkbox1"></label>
-													</div>
-												</td>
-												<td>
-														<div class="col-sm-4">
-														</div>
-		
-														<div class="media">
-															<a href="#" class="pull-left">
-																<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-															</a>
-															<div class="media-body">
-																<span class="media-meta pull-right">Febrero 13, 2016</span>
-																<h4 class="title">
-																	<%if (proceeding[3] == 'null') {%>
-																		<%= proceeding[1] %>
-																	<%} else {%>
-																		<a href="<%= proceeding[3] %>" target="blank"> <%= proceeding[1] %> </a>
-																	<%}%>
-		
-																	<span class="pull-right Tìtulo">(Tìtulo)</span>
-																</h4>
-																<p class="summary">Autores:
-																	<% for (author of proceeding[2]){%>
-																		<span><%= author %>;</span>
-																	<%}%>
-																</p>
-																<p class="summary">Alunos Envolvidos:
-																	<% for (student of proceeding[4]){%>
-																		<span><%= student %>;</span>
-																	<%}%>
-																</p>
-															</div>
-														</div>
-												</td>
-											</tr>
-											<% } %>
-	
-											<% for (proceeding of proceedingsByStudents){%>
-											<tr data-status="Aluno">
-												<td>
-													<div class="ckbox">
-														<input type="checkbox" id="checkbox1">
-														<label for="checkbox1"></label>
-													</div>
-												</td>
-												<td>
-														<div class="col-sm-4">
-														</div>
-		
-														<div class="media">
-															<a href="#" class="pull-left">
-																<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-															</a>
-															<div class="media-body">
-																<span class="media-meta pull-right">Febrero 13, 2016</span>
-																<h4 class="title">
-																	<%if (proceeding[3] == 'null') {%>
-																		<%= proceeding[1] %>
-																	<%} else {%>
-																		<a href="<%= proceeding[3] %>" target="blank"> <%= proceeding[1] %> </a>
-																	<%}%>
-		
-																	<span class="pull-right Tìtulo">(Tìtulo)</span>
-																</h4>
-																<p class="summary">Autores:
-																		<% for (author of proceeding[2]){%>
-																			<span><%= author %>;</span>
-																		<%}%>
-																</p>
-																<p class="summary">Alunos Envolvidos:
-																	<% for (student of proceeding[4]){%>
-																		<span><%= student %>;</span>
-																	<%}%>
-																</p>
-															</div>
-														</div>
-												</td>
-											</tr>
-											<% } %>
-									</tbody>
-								</table>
-							</div>
-					</div>
-					<div class="card-footer text-muted">
-						2 days ago
-					</div>
-				</div>
 
-			<div class="row">
-				<section class="content">
-					<h1>Pesquisa</h1>
-					<div class="col-md-8 col-md-offset-2">
-						<div class="panel panel-default">
-								<div class="table-container">
-									<table class="table table-filter">
-										<tbody>
-												<div class="cloud">
-													<%- cloud %>
+										<% for (proceeding of proceedingsByStudents){%>
+										<tr data-status="Aluno">
+											<td>
+												<div class="ckbox">
+													<input type="checkbox" id="checkbox1">
+													<label for="checkbox1"></label>
 												</div>
-										</tbody>
-									</table>
-								</div>
-		
-								<div class="panel-body">
-								<div class="table-container">
-									<table class="table table-filter">
-										<tbody>
-												
-											<% for (proceeding of proceedingsByName){%>
-											<tr data-status="Tìtulo">
-												<td>
-													<div class="ckbox">
-														<input type="checkbox" id="checkbox1">
-														<label for="checkbox1"></label>
+											</td>
+											<td>
+													<div class="col-sm-4">
 													</div>
-												</td>
-												<td>
-														<div class="col-sm-4">
-														</div>
-		
-														<div class="media">
-															<a href="#" class="pull-left">
-																<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-															</a>
-															<div class="media-body">
-																<span class="media-meta pull-right">Febrero 13, 2016</span>
-																<h4 class="title">
-																	<%if (proceeding[3] == 'null') {%>
-																		<%= proceeding[1] %>
-																	<%} else {%>
-																		<a href="<%= proceeding[3] %>" target="blank"> <%= proceeding[1] %> </a>
-																	<%}%>
-		
-																	<span class="pull-right Tìtulo">(Tìtulo)</span>
-																</h4>
-																<p class="summary">Autores:
+	
+													<div class="media">
+														<a href="#" class="pull-left">
+															<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
+														</a>
+														<div class="media-body">
+															<span class="media-meta pull-right">Febrero 13, 2016</span>
+															<h4 class="title">
+																<%if (proceeding[3] == 'null') {%>
+																	<%= proceeding[1] %>
+																<%} else {%>
+																	<a href="<%= proceeding[3] %>" target="blank"> <%= proceeding[1] %> </a>
+																<%}%>
+	
+																<span class="pull-right Tìtulo">(Tìtulo)</span>
+															</h4>
+															<p class="summary">Autores:
 																	<% for (author of proceeding[2]){%>
 																		<span><%= author %>;</span>
 																	<%}%>
-																</p>
-																<p class="summary">Alunos Envolvidos:
-																	<% for (student of proceeding[4]){%>
-																		<span><%= student %>;</span>
-																	<%}%>
-																</p>
-															</div>
+															</p>
+															<p class="summary">Alunos Envolvidos:
+																<% for (student of proceeding[4]){%>
+																	<span><%= student %>;</span>
+																<%}%>
+															</p>
 														</div>
-												</td>
-											</tr>
-											<% } %>
-		
-											<% for (proceeding of proceedingsByAuthor){%>
-												<tr data-status="Autor">
-													<td>
-														<div class="ckbox">
-															<input type="checkbox" id="checkbox1">
-															<label for="checkbox1"></label>
-														</div>
-													</td>
-													<td>
-															<div class="col-sm-4">
-															</div>
-			
-															<div class="media">
-																<a href="#" class="pull-left">
-																	<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-																</a>
-																<div class="media-body">
-																	<span class="media-meta pull-right">Febrero 13, 2016</span>
-																	<h4 class="title">
-																		<%if (proceeding[3] == 'null') {%>
-																			<%= proceeding[1] %>
-																		<%} else {%>
-																			<a href="<%= proceeding[3] %>" target="blank"> <%= proceeding[1] %> </a>
-																		<%}%>
-			
-																		<span class="pull-right Tìtulo">(Tìtulo)</span>
-																	</h4>
-																	<p class="summary">Autores:
-																		<% for (author of proceeding[2]){%>
-																			<span><%= author %>;</span>
-																		<%}%>
-																	</p>
-																	<p class="summary">Alunos Envolvidos:
-																		<% for (student of proceeding[4]){%>
-																			<span><%= student %>;</span>
-																		<%}%>
-																	</p>
-																</div>
-															</div>
-													</td>
-												</tr>
-												<% } %>
-		
-												<% for (proceeding of proceedingsByStudents){%>
-												<tr data-status="Aluno">
-													<td>
-														<div class="ckbox">
-															<input type="checkbox" id="checkbox1">
-															<label for="checkbox1"></label>
-														</div>
-													</td>
-													<td>
-															<div class="col-sm-4">
-															</div>
-			
-															<div class="media">
-																<a href="#" class="pull-left">
-																	<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-																</a>
-																<div class="media-body">
-																	<span class="media-meta pull-right">Febrero 13, 2016</span>
-																	<h4 class="title">
-																		<%if (proceeding[3] == 'null') {%>
-																			<%= proceeding[1] %>
-																		<%} else {%>
-																			<a href="<%= proceeding[3] %>" target="blank"> <%= proceeding[1] %> </a>
-																		<%}%>
-			
-																		<span class="pull-right Tìtulo">(Tìtulo)</span>
-																	</h4>
-																	<p class="summary">Autores:
-																			<% for (author of proceeding[2]){%>
-																				<span><%= author %>;</span>
-																			<%}%>
-																	</p>
-																	<p class="summary">Alunos Envolvidos:
-																		<% for (student of proceeding[4]){%>
-																			<span><%= student %>;</span>
-																		<%}%>
-																	</p>
-																</div>
-															</div>
-													</td>
-												</tr>
-												<% } %>
-										</tbody>
-									</table>
-								</div>
-							</div>
+													</div>
+											</td>
+										</tr>
+										<% } %>
+								</tbody>
+							</table>
 						</div>
-					</div>
-				</section>
+				</div>
+				<div class="card-footer text-muted">
+					2 days ago
+				</div>
 			</div>
-    
+
           	<!-- FOOTER -->
 			<footer class="container">
 				<p class="float-right"><a href="#">Voltar ao topo</a></p>
