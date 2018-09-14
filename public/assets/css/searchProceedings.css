@@ -1,3 +1,9 @@
+/* 
+    :: Includes
+*/
+
+@import url("http://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css");
+
 /*    --------------------------------------------------
 	:: General
 	-------------------------------------------------- */
@@ -80,14 +86,16 @@
     .ckbox input[type="checkbox"]:checked + label:before {
         border-color: #2BBCDE;
         background-color: #2BBCDE;
+        font-family: FontAwesome;
+        display: inline-block;
     }
     .ckbox input[type="checkbox"]:checked + label:after {
-        top: 3px;
+        top: 0px;
         left: 3.5px;
-        content: '\e013';
+        content: '✔';
         color: #fff;
-        font-size: 11px;
-        font-family: 'Glyphicons Halflings';
+        font-size: 15px;
+        font-family: FontAwesome;
         position: absolute;
     }
     .table-filter .star {
