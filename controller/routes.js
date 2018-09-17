@@ -443,45 +443,52 @@ router.post('/search', function(req, res) {
 		
 		searchValue = '%' + searchValue + '%'; // Apenas escapa as aspas simples
 
-		if(req.body.chkProceedings)
+		if(req.body.chkProceedings && req.body.chkResearchs)
 		{
-			functions.getProceedingsByItsNameTeacherOrStudents(searchValue).then(function(result)
-			{
-				functions.getTeacherInfoByItsName(searchValue).then(function(cloud)
-				{
-					tagCloud.tagCloud(cloud, function (data)
-					{
-						res.render('pages/searchProceedings', { proceedingsByName: result[0][0], proceedingsByAuthor: result[1][0], proceedingsByStudents: result[2][0], cloud: data } );
-					},
-					{
-						classPrefix: 'btn tag tag',
-						randomize: true,
-						numBuckets: 5,
-						htmlTag: 'a',
-						additionalAttributes: {href: vars.config.url +'/teacher={{tag}}'}
-					});
-				}).catch((err) => setImmediate(() => { throw err; }));
-			}).catch((err) => setImmediate(() => { throw err; }));
+			console.log("cai");
 		}
-		if(req.body.chkResearchs)
+		else
 		{
-			functions.getResearchsByItsNameTeacherOrStudents(searchValue).then(function(result)
+			if(req.body.chkProceedings)
 			{
-				functions.getTeacherInfoByItsName(searchValue).then(function(cloud)
+				functions.getProceedingsByItsNameTeacherOrStudents(searchValue).then(function(result)
 				{
-					tagCloud.tagCloud(cloud, function (data)
+					functions.getTeacherInfoByItsName(searchValue).then(function(cloud)
 					{
-						res.render('pages/searchProceedings', { proceedingsByName: result[0][0], proceedingsByAuthor: result[1][0], proceedingsByStudents: result[2][0], cloud: data } );
-					},
-					{
-						classPrefix: 'btn tag tag',
-						randomize: true,
-						numBuckets: 5,
-						htmlTag: 'a',
-						additionalAttributes: {href: vars.config.url +'/teacher={{tag}}'}
-					});
+						tagCloud.tagCloud(cloud, function (data)
+						{
+							res.render('pages/searchProceedings', { proceedingsByName: result[0][0], proceedingsByAuthor: result[1][0], proceedingsByStudents: result[2][0], cloud: data } );
+						},
+						{
+							classPrefix: 'btn tag tag',
+							randomize: true,
+							numBuckets: 5,
+							htmlTag: 'a',
+							additionalAttributes: {href: vars.config.url +'/teacher={{tag}}'}
+						});
+					}).catch((err) => setImmediate(() => { throw err; }));
 				}).catch((err) => setImmediate(() => { throw err; }));
-			}).catch((err) => setImmediate(() => { throw err; }));
+			}
+			if(req.body.chkResearchs)
+			{
+				functions.getResearchsByItsNameTeacherOrStudents(searchValue).then(function(result)
+				{
+					functions.getTeacherInfoByItsName(searchValue).then(function(cloud)
+					{
+						tagCloud.tagCloud(cloud, function (data)
+						{
+							res.render('pages/searchProceedings', { proceedingsByName: result[0][0], proceedingsByAuthor: result[1][0], proceedingsByStudents: result[2][0], cloud: data } );
+						},
+						{
+							classPrefix: 'btn tag tag',
+							randomize: true,
+							numBuckets: 5,
+							htmlTag: 'a',
+							additionalAttributes: {href: vars.config.url +'/teacher={{tag}}'}
+						});
+					}).catch((err) => setImmediate(() => { throw err; }));
+				}).catch((err) => setImmediate(() => { throw err; }));
+			}
 		}
 	}
 	catch(err)
