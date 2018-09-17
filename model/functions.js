@@ -1,6 +1,83 @@
 var vars = require('./variables.js');
 
 var functions = {
+	getResearchsByItsNameTeacherOrStudents: function(toSearchValue)
+	{
+		var treatedResults = [];
+		var queryGetResearchsByTitle = "SELECT idProjeto AS researchCode FROM projeto WHERE nomeProjeto LIKE '" + toSearchValue + "'";
+		var queryGetResearchsByTeachers = "SELECT P.idProjeto AS researchCode, nomeProjeto AS researchName, nomeServidor AS researchAuthor FROM projeto P JOIN servidor_participa_projeto SP ON SP.idProjeto = P.idProjeto JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.nomeServidor LIKE '" + toSearchValue + "'";
+		var queryGetResearchsByStudents = "SELECT P.idProjeto AS researchCode FROM projeto P JOIN aluno_participa_projeto AP ON AP.idProjeto = P.idProjeto JOIN aluno A ON A.matriculaAluno = AP.matriculaAluno WHERE A.nomeAluno LIKE '" + toSearchValue + "'";
+		var sql = queryGetResearchsByTitle + ";" + queryGetResearchsByTeachers + ";" + queryGetResearchsByStudents;
+
+		try
+		{
+			return new Promise(function(resolve)
+			{
+				vars.con.query(sql, [1, 2, 3], function (err, results)
+				{
+					if(err)
+					{
+						return Promise.reject(err);
+					}
+
+					//Trata cada resultado obtido
+					//Trata a busca por nome de publicação
+					var ResearchsByName = [];
+					var promises = [];
+					results[0].forEach(function(result)
+					{
+						var researchCode = result["researchCode"];
+						const promise = functions.getResearchWorkInfo(researchCode);
+						promises.push(promise);
+					});
+
+					//Trata cada resultado obtido
+					//Trata a busca por nome de autor
+					Promise.all(promises).then(Researchs =>
+					{
+						ResearchsByName.push(Researchs);
+						treatedResults.push(ResearchsByName);
+						
+						var ResearchsByAuthor = [];
+						promises = [];
+						results[1].forEach(function(result)
+						{
+							var researchCode = result["researchCode"];
+							const promise = functions.getResearchWorkInfo(researchCode);
+							promises.push(promise);
+						});
+						//Trata cada resultado obtido
+						//Trata a busca por nome de aluno
+						Promise.all(promises).then(research =>
+						{
+							ResearchsByAuthor.push(research);
+							treatedResults.push(ResearchsByAuthor);
+
+							var ResearchsByStudents = [];
+							promises = [];
+							results[2].forEach(function(result)
+							{
+								var researchCode = result["researchCode"];
+								const promise = functions.getResearchWorkInfo(researchCode);
+								promises.push(promise);
+							});
+
+							Promise.all(promises).then(research =>
+							{
+								ResearchsByStudents.push(research);
+								treatedResults.push(ResearchsByStudents);
+								resolve(treatedResults);
+							});
+						});
+					});
+				});
+			});
+		}
+		catch(e)
+		{
+			throw e;
+		}
+	},
 	getProceedingsByItsNameTeacherOrStudents: function(toSearchValue)
 	{
 		var treatedResults = [];
@@ -149,11 +226,48 @@ var functions = {
 		params: string to treat, maybe an author full name, etc
 		return: string with firts letters of each word capitalized
 	*/
-	toTitleCase: function (str) {
+	capitalizeString: function (str) {
 		return str.replace(/\w\S*/g, function(txt){
 			return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
 		});
 	},
+	/* Function to get info of a research work by it's code
+	   params: code of research work to be searched
+	   return: array containing research code, it's name and authors
+	*/
+	getResearchWorkInfo: function (researchCode)
+	{
+		const getresearchInfo = "SELECT S.nomeServidor AS researchAuthor, P.nomeProjeto AS researchName FROM servidor S JOIN servidor_participa_projeto SP ON S.siapeServidor = SP.siapeServidor JOIN projeto P ON P.idProjeto = SP.idProjeto WHERE P.idProjeto = '" + researchCode + "'";
+		const getresearchStudents = "SELECT nomeAluno AS researchStudent FROM aluno_participa_projeto AP JOIN aluno A ON AP.matriculaAluno = A.matriculaAluno JOIN projeto P ON P.idProjeto = AP.idProjeto WHERE P.idProjeto = '" + researchCode + "'";
+		const sql = getresearchInfo +";"+ getresearchStudents +";";
+		
+		return new Promise(function(resolve, reject)
+		{
+			vars.con.query(sql, [1, 2], function (err, results, fields)
+			{
+				var researchInfo = [];
+				researchInfo.push(researchCode);
+				researchInfo.push(results[0][0]["researchName"]);
+				researchInfo.push([]);
+				
+				if(results[0]["researchPath"] != null) researchInfo.push(results[0]["researchPath"]);
+				else researchInfo.push('null');
+				results[0].forEach(function(result)
+				{
+					var researchAuthor = functions.capitalizeString(result["researchAuthor"]);
+					researchInfo[2].push(researchAuthor);
+				});
+
+				// Itera entre os alunos envolvidos
+				researchInfo.push([]);
+				results[1].forEach(function(student)
+				{
+					researchInfo[4].push(student["researchStudent"]);
+				});
+				resolve(researchInfo);
+			});
+        });
+    },
     /* Function to get info of a proceeding by it's code
 	   params: code of proceeding to be searched
 	   return: array containing proceeding code, it's name and authors
@@ -177,7 +291,7 @@ var functions = {
 				else proceedingInfo.push('null');
 				results[0].forEach(function(result)
 				{
-					var proceedingAuthor = functions.toTitleCase(result["proceedingAuthor"]);
+					var proceedingAuthor = functions.capitalizeString(result["proceedingAuthor"]);
 					proceedingInfo[2].push(proceedingAuthor);
 				});
 
