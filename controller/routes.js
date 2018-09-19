@@ -252,7 +252,7 @@ router.post('/pdf', function(req, res) {
 				{
 					var certificateWorkCod = research["researchCod"];
 					
-					functions.recordGeneratedCertificate(certificatedPersonCod, certificateWorkCod).then(function(result)
+					functions.generateCertificate(certificatedPersonCod, certificateWorkCod).then(function(generatedCertificateHash)
 					{
 						doc.image('public/certificados/modelos/modelo1.jpg',
 						{
@@ -283,8 +283,9 @@ router.post('/pdf', function(req, res) {
 						certificateFinalData.setMonth(date[1]);
 						certificateFinalData.setFullYear(date[2]);
 						
-						var certificateMessage = "Declaro para os devidos fins que o/a discente " + certificatedPersonName + " de matrícula SIAPE " + certificatedPersonCod + " atuou como " + certificatedPersonFunction.toLowerCase() + " no projeto de pesquisa '" + certificatedWork + "	' aprovado no Edital " + certificateEdictNumber + "/" + certificateEdictYear + " do Instituto Federal de Minas Gerais campus Sabará, com período de vigência de " +  vars.monthNames[certificateInitialData.getMonth()-1] + " de " + certificateInitialData.getFullYear() + " à " + vars.monthNames[certificateFinalData.getMonth()-1] + " de " + certificateFinalData.getFullYear() + ".";						
-						
+						var certificateMessage = "Declaro para os devidos fins que o/a discente " + certificatedPersonName + " de matrícula SIAPE " + certificatedPersonCod + " atuou como " + certificatedPersonFunction.toLowerCase() + " no projeto de pesquisa '" + certificatedWork + "	' aprovado no Edital " + certificateEdictNumber + "/" + certificateEdictYear + " do Instituto Federal de Minas Gerais campus Sabará, com período de vigência de " +  vars.monthNames[certificateInitialData.getMonth()-1] + " de " + certificateInitialData.getFullYear() + " à " + vars.monthNames[certificateFinalData.getMonth()-1] + " de " + certificateFinalData.getFullYear() + ".";
+						// functions.getCertificateHash(certificatedPersonCod, certificateWorkCod);
+
 						doc.text(certificateMessage,280,350,
 						{
 							align: 'justify',
@@ -292,14 +293,20 @@ router.post('/pdf', function(req, res) {
 						});
 
 						var currentDate = new Date();
-						var certificateDate = "Gerado em: " + currentDate.getDate() + "/" + parseInt(currentDate.getMonth()+1) + "/" + currentDate.getFullYear() + " às " + currentDate.getHours() + "h" + currentDate.getMinutes();
+						var certificateDate = "Gerado em: " + currentDate.getDate() + "/" + parseInt(currentDate.getMonth()+1) + "/" + currentDate.getFullYear() + " às " + currentDate.getHours() + "h" + (currentDate.getMinutes()<10?'0':'') + currentDate.getMinutes();
+						var hashGenerated = "Código de Validação: " + generatedCertificateHash;
 
 						doc.fontSize(15);
-						doc.text(certificateDate, 800,690,
+						doc.text(certificateDate, 550,690,
 						{
 							align: 'justify'
 						});
 						
+						doc.text(hashGenerated, 800, 690,
+						{
+							align: 'justify'
+						});
+
 						if(index != results.length-1) doc.addPage();
 						else
 						{

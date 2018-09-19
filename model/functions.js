@@ -192,19 +192,79 @@ var functions = {
 			throw e;
 		}
 	},
-	recordGeneratedCertificate: function(certificatedPersonCod, certificateWorkCod)
-	{
-		var sql = "INSERT INTO certificados (siapeServidor, idProjeto) VALUES (" + certificatedPersonCod + "," + "'" + certificateWorkCod + "')";
 
+	/*
+		This function runs queries in database in order to verify if already exists a certificate previously generated
+		params: int with teacher unique code, string with unique research work code
+		return: certificate hash if it exists and false if don't
+	*/
+	certificateExists: function(certificatedPersonCod, certificateWorkCod)
+	{
+		console.log("entra");
+		var sql = "SELECT hashCertificado AS certificateHash FROM certificados WHERE siapeServidor = " + certificatedPersonCod + " AND idProjeto = '" + certificateWorkCod + "'";
+		
 		return new Promise(function(resolve, reject)
 		{
-			vars.con.query(sql, function (err, results)
+			console.log(sql);
+
+			vars.con.query(sql, function(err, results)
 			{
-				if(err && err.message.substring(0,err.message.indexOf(' ')) != 'ER_BAD_NULL_ERROR:') reject(err);
-				resolve(results);
+				console.log("cai33");
+				if(err) reject(err);
+				else
+				{
+					if(results) resolve(results[0].certificateHash);
+					else resolve(false);
+				}
 			});
 		});
 	},
+
+	/*
+		Function to generate teacher certificate
+		params: int with teacher unique code, string with unique research work code
+		return: generated certificate hash
+	*/
+	generateCertificate: function(certificatedPersonCod, certificateWorkCod)
+	{
+		functions.certificateExists(certificatedPersonCod, certificateWorkCod).then(function(certificateHash)
+		{
+			console.log("cai1");
+			var sql = "INSERT INTO certificados (siapeServidor, idProjeto) VALUES (" + certificatedPersonCod + "," + "'" + certificateWorkCod + "')";
+			
+			if(!certificateHash)
+			{
+				return new Promise(function(resolve, reject)
+				{
+					vars.con.query(sql, function (err, results)
+					{
+						if(err && err.message.substring(0,err.message.indexOf(' ')) != 'ER_BAD_NULL_ERROR:') reject(err);
+						else
+						{
+							sql = "SELECT hashCertificado AS certificateHash FROM certificados WHERE idCertificado = " + results.insertId;
+							
+							vars.con.query(sql, function(err, results)
+							{
+								if(err) reject(err);
+								else resolve(results[0].certificateHash);
+							});
+						}
+					});
+				});
+			}
+			else
+			{
+				resolve(certificateHash);
+			}
+		}).catch((err) => setImmediate(() => { throw err; }));
+	},
+
+	/*
+		This function verify the years range that a teacher had been active with research works, by teacher name
+		params: string containing teacher name
+		return: inte array containing the start years of research works relative to given teacher, undefined if
+		teacher have zero research works
+	*/
 	getYearsAvailableByTeacher: function(teacherName)
 	{
 		var sql1 = "SELECT siapeServidor FROM servidor WHERE nomeServidor = '" + teacherName + "';";	
