@@ -200,21 +200,21 @@ var functions = {
 	*/
 	certificateExists: function(certificatedPersonCod, certificateWorkCod)
 	{
-		console.log("entra");
 		var sql = "SELECT hashCertificado AS certificateHash FROM certificados WHERE siapeServidor = " + certificatedPersonCod + " AND idProjeto = '" + certificateWorkCod + "'";
 		
 		return new Promise(function(resolve, reject)
 		{
-			console.log(sql);
 
 			vars.con.query(sql, function(err, results)
 			{
-				console.log("cai33");
 				if(err) reject(err);
 				else
 				{
-					if(results) resolve(results[0].certificateHash);
-					else resolve(false);
+					if(results[0]) resolve(results[0].certificateHash);
+					else
+					{
+						resolve(false);
+					}
 				}
 			});
 		});
@@ -227,17 +227,17 @@ var functions = {
 	*/
 	generateCertificate: function(certificatedPersonCod, certificateWorkCod)
 	{
-		functions.certificateExists(certificatedPersonCod, certificateWorkCod).then(function(certificateHash)
+		return new Promise(function(resolve, reject)
 		{
-			console.log("cai1");
-			var sql = "INSERT INTO certificados (siapeServidor, idProjeto) VALUES (" + certificatedPersonCod + "," + "'" + certificateWorkCod + "')";
-			
-			if(!certificateHash)
+			functions.certificateExists(certificatedPersonCod, certificateWorkCod).then(function(certificateHash)
 			{
-				return new Promise(function(resolve, reject)
+				if(!certificateHash)
 				{
+					var sql = "INSERT INTO certificados (siapeServidor, idProjeto) VALUES (" + certificatedPersonCod + "," + "'" + certificateWorkCod + "')";
+					
 					vars.con.query(sql, function (err, results)
 					{
+						console.log(this.sql);
 						if(err && err.message.substring(0,err.message.indexOf(' ')) != 'ER_BAD_NULL_ERROR:') reject(err);
 						else
 						{
@@ -250,13 +250,13 @@ var functions = {
 							});
 						}
 					});
-				});
-			}
-			else
-			{
-				resolve(certificateHash);
-			}
-		}).catch((err) => setImmediate(() => { throw err; }));
+				}
+				else
+				{
+					resolve(certificateHash);
+				}
+			}).catch((err) => setImmediate(() => { throw err; }));
+		});
 	},
 
 	/*
