@@ -14,7 +14,7 @@
 			<link rel="stylesheet" href="/CPPG/assets/bootstrap-select-1.13.2/dist/css/bootstrap-select.min.css">
         </header>
     
-        <main role="main">
+        <main role="main" class="mt-5">
     
 			<div class="row">
 				<section class="content mx-auto my-5 text-center">
@@ -27,7 +27,7 @@
 									<div class="card-body">
 												  
 										<h4>Professor:</h4>
-										<form action="/CPPG/pdf" method="POST">
+										<form action="/CPPG/pdf" method="POST" target="_blank">
 											<div>
 												<select name="teacherInfo" class="selectpicker" id="selTeacher" data-live-search="true" title="Selecione um discente.." required>
 													<% for (teacher of teachers){%>
@@ -60,6 +60,6 @@
 		<!-- Bootstrap core JavaScript -->
 		<% include ../partials/footer %>
 		
-		<script src="/CPPG/assets/js/geraCertificado.js"></script>
+		<script type="module" src="/CPPG/assets/js/geraCertificado.js"></script>
 		<!-- Latest compiled and minified JavaScript -->
 		<script src="/CPPG/assets/bootstrap-select-1.13.2/dist/js/bootstrap-select.min.js"></script>
