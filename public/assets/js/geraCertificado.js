@@ -1,5 +1,9 @@
+import { changeActiveTabById } from '/CPPG/assets/js/navbar.js';
+
 $(document).ready(function()
 {
+    changeActiveTabById('gerarCertificado');
+
     var allOptionsAreSelected = false;
     $('#selYear').on('changed.bs.select', function(e, clickedIndex)
     {
