@@ -302,7 +302,7 @@ router.post('/pdf', function(req, res) {
 							align: 'justify'
 						});
 						
-						doc.text(hashGenerated, 800, 690,
+						doc.text(hashGenerated, 785, 690,
 						{
 							align: 'justify'
 						});
@@ -327,7 +327,32 @@ router.post('/pdf', function(req, res) {
 	}
 });
 
-router.get('/teacher=:teacherName', function(req, res) {
+router.get('/validarCertificado', function(req, res)
+{
+	res.render('pages/validarCertificado');
+});
+
+router.post('/validateCertificate', function(req, res)
+{
+	var certificateHash = req.body.certificateHash;
+	
+	try
+	{
+		functions.validateCertificateByHash(certificateHash).then(function(isValid)
+		{
+			if(isValid) res.send(true);
+			else res.send(false);
+		}).catch((err) => setImmediate(() => { throw err; }));
+	}
+	catch(err)
+	{
+		throw err;
+	}
+	
+});
+
+router.get('/teacher=:teacherName', function(req, res)
+{
 	var teacherName = req.params.teacherName;
 
 	try

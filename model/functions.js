@@ -237,7 +237,6 @@ var functions = {
 					
 					vars.con.query(sql, function (err, results)
 					{
-						console.log(this.sql);
 						if(err && err.message.substring(0,err.message.indexOf(' ')) != 'ER_BAD_NULL_ERROR:') reject(err);
 						else
 						{
@@ -256,6 +255,26 @@ var functions = {
 					resolve(certificateHash);
 				}
 			}).catch((err) => setImmediate(() => { throw err; }));
+		});
+	},
+
+	/*
+		This function validates a certificate by a hash
+		params: string containing hash to be verified
+		return: true if it is valid, and false instead
+	*/
+	validateCertificateByHash: function(certificateHash)
+	{
+		var sql = "SELECT hashCertificado AS isValid FROM certificados WHERE EXISTS(SELECT hashCertificado FROM certificados WHERE hashCertificado = '" + certificateHash + "') AND hashCertificado = '" + certificateHash + "'";
+
+		return new Promise(function(resolve, reject)
+		{
+			vars.con.query(sql, function(err, result)
+			{
+				if(err) reject(err);
+				if(result[0] != undefined) resolve(true);
+				else resolve(false);
+			});
 		});
 	},
 

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <% include ../partials/head %>
+    </head>
+      <body>
+    
+        <header>
+			<% include ../partials/navbar %>
+        </header>
+    
+        <main role="main" class="mt-5">
+    
+			<div class="row">
+				<section class="content mx-auto my-5 text-center">
+					<br>
+					<div>
+							<div class="card">
+								<div class="card-header">
+										<h5 class="card-title">Validar um certificado</h5>
+								</div>
+								<div class="card-body">
+												
+									<h4>Insira o código do certificado abaixo:</h4>
+									<form id="validateCertificateForm" action="/CPPG/validateCertificate" method="POST" class="pt-4">
+										<div class="input-group mb-3">
+											<input name="certificateHash" type="text" class="form-control" placeholder="Digite aqui o código a ser validado" aria-label="Código do Certificado" aria-describedby="basic-addon1" required>
+										</div>
+										<button type="submit" class="btn btn-default navbar-btn my-3">Validar</button>
+									</form>
+								
+								<p id="validCertificate" class="text-center d-none">Certificado válido!</p>
+								<p id="invalidCertificate" class="text-center d-none">Certificado inválido!</p>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+			</div>
+
+			<!-- MODAL USADO PARA MOSTRAR RESPOSTA DA VALIDAÇÃO -->
+			<div class="modal fade" tabindex="-1" role="dialog" id="validationResultsModal">
+				<div class="modal-dialog modal-dialog-centered" role="document">
+					<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Validação de Certificado</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+					</div>
+					</div>
+				</div>
+			</div>
+    
+			<!-- FOOTER -->
+			<footer class="container">
+			<p class="float-right"><a href="#">Voltar ao topo</a></p>
+			<p>© 2018 IFMG Campus Sabará</p>
+			</footer>
+        </main>
+	
+		<!-- Bootstrap core JavaScript -->
+		<% include ../partials/footer %>
+		<script type="module" src="assets/js/validarCertificado.js"></script>
