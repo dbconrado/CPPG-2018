@@ -7,8 +7,15 @@ var sort = require('srtr');
 var vars = require('../model/variables.js');
 var functions = require('../model/functions.js');
 var fs = require('fs');
+var ejsLint = require('ejs-lint');
 
-router.get('/indicadores', function(req, res){
+router.get('/', function(req, res)
+{
+	res.render('pages/index-novo');
+});
+
+router.get('/indicadores', function(req, res)
+{
 	try
 	{
 		if(vars.con.state === 'disconnected'){
@@ -169,11 +176,9 @@ router.get('/indicadores', function(req, res){
 		});
 	}
 });
-router.get('/', function(req, res){
-	res.render('pages/index-novo');
-});
 
-router.all('/gerarCertificado', function(req, res){
+router.all('/gerarCertificado', function(req, res)
+{
 	if(req.body["teacherInfo"])
 	{
 		try
@@ -220,7 +225,8 @@ router.all('/gerarCertificado', function(req, res){
 	}
 });
 
-router.post('/pdf', function(req, res) {
+router.post('/pdf', function(req, res)
+{
 	try
 	{
 		var PDF = require('pdfkit');
@@ -408,7 +414,8 @@ router.get('/teacher=:teacherName', function(req, res)
 	}
 });
 
-router.get('/keyword=:word', function(req, res) {
+router.get('/keyword=:word', function(req, res)
+{
 	var keyword = req.params.word;
 	functions.getProceedingCodeByKeyword(keyword).then(function(proceedingsCodes)
 	{
@@ -426,7 +433,8 @@ router.get('/keyword=:word', function(req, res) {
 	}).catch((err) => setImmediate(() => { throw err; }));;
 });
 
-router.post('/antigo-search', function(req, res) {
+router.post('/antigo-search', function(req, res)
+{
 	var searchValue = req.body.searchValue;
 	try
 	{
@@ -445,7 +453,7 @@ router.post('/antigo-search', function(req, res) {
 			{
 				tagCloud.tagCloud(cloud, function (data)
 				{
-					res.render('searchProceedings', { proceedingsByName: result[0][0], proceedingsByAuthor: result[1][0], proceedingsByStudents: result[2][0], cloud: data } );
+					res.render('searchProceedings', { resultsByName: result[0][0], resultsByAuthor: result[1][0], resultsByStudentsInvolved: result[2][0], cloud: data } );
 				},
 				{
 					classPrefix: 'btn tag tag',
@@ -462,13 +470,15 @@ router.post('/antigo-search', function(req, res) {
 		throw err;
 	}
 });
-router.post('/search', function(req, res) {
+router.post('/search', function(req, res)
+{
 	var searchValue = req.body.searchValue;
 	try
 	{
 		if(vars.con.state === 'disconnected')
 		{
-			vars.con.connect(function(err) {
+			vars.con.connect(function(err)
+			{
 				if (err) throw err;
 			});
 		}
@@ -477,19 +487,27 @@ router.post('/search', function(req, res) {
 
 		if(req.body.chkProceedings && req.body.chkResearchs)
 		{
-			console.log("cai");
+			functions.getProceedingsByItsNameTeacherOrStudents(searchValue).then(function(proceedings)
+			{
+				functions.getResearchsByItsNameTeacherOrStudents(searchValue).then(function(researchWorks)
+				{
+					res.render('pages/searchProceedings', { chkBoxProceedings: true, chkBoxResearchWorks: true, proceedingsByName: proceedings[0][0], proceedingsByAuthor: proceedings[1][0], proceedingsByStudents: proceedings[2][0], researchWorksByName: researchWorks[0][0], researchWorksByAuthor: researchWorks[1][0], researchWorksByStudents: researchWorks[2][0]});
+
+				}).catch((err) => setImmediate(() => { throw err; }));
+			}).catch((err) => setImmediate(() => { throw err; }));
 		}
 		else
 		{
 			if(req.body.chkProceedings)
 			{
-				functions.getProceedingsByItsNameTeacherOrStudents(searchValue).then(function(result)
+				functions.getProceedingsByItsNameTeacherOrStudents(searchValue).then(function(proceedings)
 				{
 					functions.getTeacherInfoByItsName(searchValue).then(function(cloud)
 					{
 						tagCloud.tagCloud(cloud, function (data)
 						{
-							res.render('pages/searchProceedings', { proceedingsByName: result[0][0], proceedingsByAuthor: result[1][0], proceedingsByStudents: result[2][0], cloud: data } );
+							console.log(cloud);
+							res.render('pages/searchProceedings', { chkBoxProceedings: true, chkBoxResearchWorks: false, proceedingsByName: proceedings[0][0], proceedingsByAuthor: proceedings[1][0], proceedingsByStudents: proceedings[2][0], cloud: data});
 						},
 						{
 							classPrefix: 'btn tag tag',
@@ -503,13 +521,13 @@ router.post('/search', function(req, res) {
 			}
 			if(req.body.chkResearchs)
 			{
-				functions.getResearchsByItsNameTeacherOrStudents(searchValue).then(function(result)
+				functions.getResearchsByItsNameTeacherOrStudents(searchValue).then(function(researchWorks)
 				{
 					functions.getTeacherInfoByItsName(searchValue).then(function(cloud)
 					{
 						tagCloud.tagCloud(cloud, function (data)
 						{
-							res.render('pages/searchProceedings', { proceedingsByName: result[0][0], proceedingsByAuthor: result[1][0], proceedingsByStudents: result[2][0], cloud: data } );
+							res.render('pages/searchProceedings', { chkBoxProceedings: false, chkBoxResearchWorks: true, researchWorksByName: researchWorks[0][0], researchWorksByAuthor: researchWorks[1][0], researchWorksByStudents: researchWorks[2][0]});
 						},
 						{
 							classPrefix: 'btn tag tag',

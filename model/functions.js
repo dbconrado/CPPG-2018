@@ -416,8 +416,9 @@ var functions = {
 			var sql = "SELECT nomeServidor AS teacherName FROM servidor WHERE nomeServidor LIKE '" + teacherName + "' AND tipo = 'DOCENTE'";
 			return new Promise(function(resolve)
 			{
-				vars.con.query(sql, function (results)
+				vars.con.query(sql, function (err, results)
 				{
+					if(err) throw err;
 					var cloud = [];
 
 					if(results)
@@ -429,6 +430,7 @@ var functions = {
 							});
 						});
 					}
+					console.log(cloud);
 					resolve(cloud);
 				});
 			});
