@@ -462,9 +462,14 @@ router.post('/search', function(req, res) {
 				{
 					functions.getTeacherInfoByItsName(searchValue).then(function(cloud)
 					{
-						tagCloud.tagCloud(cloud, function (data)
+						tagCloud.tagCloud(cloud, function (err, data)
 						{
+<<<<<<< Updated upstream
 							res.render('pages/searchProceedings', { proceedingsByName: result[0][0], proceedingsByAuthor: result[1][0], proceedingsByStudents: result[2][0], cloud: data } );
+=======
+							if(err) throw err;
+							res.render('pages/searchProceedings', { chkBoxProceedings: true, chkBoxResearchWorks: false, proceedingsByName: proceedings[0][0], proceedingsByAuthor: proceedings[1][0], proceedingsByStudents: proceedings[2][0], cloud: data});
+>>>>>>> Stashed changes
 						},
 						{
 							classPrefix: 'btn tag tag',
