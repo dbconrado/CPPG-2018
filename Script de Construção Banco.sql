@@ -130,7 +130,7 @@ DROP TABLE IF EXISTS `certificados`;
 CREATE TABLE `certificados` (
   `siapeServidor` int(11) NOT NULL,
   `idProjeto` char(10) NOT NULL,
-  `hashCertificado` char(10) DEFAULT NULL,
+  `hashCertificado` CHAR(10) DEFAULT NULL,
   `idCertificado` int(11) NOT NULL AUTO_INCREMENT,
   `generationDate` TIMESTAMP NOT NULL,
   PRIMARY KEY (`idCertificado`),
@@ -138,7 +138,7 @@ CREATE TABLE `certificados` (
   KEY `idProjeto` (`idProjeto`),
   CONSTRAINT `certificados_ibfk_1` FOREIGN KEY (`siapeServidor`) REFERENCES `servidor` (`siapeServidor`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `certificados_ibfk_2` FOREIGN KEY (`idProjeto`) REFERENCES `projeto` (`idProjeto`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,7 +163,7 @@ FOR EACH ROW
 BEGIN
 	CALL proc_verificaSeRowExiste(NEW.siapeServidor,NEW.idProjeto,@existe);
     IF(@existe = false) THEN
-		set @hash = RIGHT(MD5(concat(NEW.siapeServidor, NEW.idCertificado)),10);
+		set @hash = MD5(CONCAT(NEW.siapeServidor,NEW.idProjeto));
 		SET NEW.hashCertificado = @hash;
 	ELSE SET NEW.siapeServidor = NULL;
 	END IF;

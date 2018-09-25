@@ -7,8 +7,15 @@ var sort = require('srtr');
 var vars = require('../model/variables.js');
 var functions = require('../model/functions.js');
 var fs = require('fs');
+var ejsLint = require('ejs-lint');
 
-router.get('/indicadores', function(req, res){
+router.get('/', function(req, res)
+{
+	res.render('pages/index-novo');
+});
+
+router.get('/indicadores', function(req, res)
+{
 	try
 	{
 		if(vars.con.state === 'disconnected'){
@@ -169,11 +176,9 @@ router.get('/indicadores', function(req, res){
 		});
 	}
 });
-router.get('/', function(req, res){
-	res.render('pages/index-novo');
-});
 
-router.all('/gerarCertificado', function(req, res){
+router.all('/gerarCertificado', function(req, res)
+{
 	if(req.body["teacherInfo"])
 	{
 		try
@@ -220,7 +225,8 @@ router.all('/gerarCertificado', function(req, res){
 	}
 });
 
-router.post('/pdf', function(req, res) {
+router.post('/pdf', function(req, res)
+{
 	try
 	{
 		var PDF = require('pdfkit');
@@ -302,7 +308,7 @@ router.post('/pdf', function(req, res) {
 							align: 'justify'
 						});
 						
-						doc.text(hashGenerated, 800, 690,
+						doc.text(hashGenerated, 785, 690,
 						{
 							align: 'justify'
 						});
@@ -327,7 +333,32 @@ router.post('/pdf', function(req, res) {
 	}
 });
 
-router.get('/teacher=:teacherName', function(req, res) {
+router.get('/validarCertificado', function(req, res)
+{
+	res.render('pages/validarCertificado');
+});
+
+router.post('/validateCertificate', function(req, res)
+{
+	var certificateHash = req.body.certificateHash;
+	
+	try
+	{
+		functions.validateCertificateByHash(certificateHash).then(function(isValid)
+		{
+			if(isValid) res.send(true);
+			else res.send(false);
+		}).catch((err) => setImmediate(() => { throw err; }));
+	}
+	catch(err)
+	{
+		throw err;
+	}
+	
+});
+
+router.get('/teacher=:teacherName', function(req, res)
+{
 	var teacherName = req.params.teacherName;
 
 	try
@@ -383,7 +414,8 @@ router.get('/teacher=:teacherName', function(req, res) {
 	}
 });
 
-router.get('/keyword=:word', function(req, res) {
+router.get('/keyword=:word', function(req, res)
+{
 	var keyword = req.params.word;
 	functions.getProceedingCodeByKeyword(keyword).then(function(proceedingsCodes)
 	{
@@ -401,7 +433,8 @@ router.get('/keyword=:word', function(req, res) {
 	}).catch((err) => setImmediate(() => { throw err; }));;
 });
 
-router.post('/antigo-search', function(req, res) {
+router.post('/antigo-search', function(req, res)
+{
 	var searchValue = req.body.searchValue;
 	try
 	{
@@ -420,7 +453,7 @@ router.post('/antigo-search', function(req, res) {
 			{
 				tagCloud.tagCloud(cloud, function (data)
 				{
-					res.render('searchProceedings', { proceedingsByName: result[0][0], proceedingsByAuthor: result[1][0], proceedingsByStudents: result[2][0], cloud: data } );
+					res.render('searchProceedings', { resultsByName: result[0][0], resultsByAuthor: result[1][0], resultsByStudentsInvolved: result[2][0], cloud: data } );
 				},
 				{
 					classPrefix: 'btn tag tag',
@@ -437,13 +470,15 @@ router.post('/antigo-search', function(req, res) {
 		throw err;
 	}
 });
-router.post('/search', function(req, res) {
+router.post('/search', function(req, res)
+{
 	var searchValue = req.body.searchValue;
 	try
 	{
 		if(vars.con.state === 'disconnected')
 		{
-			vars.con.connect(function(err) {
+			vars.con.connect(function(err)
+			{
 				if (err) throw err;
 			});
 		}
@@ -498,7 +533,7 @@ router.post('/search', function(req, res) {
 			}
 			if(req.body.chkResearchs)
 			{
-				functions.getResearchsByItsNameTeacherOrStudents(searchValue).then(function(result)
+				functions.getResearchsByItsNameTeacherOrStudents(searchValue).then(function(researchWorks)
 				{
 					functions.getTeacherInfoByItsName(searchValue).then(function(cloud)
 					{
