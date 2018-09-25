@@ -365,14 +365,16 @@ router.get('/teacher=:teacherName', function(req, res)
 	{
 		treatKeywordsForTeacher(teacherName).then(function(cloud)
 		{
-			tagCloud.tagCloud(cloud, function (data) {
-				res.render('teacherPage', { cloud: data } );
+			tagCloud.tagCloud(cloud, function (err, data) 
+			{
+				if(err) throw err;
+				res.render('pages/teacherPage', { cloud: data } );
 			}, {
 				classPrefix: 'btn tag tag',
 				randomize: false,
 				numBuckets: 5,
 				htmlTag: 'a',
-				additionalAttributes: {href: vars.config.url +'/keyword={{tag}}'}
+				additionalAttributes: {href: vars.config.url +'/keyword={{tag}}', title: ''}
 			});
 		}).catch((err) => setImmediate(() => { throw err; }));
 	}
