@@ -452,24 +452,39 @@ router.post('/search', function(req, res) {
 
 		if(req.body.chkProceedings && req.body.chkResearchs)
 		{
-			console.log("cai");
+			functions.getProceedingsByItsNameTeacherOrStudents(searchValue).then(function(proceedings)
+			{
+				functions.getResearchsByItsNameTeacherOrStudents(searchValue).then(function(researchWorks)
+				{
+					functions.getTeacherInfoByItsName(searchValue).then(function(cloud)
+					{
+						tagCloud.tagCloud(cloud, function (err , data)
+						{
+							res.render('pages/searchProceedings', { chkBoxProceedings: true, chkBoxResearchWorks: true, proceedingsByName: proceedings[0][0], proceedingsByAuthor: proceedings[1][0], proceedingsByStudents: proceedings[2][0], researchWorksByName: researchWorks[0][0], researchWorksByAuthor: researchWorks[1][0], researchWorksByStudents: researchWorks[2][0], cloud: data});
+						},
+						{
+							classPrefix: 'btn tag tag',
+							randomize: true,
+							numBuckets: 5,
+							htmlTag: 'a',
+							additionalAttributes: {href: vars.config.url +'/teacher={{tag}}'}
+						});
+					}).catch((err) => setImmediate(() => { throw err; }));
+				}).catch((err) => setImmediate(() => { throw err; }));
+			}).catch((err) => setImmediate(() => { throw err; }));
 		}
 		else
 		{
 			if(req.body.chkProceedings)
 			{
-				functions.getProceedingsByItsNameTeacherOrStudents(searchValue).then(function(result)
+				functions.getProceedingsByItsNameTeacherOrStudents(searchValue).then(function(proceedings)
 				{
 					functions.getTeacherInfoByItsName(searchValue).then(function(cloud)
 					{
-						tagCloud.tagCloud(cloud, function (err, data)
+						tagCloud.tagCloud(cloud, function (err , data)
 						{
-<<<<<<< Updated upstream
-							res.render('pages/searchProceedings', { proceedingsByName: result[0][0], proceedingsByAuthor: result[1][0], proceedingsByStudents: result[2][0], cloud: data } );
-=======
 							if(err) throw err;
 							res.render('pages/searchProceedings', { chkBoxProceedings: true, chkBoxResearchWorks: false, proceedingsByName: proceedings[0][0], proceedingsByAuthor: proceedings[1][0], proceedingsByStudents: proceedings[2][0], cloud: data});
->>>>>>> Stashed changes
 						},
 						{
 							classPrefix: 'btn tag tag',
@@ -487,9 +502,10 @@ router.post('/search', function(req, res) {
 				{
 					functions.getTeacherInfoByItsName(searchValue).then(function(cloud)
 					{
-						tagCloud.tagCloud(cloud, function (data)
+						tagCloud.tagCloud(cloud, function (err , data)
 						{
-							res.render('pages/searchProceedings', { proceedingsByName: result[0][0], proceedingsByAuthor: result[1][0], proceedingsByStudents: result[2][0], cloud: data } );
+							if(err) throw err;
+							res.render('pages/searchProceedings', { chkBoxProceedings: false, chkBoxResearchWorks: true, researchWorksByName: researchWorks[0][0], researchWorksByAuthor: researchWorks[1][0], researchWorksByStudents: researchWorks[2][0], cloud: data});
 						},
 						{
 							classPrefix: 'btn tag tag',
