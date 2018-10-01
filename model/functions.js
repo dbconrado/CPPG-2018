@@ -353,7 +353,7 @@ var functions = {
 	*/
 	getProceedingInfo: function (proceedingCode)
 	{
-		const getProceedingInfo = "SELECT S.nomeServidor AS proceedingAuthor, P.nomePublicacao AS proceedingName, URN_ArtigoCompleto AS proceedingPath FROM servidor S JOIN servidor_publica SP ON S.siapeServidor = SP.siapeServidor JOIN publicacao P ON P.codPublicacao = SP.codPublicacao WHERE P.codPublicacao = " + proceedingCode + "";
+		const getProceedingInfo = "SELECT S.nomeServidor AS proceedingAuthor, P.nomePublicacao AS proceedingName, P.URN_ArtigoCompleto AS proceedingPath FROM servidor S JOIN servidor_publica SP ON S.siapeServidor = SP.siapeServidor JOIN publicacao P ON P.codPublicacao = SP.codPublicacao WHERE P.codPublicacao = " + proceedingCode + "";
 		const getProceedingStudents = "SELECT nomeAluno AS proceedingStudent FROM aluno_publica AP JOIN aluno A ON AP.matriculaAluno = A.matriculaAluno JOIN publicacao P ON P.codPublicacao = AP.codPublicacao WHERE P.codPublicacao = " + proceedingCode + "";
 		const sql = getProceedingInfo +";"+ getProceedingStudents +";";
 		
@@ -366,7 +366,7 @@ var functions = {
 				proceedingInfo.push(results[0][0]["proceedingName"]);
 				proceedingInfo.push([]);
 				
-				if(results[0]["proceedingPath"] != null) proceedingInfo.push(results[0]["proceedingPath"]);
+				if(results[0][0]["proceedingPath"] != null) proceedingInfo.push(results[0][0]["proceedingPath"]);
 				else proceedingInfo.push('null');
 				results[0].forEach(function(result)
 				{
