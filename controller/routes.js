@@ -357,6 +357,24 @@ router.post('/validateCertificate', function(req, res)
 	
 });
 
+router.get('/projetos', function(req, res)
+{
+	functions.getResearchWorksCodes().then(function(researchWorksCodes)
+	{
+		var promises = [];
+		researchWorksCodes.forEach(function(code)
+		{
+			const promise = functions.getResearchWorkInfoByItsCode(code.researchCode);
+			promises.push(promise);
+		});
+
+		Promise.all(promises).then(researchWorks =>
+		{
+			res.render('pages/researchWorks', { researchWorks: researchWorks[0][0]});
+		});
+	}).catch((err) => setImmediate(() => { throw err; }));
+});
+
 router.get('/teacher=:teacherName', function(req, res)
 {
 	var teacherName = req.params.teacherName;

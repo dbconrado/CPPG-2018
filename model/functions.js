@@ -27,7 +27,7 @@ var functions = {
 					results[0].forEach(function(result)
 					{
 						var researchCode = result["researchCode"];
-						const promise = functions.getResearchWorkInfo(researchCode);
+						const promise = functions.getResearchWorkInfoByItsCode(researchCode);
 						promises.push(promise);
 					});
 
@@ -43,7 +43,7 @@ var functions = {
 						results[1].forEach(function(result)
 						{
 							var researchCode = result["researchCode"];
-							const promise = functions.getResearchWorkInfo(researchCode);
+							const promise = functions.getResearchWorkInfoByItsCode(researchCode);
 							promises.push(promise);
 						});
 						//Trata cada resultado obtido
@@ -58,7 +58,7 @@ var functions = {
 							results[2].forEach(function(result)
 							{
 								var researchCode = result["researchCode"];
-								const promise = functions.getResearchWorkInfo(researchCode);
+								const promise = functions.getResearchWorkInfoByItsCode(researchCode);
 								promises.push(promise);
 							});
 
@@ -310,11 +310,29 @@ var functions = {
 			return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();
 		});
 	},
+	/* Function to get all research works codes
+	   params: none
+	   return: array containing all research works codes
+	*/
+	getResearchWorksCodes: function()
+	{
+		const sql = "SELECT idProjeto AS researchCode FROM projeto";
+
+		return new Promise(function(resolve,reject)
+		{
+			vars.con.query(sql, function(err, results)
+			{
+				if(err) reject(err);
+				resolve(results);
+			});
+		});
+	},
 	/* Function to get info of a research work by it's code
 	   params: code of research work to be searched
-	   return: array containing research code, it's name and authors
+	   return: array containing research code, it's name,
+	   authors and students involveds
 	*/
-	getResearchWorkInfo: function (researchCode)
+	getResearchWorkInfoByItsCode: function (researchCode)
 	{
 		const getresearchInfo = "SELECT S.nomeServidor AS researchAuthor, P.nomeProjeto AS researchName FROM servidor S JOIN servidor_participa_projeto SP ON S.siapeServidor = SP.siapeServidor JOIN projeto P ON P.idProjeto = SP.idProjeto WHERE P.idProjeto = '" + researchCode + "'";
 		const getresearchStudents = "SELECT nomeAluno AS researchStudent FROM aluno_participa_projeto AP JOIN aluno A ON AP.matriculaAluno = A.matriculaAluno JOIN projeto P ON P.idProjeto = AP.idProjeto WHERE P.idProjeto = '" + researchCode + "'";
@@ -324,9 +342,11 @@ var functions = {
 		{
 			vars.con.query(sql, [1, 2], function (err, results, fields)
 			{
+				if(err) reject(err);
 				var researchInfo = [];
 				researchInfo.push(researchCode);
-				researchInfo.push(results[0][0]["researchName"]);
+				
+				if(results[0][0] != undefined) researchInfo.push(results[0][0]["researchName"]);
 				researchInfo.push([]);
 				
 				if(results[0]["researchPath"] != null) researchInfo.push(results[0]["researchPath"]);
@@ -430,7 +450,6 @@ var functions = {
 							});
 						});
 					}
-					console.log(cloud);
 					resolve(cloud);
 				});
 			});
