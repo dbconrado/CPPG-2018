@@ -370,7 +370,7 @@ router.get('/projetos', function(req, res)
 
 		Promise.all(promises).then(researchWorks =>
 		{
-			res.render('pages/researchWorks', { researchWorks: researchWorks[0][0]});
+			res.render('pages/researchWorks', { researchWorks: researchWorks});
 		});
 	}).catch((err) => setImmediate(() => { throw err; }));
 });

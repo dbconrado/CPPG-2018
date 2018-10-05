@@ -316,7 +316,7 @@ var functions = {
 	*/
 	getResearchWorksCodes: function()
 	{
-		const sql = "SELECT idProjeto AS researchCode FROM projeto";
+		const sql = "SELECT idProjeto AS researchCode FROM projeto ORDER BY nomeProjeto ASC";
 
 		return new Promise(function(resolve,reject)
 		{
@@ -334,7 +334,7 @@ var functions = {
 	*/
 	getResearchWorkInfoByItsCode: function (researchCode)
 	{
-		const getresearchInfo = "SELECT S.nomeServidor AS researchAuthor, P.nomeProjeto AS researchName FROM servidor S JOIN servidor_participa_projeto SP ON S.siapeServidor = SP.siapeServidor JOIN projeto P ON P.idProjeto = SP.idProjeto WHERE P.idProjeto = '" + researchCode + "'";
+		const getresearchInfo = "SELECT S.nomeServidor AS researchAuthor, P.nomeProjeto AS researchName, P.dataInicio AS initialDate, P.dataTermino AS finalData FROM servidor S JOIN servidor_participa_projeto SP ON S.siapeServidor = SP.siapeServidor JOIN projeto P ON P.idProjeto = SP.idProjeto WHERE P.idProjeto = '" + researchCode + "'";
 		const getresearchStudents = "SELECT nomeAluno AS researchStudent FROM aluno_participa_projeto AP JOIN aluno A ON AP.matriculaAluno = A.matriculaAluno JOIN projeto P ON P.idProjeto = AP.idProjeto WHERE P.idProjeto = '" + researchCode + "'";
 		const sql = getresearchInfo +";"+ getresearchStudents +";";
 		
@@ -348,11 +348,9 @@ var functions = {
 				
 				if(results[0][0] != undefined) researchInfo.push(results[0][0]["researchName"]);
 				researchInfo.push([]);
-				
-				if(results[0]["researchPath"] != null) researchInfo.push(results[0]["researchPath"]);
-				else researchInfo.push('null');
 				results[0].forEach(function(result)
 				{
+					console.log(result["researchName"]);
 					var researchAuthor = functions.capitalizeString(result["researchAuthor"]);
 					researchInfo[2].push(researchAuthor);
 				});
@@ -361,7 +359,7 @@ var functions = {
 				researchInfo.push([]);
 				results[1].forEach(function(student)
 				{
-					researchInfo[4].push(student["researchStudent"]);
+					researchInfo[3].push(student["researchStudent"]);
 				});
 				resolve(researchInfo);
 			});

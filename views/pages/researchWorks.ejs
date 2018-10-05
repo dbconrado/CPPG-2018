@@ -49,23 +49,22 @@
 													</a>
 													<div class="media-body">
 														<span class="media-meta float-right">Febrero 13, 2016</span>
+														
 														<h4 class="title">
-															<%if (researchWork[3] == 'null') {%>
-																<%= researchWork[1] %>
-															<%} else {%>
-																<a href="<%= researchWork[3] %>" target="blank"> <%= researchWork[1] %> </a>
-															<%}%>
-
+															<%= researchWork[1] %>
 															<span class="pull-right Tìtulo">(Tìtulo)</span>
 														</h4>
+
 														<p class="summary">Autores:
 															<% for (author of researchWork[2]){%>
 																<span><%= author %>;</span>
 															<%}%>
 														</p>
 														<p class="summary">Alunos Envolvidos:
-															<% for (student of researchWork[4]){%>
-																<span><%= student %>;</span>
+															<% if (researchWork[3] != [] && researchWork[3] != undefined) { %>
+																<% for (student of researchWork[3]) {%>
+																	<span><%= student %>;</span>
+																<%}%>
 															<%}%>
 														</p>
 													</div>
