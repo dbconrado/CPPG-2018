@@ -559,6 +559,7 @@ router.post('/search', function(req, res)
 					{
 						tagCloud.tagCloud(cloud, function (err , data)
 						{
+							console.log(researchWorks[0][0]);
 							if(err) throw err;
 							res.render('pages/searchProceedings', { chkBoxProceedings: false, chkBoxResearchWorks: true, researchWorksByName: researchWorks[0][0], researchWorksByAuthor: researchWorks[1][0], researchWorksByStudents: researchWorks[2][0], cloud: data});
 						},
@@ -580,7 +581,10 @@ router.post('/search', function(req, res)
 	}
 });
 
-
+router.get('/grupos-de-pesquisa', function(req, res)
+{
+	// res.render('/')
+});
 
 router.get('/pub-discentes/compilados/2014-2016.pdf', function(res) {
 	res.sendFile(path.resolve(__dirname + '/../public/publicacoes-discentes/compilados/2014-2016.pdf'), function(err, html) {
