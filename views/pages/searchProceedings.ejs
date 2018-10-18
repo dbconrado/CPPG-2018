@@ -50,74 +50,32 @@
 							<div class="table-container text-left">
 								<table class="table table-filter">
 									<tbody>
-										<% for (proceeding of proceedingsByName){%>
-										<tr data-status="Tìtulo">
-											<td class="text-center mx-auto">
-												<div class="ckbox m-auto d-block">
-													<input type="checkbox" id="checkbox1">
-													<label for="checkbox1"></label>
-												</div
-											</td>
-											<td>
-													<div class="col-sm-4">
-													</div>
-
-													<div class="media d-block">
-														<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
-															<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-														</a>
-														<div class="media-body">
-															<span class="media-meta float-right">Febrero 13, 2016</span>
-															<h4 class="title">
-																<%if (proceeding[3] == 'null') {%>
-																	<%= proceeding[1] %>
-																<%} else {%>
-																	<a href="<%= proceeding[3] %>" target="blank"> <%= proceeding[1] %> </a>
-																<%}%>
-
-																<span class="pull-right Tìtulo">(Tìtulo)</span>
-															</h4>
-															<p class="summary">Autores:
-																<% for (author of proceeding[2]){%>
-																	<span><%= author %>;</span>
-																<%}%>
-															</p>
-															<p class="summary">Alunos Envolvidos:
-																<% for (student of proceeding[4]){%>
-																	<span><%= student %>;</span>
-																<%}%>
-															</p>
-														</div>
-													</div>
-											</td>
-										</tr>
-										<% } %>
-
-										<% for (proceeding of proceedingsByAuthor){%>
-											<tr data-status="Autor">
-												<td>
-													<div class="ckbox">
+										<% if (proceedingsByName){%>
+											<% for (proceeding of proceedingsByName){%>
+											<tr data-status="Tìtulo">
+												<td class="text-center mx-auto">
+													<div class="ckbox m-auto d-block">
 														<input type="checkbox" id="checkbox1">
 														<label for="checkbox1"></label>
-													</div>
+													</div
 												</td>
 												<td>
 														<div class="col-sm-4">
 														</div>
-		
-														<div class="media">
-															<a href="#" class="pull-left">
+
+														<div class="media d-block">
+															<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
 																<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
 															</a>
 															<div class="media-body">
-																<span class="media-meta pull-right">Febrero 13, 2016</span>
+																<span class="media-meta float-right">Febrero 13, 2016</span>
 																<h4 class="title">
 																	<%if (proceeding[3] == 'null') {%>
 																		<%= proceeding[1] %>
 																	<%} else {%>
 																		<a href="<%= proceeding[3] %>" target="blank"> <%= proceeding[1] %> </a>
 																	<%}%>
-		
+
 																	<span class="pull-right Tìtulo">(Tìtulo)</span>
 																</h4>
 																<p class="summary">Autores:
@@ -135,9 +93,11 @@
 												</td>
 											</tr>
 											<% } %>
+										<% } %>
 
-											<% for (proceeding of proceedingsByStudents){%>
-												<tr data-status="Aluno">
+										<% if (proceedingsByAuthor){%>
+											<% for (proceeding of proceedingsByAuthor){%>
+												<tr data-status="Autor">
 													<td>
 														<div class="ckbox">
 															<input type="checkbox" id="checkbox1">
@@ -164,9 +124,9 @@
 																		<span class="pull-right Tìtulo">(Tìtulo)</span>
 																	</h4>
 																	<p class="summary">Autores:
-																			<% for (author of proceeding[2]){%>
-																				<span><%= author %>;</span>
-																			<%}%>
+																		<% for (author of proceeding[2]){%>
+																			<span><%= author %>;</span>
+																		<%}%>
 																	</p>
 																	<p class="summary">Alunos Envolvidos:
 																		<% for (student of proceeding[4]){%>
@@ -177,6 +137,52 @@
 															</div>
 													</td>
 												</tr>
+												<% } %>
+											<% } %>
+
+											<% if (proceedingsByStudents){%>
+												<% for (proceeding of proceedingsByStudents){%>
+													<tr data-status="Aluno">
+														<td>
+															<div class="ckbox">
+																<input type="checkbox" id="checkbox1">
+																<label for="checkbox1"></label>
+															</div>
+														</td>
+														<td>
+																<div class="col-sm-4">
+																</div>
+				
+																<div class="media">
+																	<a href="#" class="pull-left">
+																		<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
+																	</a>
+																	<div class="media-body">
+																		<span class="media-meta pull-right">Febrero 13, 2016</span>
+																		<h4 class="title">
+																			<%if (proceeding[3] == 'null') {%>
+																				<%= proceeding[1] %>
+																			<%} else {%>
+																				<a href="<%= proceeding[3] %>" target="blank"> <%= proceeding[1] %> </a>
+																			<%}%>
+				
+																			<span class="pull-right Tìtulo">(Tìtulo)</span>
+																		</h4>
+																		<p class="summary">Autores:
+																				<% for (author of proceeding[2]){%>
+																					<span><%= author %>;</span>
+																				<%}%>
+																		</p>
+																		<p class="summary">Alunos Envolvidos:
+																			<% for (student of proceeding[4]){%>
+																				<span><%= student %>;</span>
+																			<%}%>
+																		</p>
+																	</div>
+																</div>
+														</td>
+													</tr>
+												<% } %>
 											<% } %>
 									</tbody>
 								</table>
@@ -205,60 +211,57 @@
 							<div class="table-container text-left">
 								<table class="table table-filter">
 									<tbody>
-										<% for (researchWork of researchWorksByName){%>
-											<tr data-status="Tìtulo">
-												<td class="text-center mx-auto">
-													<div class="ckbox m-auto d-block">
-														<input type="checkbox" id="checkbox1">
-														<label for="checkbox1"></label>
-													</div
-												</td>
-												<td>
-														<div class="col-sm-4">
-														</div>
-	
-														<div class="media d-block">
-															<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
-																<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-															</a>
-															<div class="media-body">
-																<span class="media-meta float-right">Febrero 13, 2016</span>
-																<h4 class="title">
-																	<%if (researchWork[3] == 'null') {%>
-																		<%= researchWork[1] %>
-																	<%} else {%>
-																		<a href="<%= researchWork[3] %>" target="blank"> <%= researchWork[1] %> </a>
-																	<%}%>
-	
-																	<span class="pull-right Tìtulo">(Tìtulo)</span>
-																</h4>
-																<p class="summary">Autores:
-																	<% for (author of researchWork[2]){%>
-																		<span><%= author %>;</span>
-																	<%}%>
-																</p>
-																<p class="summary">Alunos Envolvidos:
-																	<% for (student of researchWork[4]){%>
-																		<span><%= student %>;</span>
-																	<%}%>
-																</p>
+										<% if (researchWorksByName){%>
+											<% for (researchWork of researchWorksByName){%>
+												<tr data-status="Tìtulo">
+													<td class="text-center mx-auto">
+														<div class="ckbox m-auto d-block">
+															<input type="checkbox" id="checkbox1">
+															<label for="checkbox1"></label>
+														</div
+													</td>
+													<td>
+															<div class="col-sm-4">
 															</div>
-														</div>
-												</td>
-											</tr>
+		
+															<div class="media d-block">
+																<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
+																	<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
+																</a>
+																<div class="media-body">
+																	<span class="media-meta float-right">Febrero 13, 2016</span>
+																	<h4 class="title">
+																		<%= researchWork[1] %>
+																		<span class="pull-right Tìtulo">(Tìtulo)</span>
+																	</h4>
+																	<p class="summary">Autores:
+																		<% for (author of researchWork[2]){%>
+																			<span><%= author %>;</span>
+																		<%}%>
+																	</p>
+																	<p class="summary">Alunos Envolvidos:
+																		<% for (student of researchWork[3]){%>
+																			<span><%= student %>;</span>
+																		<%}%>
+																	</p>
+																</div>
+															</div>
+													</td>
+												</tr>
+											<% } %>
 										<% } %>
 
-										<% for (researchWork of researchWorksByAuthor){%>
-											<tr data-status="Autor">
-												<td>
-													<div class="ckbox">
-														<input type="checkbox" id="checkbox1">
-														<label for="checkbox1"></label>
-													</div>
-												</td>
-												<td>
-														<div class="col-sm-4">
+										<% if (researchWorksByAuthor){%>
+											<% for (researchWork of researchWorksByAuthor){%>
+												<tr data-status="Autor">
+													<td>
+														<div class="ckbox">
+															<input type="checkbox" id="checkbox1">
+															<label for="checkbox1"></label>
 														</div>
+													</td>
+													<td>
+														<div class="col-sm-4"></div>
 		
 														<div class="media">
 															<a href="#" class="pull-left">
@@ -267,12 +270,7 @@
 															<div class="media-body">
 																<span class="media-meta pull-right">Febrero 13, 2016</span>
 																<h4 class="title">
-																	<%if (researchWork[3] == 'null') {%>
-																		<%= researchWork[1] %>
-																	<%} else {%>
-																		<a href="<%= researchWork[3] %>" target="blank"> <%= researchWork[1] %> </a>
-																	<%}%>
-		
+																	<%= researchWork[1] %>
 																	<span class="pull-right Tìtulo">(Tìtulo)</span>
 																</h4>
 																<p class="summary">Autores:
@@ -281,54 +279,57 @@
 																	<%}%>
 																</p>
 																<p class="summary">Alunos Envolvidos:
-																	<% for (student of researchWork[4]){%>
-																		<span><%= student %>;</span>
+																	<%if (researchWork[3]) {%>
+																		<% for (student of researchWork[3]){%>
+																			<span><%= student %>;</span>
+																		<%}%>
 																	<%}%>
 																</p>
 															</div>
 														</div>
-												</td>
-											</tr>
+													</td>
+												</tr>
+											<% } %>
 										<% } %>
 
-										<% for (researchWork of researchWorksByStudents){%>
-											<tr data-status="Aluno">
-												<td>
-													<div class="ckbox">
-														<input type="checkbox" id="checkbox1">
-														<label for="checkbox1"></label>
-													</div>
-												</td>
-												<td>			
-													<div class="media">
-														<a href="#" class="pull-left">
-															<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-														</a>
-														<div class="media-body">
-															<span class="media-meta pull-right">Febrero 13, 2016</span>
-															<h4 class="title">
-																<%if (researchWork[3] == 'null') {%>
-																	<%= researchWork[1] %>
-																<%} else {%>
-																	<a href="<%= researchWork[3] %>" target="blank"> <%= researchWork[1] %> </a>
-																<%}%>
-	
-																<span class="pull-right Tìtulo">(Tìtulo)</span>
-															</h4>
-															<p class="summary">Autores:
-																	<% for (author of researchWork[2]){%>
-																		<span><%= author %>;</span>
-																	<%}%>
-															</p>
-															<p class="summary">Alunos Envolvidos:
-																<% for (student of researchWork[4]){%>
-																	<span><%= student %>;</span>
-																<%}%>
-															</p>
+										<% if (researchWorksByStudents){%>
+											<% for (researchWork of researchWorksByStudents){%>
+												<tr data-status="Aluno">
+													<td>
+														<div class="ckbox">
+															<input type="checkbox" id="checkbox1">
+															<label for="checkbox1"></label>
 														</div>
-													</div>
-												</td>
-											</tr>
+													</td>
+													<td>			
+														<div class="media">
+															<a href="#" class="pull-left">
+																<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
+															</a>
+															<div class="media-body">
+																<span class="media-meta pull-right">Febrero 13, 2016</span>
+																<h4 class="title">
+																	<%= researchWork[1] %>
+		
+																	<span class="pull-right Tìtulo">(Tìtulo)</span>
+																</h4>
+																<p class="summary">Autores:
+																		<% for (author of researchWork[2]){%>
+																			<span><%= author %>;</span>
+																		<%}%>
+																</p>
+																<p class="summary">Alunos Envolvidos:
+																	<%if (researchWork[3]) {%>
+																		<% for (student of researchWork[3]){%>
+																			<span><%= student %>;</span>
+																		<%}%>
+																	<%}%>
+																</p>
+															</div>
+														</div>
+													</td>
+												</tr>
+											<% } %>
 										<% } %>
 									</tbody>
 								</table>

@@ -559,7 +559,6 @@ router.post('/search', function(req, res)
 					{
 						tagCloud.tagCloud(cloud, function (err , data)
 						{
-							console.log(researchWorks[0]);
 							if(err) throw err;
 							res.render('pages/searchProceedings', { chkBoxProceedings: false, chkBoxResearchWorks: true, researchWorksByName: researchWorks[0][0], researchWorksByAuthor: researchWorks[1][0], researchWorksByStudents: researchWorks[2][0], cloud: data});
 						},
