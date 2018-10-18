@@ -350,7 +350,6 @@ var functions = {
 				researchInfo.push([]);
 				results[0].forEach(function(result)
 				{
-					console.log(result["researchName"]);
 					var researchAuthor = functions.capitalizeString(result["researchAuthor"]);
 					researchInfo[2].push(researchAuthor);
 				});
