@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <% include ../partials/head %>
+    </head>
+      <body>
+    
+        <header>
+			<% include ../partials/navbar %>
+			
+			<link rel="stylesheet" href="/CPPG/assets/css/geraCertificado.css">
+			
+			<!-- Latest compiled and minified CSS -->
+			<link rel="stylesheet" href="assets/gallery-assets/css/blueimp-gallery.min.css">
+        </header>
+    
+        <main role="main" class="mt-5">
+    
+			<div class="row">
+				<section class="content mx-auto my-5 text-center">
+					<br>
+					<div>
+							<div class="card">
+									<div class="card-header">
+											<h5 class="card-title">Galeria de fotos e vídeos</h5>
+									</div>
+									<div class="card-body">
+												  
+										<!-- The Gallery as lightbox dialog, should be a child element of the document body -->
+										<div id="blueimp-gallery" class="blueimp-gallery">
+											<div class="slides"></div>
+											<h3 class="title"></h3>
+											<a class="prev">‹</a>
+											<a class="next">›</a>
+											<a class="close">×</a>
+											<a class="play-pause"></a>
+											<ol class="indicator"></ol>
+										</div>
+
+										<div id="links">
+											<a href="assets/gallery-assets/img/1.jpg" title="Banana">
+												<img src="assets/gallery-assets/img/1.jpg" alt="Banana">
+											</a>
+										</div>
+									</div>
+								  </div>
+						</div>
+					</div>
+				</section>
+			</div>    
+    
+			<!-- FOOTER -->
+			<footer class="container">
+			<p class="float-right"><a href="#">Voltar ao topo</a></p>
+			<p>© 2018 IFMG Campus Sabará</p>
+			</footer>
+        </main>
+	
+		<!-- Bootstrap core JavaScript -->
+		<% include ../partials/footer %>
+		<script src="assets/gallery-assets/js/blueimp-gallery.min.js"></script>
+		<script>
+			document.getElementById('links').onclick = function (event) {
+				event = event || window.event;
+				var target = event.target || event.srcElement,
+					link = target.src ? target.parentNode : target,
+					options = {index: link, event: event},
+					links = this.getElementsByTagName('a');
+				blueimp.Gallery(links, options);
+			};
+			</script>

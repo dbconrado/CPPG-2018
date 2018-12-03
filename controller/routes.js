@@ -490,6 +490,12 @@ router.post('/antigo-search', function(req, res)
 		throw err;
 	}
 });
+
+router.get('/galeria', function(req,res)
+{
+	res.render("pages/galeria");
+});
+
 router.post('/search', function(req, res)
 {
 	var searchValue = req.body.searchValue;
