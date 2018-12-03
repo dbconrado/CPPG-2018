@@ -7,7 +7,7 @@
 - No momento da validação, incluir informações nome completo do professor, hora de geração do certificado, SIAPE, e ao que
     se refere (nome do projeto), e um captcha (reCaptcha).
 - Form para mandar imagens de fundo para a chamada, que mudam periodicamente.
-- Diminuir placehold do campo de pesquisa
-- Reenviar tabela com projetos que faltam datass
+v Diminuir placehold do campo de pesquisa
+v Reenviar tabela com projetos que faltam datas
 - Painél de notícias na página inicial, entre a chamada e as notícias atuais.
 - New 3 vira "Fotos"
