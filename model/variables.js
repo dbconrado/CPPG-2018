@@ -1,6 +1,7 @@
 var env = process.env.NODE_ENV || 'production';
 var config = require('../model/config')[env];
 var mysql = require('mysql');
+var fs = require('fs');
 var con = mysql.createConnection({
 	host: config.database.host,
 	user: config.database.user,
@@ -15,5 +16,6 @@ const monthNames = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
 module.exports = {
 		con: con,
 		config: config,
-		monthNames: monthNames
+		monthNames: monthNames,
+		fs: fs
 }

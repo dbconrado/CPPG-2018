@@ -487,6 +487,18 @@ var functions = {
                 }
 			});
         });
+   },
+   getGalleryImagesInfo: function()
+   {
+	   images = [];
+		vars.fs.readdir('./public/assets/gallery/album/', (err, files) =>
+		{
+			files.forEach(file =>
+			{
+				images.push(file);
+			});
+			return images;
+		})
    }
 };
   module.exports = functions;
