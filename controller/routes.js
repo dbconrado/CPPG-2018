@@ -495,7 +495,7 @@ router.get('/galeria', function(req,res)
 {
 	functions.getGalleryImagesNames().then(function(imageNames)
 	{
-		res.render("pages/galeria", { imagePaths: imageNames});
+		res.render("pages/galeria", { images: imageNames});
 	}).catch((err) => setImmediate(() => { throw err; }));
 });
 
