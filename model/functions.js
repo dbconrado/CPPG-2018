@@ -488,7 +488,7 @@ var functions = {
 			});
         });
    },
-   getGalleryImagesInfo: function()
+   getGalleryImagesNames: function()
    {
 	   images = [];
 	   return new Promise(function(resolve)
