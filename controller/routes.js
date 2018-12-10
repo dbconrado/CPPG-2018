@@ -493,9 +493,12 @@ router.post('/antigo-search', function(req, res)
 
 router.get('/galeria', function(req,res)
 {
-	var images = functions.getGalleryImagesInfo();
-	console.log(images);
-	res.render("pages/galeria");
+	functions.getGalleryImagesNames().then(function(proceedings)
+	{
+		console.log("2");
+		console.log(images);
+		res.render("pages/galeria");
+	}).catch((err) => setImmediate(() => { throw err; }));
 });
 
 router.post('/search', function(req, res)

@@ -491,14 +491,20 @@ var functions = {
    getGalleryImagesInfo: function()
    {
 	   images = [];
-		vars.fs.readdir('./public/assets/gallery/album/', (err, files) =>
+	   return new Promise(function(resolve)
 		{
-			files.forEach(file =>
+			vars.fs.readdir('./public/assets/gallery/album/', (err, files) =>
 			{
-				images.push(file);
-			});
-			return images;
-		})
+				if(err) reject(err);
+				
+				files.forEach(file =>
+				{
+					images.push(file);
+				});
+				
+				resolve(images);
+			})
+		});
    }
 };
   module.exports = functions;
