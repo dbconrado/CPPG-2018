@@ -1,7 +1,7 @@
-- Edital linkar para suap.ifmg.edu.br/pesquisa/editais
+v Edital linkar para suap.ifmg.edu.br/pesquisa/editais
 
 
-"Você será redirecionado ao Suap, se conecte com seu usuário do 'Meu IFMG' e senha. Prosseguir botão"
+Mensagem ao usuário que logar: "Você será redirecionado ao Suap, se conecte com seu usuário do 'Meu IFMG' e senha. Prosseguir botão"
 
 - Adicionar link para validação no próprio certificado
 - No momento da validação, incluir informações nome completo do professor, hora de geração do certificado, SIAPE, e ao que
@@ -9,6 +9,6 @@
 - Form para mandar imagens de fundo para a chamada, que mudam periodicamente.
 v Diminuir placehold do campo de pesquisa
 v Reenviar tabela com projetos que faltam datas
-- Painél de notícias na página inicial, entre a chamada e as notícias atuais.
+v Painél de notícias na página inicial, entre a chamada e as notícias atuais.
 v New 3 vira "Fotos"
 v Implementar galeria de fotos e vídeos
