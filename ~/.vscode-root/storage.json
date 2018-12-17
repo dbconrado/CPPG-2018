@@ -5,29 +5,25 @@
     "windowsState": {
         "openedWindows": [],
         "lastActiveWindow": {
-            "folderUri": {
-                "$mid": 1,
-                "fsPath": "/home/jose/CPPG-2018",
-                "external": "file:///home/jose/CPPG-2018",
-                "path": "/home/jose/CPPG-2018",
-                "scheme": "file"
-            },
-            "backupPath": "/home/jose/CPPG-2018/~/.vscode-root/Backups/9d9ba022d9a47e611a46621253ec6d90",
+            "backupPath": "/home/ifmg/CPPG-2018/~/.vscode-root/Backups/1545062153481",
             "uiState": {
                 "mode": 0,
                 "x": 67,
-                "y": 55,
+                "y": 27,
                 "width": 1853,
-                "height": 1025
+                "height": 1053
             }
         }
     },
-    "pickerWorkingDir": "/home/jose",
+    "pickerWorkingDir": "/home/ifmg",
     "openedPathsList": {
         "workspaces2": [
-            "file:///home/jose/CPPG-2018"
+            "file:///home/ifmg/CPPG-2018"
         ],
-        "files2": []
+        "files2": [
+            "file:///home/ifmg/%C3%81rea%20de%20Trabalho/colorlib-error-404-10/colorlib-error-404-10/css/style.css",
+            "file:///home/ifmg/%C3%81rea%20de%20Trabalho/colorlib-error-404-10/colorlib-error-404-10/index.html"
+        ]
     },
     "lastKnownMenubarData": {
         "menus": {

@@ -508,7 +508,7 @@ router.post('/search', function(req, res)
 		{
 			vars.con.connect(function(err)
 			{
-				if (err) throw err;CPPG
+				if (err) throw err;
 			});
 		}
 		
