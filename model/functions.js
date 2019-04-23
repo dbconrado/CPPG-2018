@@ -518,7 +518,7 @@ var functions = {
 		});
 	});
    },
-   getCispPrestationPerCode: function(codePresentation)
+   getCispPrestationCode: function(codePresentation)
    {
 	   const sql = "SELECT * FROM apresentacao_cisp WHERE id = " + codePresentation + ";";
 	   return new Promise(function(resolve,reject)

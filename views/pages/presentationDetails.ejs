@@ -1,39 +1,55 @@
 <!DOCTYPE <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <% include ../partials/head %>
+    <link rel="stylesheet" href="/CPPG/assets/css/presentationDetails.css" />
 </head>
-<body class="pt-5">
+
+<body class="pt-5 text-center">
     <header class="mt-5">
         <% include ../partials/navbar %>
     </header>
-    <main role="main" class="container">
-        <h1 class="text-center mt-2">presentation['titulo']</h1>
-        <h3 class="mb-0">presentation['autor']</h3>
-        <div class="mb-1 text-muted">
-                <% var now = presentation['data']; %>
-                <% var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-                <%= now.toLocaleDateString('en-GB',options); %> <br>
-                <%= now.toLocaleTimeString(); %> <br>
-                <%= presentation['local']; %>
-        </div>
-        <h2 class="featurette-heading my-2">Resumo da Apresentação</h2>
-        <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Harum iure possimus reprehenderit minima nemo tempora ut aut neque quas, enim quos recusandae sapiente, laborum, nesciunt nobis impedit ipsum quibusdam voluptates!</p>
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Dolores reiciendis commodi nihil, laudantium iure a inventore recusandae excepturi, totam adipisci animi. Nobis atque iste ullam nihil non, quod nam inventore.</p>
-        <h2 class="featurette-heading my-2">Sobre o(a) Apresentador(a)</h2>
-        <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Non, possimus ipsam? Aspernatur debitis nobis placeat ipsa itaque adipisci cumque, quis aliquam inventore velit voluptatibus possimus quaerat dicta consectetur sed eligendi.</p>
-        <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Quis nisi quo corrupti ullam consequuntur ipsam recusandae, incidunt similique minima unde aspernatur earum eum voluptate, fugit dignissimos tempora blanditiis perspiciatis debitis?</p>
+    <% for (presentation of presentations) { %>
+        <main role="main" class="container">
+            
+                <h3 class="pb-4 mb-4 font-italic border-bottom">
+                    <%=presentation['titulo']%>
+                </h3>
 
-        <!--FOOTER-->
-        <footer class="container">
-                <p class="float-right">
-                  <a href="#">Voltar ao topo</a>
-                </p>
-                <p>© 2018 IFMG Campus Sabará</p>
-        </footer>
+                <div class="blog-post">
+                        <img src="/CPPG/assets/images/2cisp.jpg" class="rounded float-right" width="200px" height="250px" alt="foto do autor(a)">
+                    <div>
+                    <h2 class="blog-post-title"><%=presentation['apresentador']%></h2>
+                    <p class="blog-post-meta"><% var now = presentation['data']; %>
+                        <% var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+                        <%= now.toLocaleDateString('en-GB',options); %> <br>
+                        <%= now.toLocaleTimeString(); %> <br>
+                        <%= presentation['local']; %>
+                    </p>
+                </div>
+                    <hr>
+                    <h2>Resumo da Apresentação</h2>
+                    <p><%= presentation['resumo']; %></p>
+                    <hr>
+                    <h2>Sobre o(a) Apresentador(a)</h2>
+                    <p><%= presentation['sobre_apresentador']; %></p>
+                </div>
+                <!-- /.blog-post -->
 
-    </main>    
+            
+            <% } %>
+                <!--FOOTER-->
+                <footer class="container">
+                    <p class="float-right">
+                        <a href="#">Voltar ao topo</a>
+                    </p>
+                    <p>© 2018 IFMG Campus Sabará</p>
+                </footer>
+
+        </main>
 </body>
+
 </html>

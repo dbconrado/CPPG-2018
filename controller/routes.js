@@ -621,10 +621,13 @@ router.get('/cisp', function(req, res)
 	}).catch((err) => setImmediate(() => { throw err; }));
 });
 
-router.get('/cisp_presentation:=codPresentation', function(req,res)
+router.get('/cisp/:codPresentation', function(req,res)
 {
- 	functions.getCispPrestationPerCode(codPresentation).then(function(results){
-		 res.render('pages/presentationDetails', {presentation: result});
-	 });
+	var id = req.params.codPresentation;
+	 functions.getCispPrestationCode(id).then(function(result)
+	 {
+		//  res.send(result);
+		 res.render('pages/presentationDetails', { presentations: result });
+	 }).catch((err) => setImmediate(() => { throw err; }));
 });
 module.exports = router;
