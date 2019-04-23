@@ -620,4 +620,11 @@ router.get('/cisp', function(req, res)
 		res.render('pages/cisp', { presentations: presentations});
 	}).catch((err) => setImmediate(() => { throw err; }));
 });
+
+router.get('/cisp_presentation:=codPresentation', function(req,res)
+{
+ 	functions.getCispPrestationPerCode(codPresentation).then(function(results){
+		 res.render('pages/presentationDetails', {presentation: result});
+	 });
+});
 module.exports = router;

@@ -517,6 +517,18 @@ var functions = {
 			resolve(results);
 		});
 	});
+   },
+   getCispPrestationPerCode: function(codePresentation)
+   {
+	   const sql = "SELECT * FROM apresentacao_cisp WHERE id = " + codePresentation + ";";
+	   return new Promise(function(resolve,reject)
+	{
+		vars.con.query(sql, function(err, results)
+		{
+			if(err) reject(err);
+			resolve(results);
+		});
+	});
    }
 };
   module.exports = functions;
