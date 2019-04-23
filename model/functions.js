@@ -505,6 +505,18 @@ var functions = {
 				resolve(images);
 			})
 		});
+   },
+   getCispNextPresentations: function()
+   {
+	const sql = "SELECT * FROM apresentacao_cisp";
+	return new Promise(function(resolve,reject)
+	{
+		vars.con.query(sql, function(err, results)
+		{
+			if(err) reject(err);
+			resolve(results);
+		});
+	});
    }
 };
   module.exports = functions;

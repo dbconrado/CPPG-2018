@@ -607,4 +607,17 @@ router.get('/pub-discentes/compilados/2014-2016.pdf', function(res) {
 		}
 	});
 });
+router.get('/cisp', function(req, res)
+{
+	var presentations = [];
+	functions.getCispNextPresentations().then(function(results)
+	{
+		results.forEach(function(result)
+		{
+			presentations.push(result);
+			console.log(result);
+		});
+		res.render('pages/cisp', { presentations: presentations});
+	}).catch((err) => setImmediate(() => { throw err; }));
+});
 module.exports = router;
