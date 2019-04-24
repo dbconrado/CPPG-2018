@@ -7,7 +7,7 @@ var functions = {
 		var queryGetResearchsByTitle = "SELECT idProjeto AS researchCode FROM projeto WHERE nomeProjeto LIKE '" + toSearchValue + "'";
 		var queryGetResearchsByTeachers = "SELECT P.idProjeto AS researchCode, nomeProjeto AS researchName, nomeServidor AS researchAuthor FROM projeto P JOIN servidor_participa_projeto SP ON SP.idProjeto = P.idProjeto JOIN servidor S ON S.siapeServidor = SP.siapeServidor WHERE S.nomeServidor LIKE '" + toSearchValue + "'";
 		var queryGetResearchsByStudents = "SELECT P.idProjeto AS researchCode FROM projeto P JOIN aluno_participa_projeto AP ON AP.idProjeto = P.idProjeto JOIN aluno A ON A.matriculaAluno = AP.matriculaAluno WHERE A.nomeAluno LIKE '" + toSearchValue + "'";
-		var sql = queryGetResearchsByTitle + ";" + queryGetResearchsByTeachers + ";" + queryGetResearchsByStudents;
+		var sql = queryGetResearchsByTitle + ";" + queryGetResearchsByTeachers + ";" + queryGetResearchsByStudents + ";";
 
 		try
 		{

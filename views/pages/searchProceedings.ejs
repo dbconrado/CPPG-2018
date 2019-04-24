@@ -13,6 +13,8 @@
     
 		<main role="main" class="container">
 
+
+
 				<div class="card text-center">
 						<div class="card-header">
 							<h3>Professores</h3>
@@ -274,20 +276,17 @@
 																	<span class="pull-right Tìtulo">(Tìtulo)</span>
 																</h4>
 																<p class="summary">Autores:
-																	<% for (author of researchWork[2]){%>
-																		<span><%= author %>;</span>
+																	<% if (researchWork[2] != [] && researchWork[2] != undefined) { %>
+																		<% for (author of researchWork[2]){%>
+																			<span><%= author %>;</span>
+																		<%}%>
 																	<%}%>
 																</p>
 																<p class="summary">Alunos Envolvidos:
-<<<<<<< HEAD
-																	<% for (student of researchWork[3]){%>
-																		<span><%= student %>;</span>
-=======
-																	<%if (researchWork[3]) {%>
+																	<% if (researchWork[3] != [] && researchWork[3] != undefined) { %>
 																		<% for (student of researchWork[3]){%>
 																			<span><%= student %>;</span>
 																		<%}%>
->>>>>>> research-works-info-page
 																	<%}%>
 																</p>
 															</div>

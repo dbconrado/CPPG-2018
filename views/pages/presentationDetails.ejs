@@ -5,51 +5,95 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <% include ../partials/head %>
-    <link rel="stylesheet" href="/CPPG/assets/css/presentationDetails.css" />
+        <link rel="stylesheet" href="/CPPG/assets/css/presentationDetails.css" />
 </head>
 
 <body class="pt-5 text-center">
     <header class="mt-5">
         <% include ../partials/navbar %>
     </header>
-    <% for (presentation of presentations) { %>
-        <main role="main" class="container">
-            
-                <h3 class="pb-4 mb-4 font-italic border-bottom">
-                    <%=presentation['titulo']%>
-                </h3>
 
-                <div class="blog-post">
-                        <img src="/CPPG/assets/images/2cisp.jpg" class="rounded float-right" width="200px" height="250px" alt="foto do autor(a)">
-                    <div>
-                    <h2 class="blog-post-title"><%=presentation['apresentador']%></h2>
-                    <p class="blog-post-meta"><% var now = presentation['data']; %>
-                        <% var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-                        <%= now.toLocaleDateString('en-GB',options); %> <br>
-                        <%= now.toLocaleTimeString(); %> <br>
-                        <%= presentation['local']; %>
+    <main role="main" class="container" id="main">
+        <% for (presentation of presentations) { %>
+            <h3 class="pb-4 mb-4 font-italic border-bottom">
+                <%=presentation['titulo']%>
+            </h3>
+
+            <div class="blog-post">
+                <div class="container">
+                    <img src="/CPPG/assets/images/2cisp.jpg" class="rounded float-right" width="200px" height="250px" alt="foto do autor(a)">
+                    <h2 class="blog-post-title">
+                        <%=presentation['apresentador']%>
+                    </h2>
+                    <p class="blog-post-meta">
+                        <% var now = presentation['data']; %>
+                            <% var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+                                <%= now.toLocaleDateString('en-GB',options); %>
+                                    <br>
+                                    <%= now.toLocaleTimeString(); %>
+                                        <br>
+                                        <%= presentation['local']; %>
                     </p>
                 </div>
-                    <hr>
-                    <h2>Resumo da Apresentação</h2>
-                    <p><%= presentation['resumo']; %></p>
-                    <hr>
-                    <h2>Sobre o(a) Apresentador(a)</h2>
-                    <p><%= presentation['sobre_apresentador']; %></p>
-                </div>
-                <!-- /.blog-post -->
-
-            
-            <% } %>
+                <!-- CONTAINER -->
+                <hr>
+                <h2 class="mt-3">Resumo da Apresentação</h2>
+                <p>
+                    <%= presentation['resumo']; %>
+                </p>
+                <hr>
+                <h2 class="mt-3">Sobre o(a) Apresentador(a)</h2>
+                <p>
+                    <%= presentation['sobre_apresentador']; %>
+                </p>
+                <% if(presentation['apresentado']) { %>
+                    <div class="container">
+                        <hr>
+                        <h2 class="mt-3">Fotos da Apresentação</h2>
+                        <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+                            <ol class="carousel-indicators">
+                                <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+                                <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+                                <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+                            </ol>
+                            <div class="carousel-inner">
+                                <div class="carousel-item active">
+                                    <img class="d-block w-100" src="<%=presentation['galeria_imagens']%>photo1.jpg" alt="Primeiro slide">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="<%=presentation['galeria_imagens']%>photo2.jpg" alt="Segundo slide">
+                                </div>
+                                <div class="carousel-item">
+                                    <img class="d-block w-100" src="<%=presentation['galeria_imagens']%>photo3.jpg" alt="Terceiro slide">
+                                </div>
+                            </div>
+                            <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Anterior</span>
+                            </a>
+                            <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="sr-only">Próximo</span>
+                            </a>
+                        </div>
+                        <!--FIM CAROUSEL-->
+                    </div>
+                    <!--FIM CONTAINER-->
+                <% } %>
+            </div>
+            <!-- /.blog-post -->
+        <% } %>
                 <!--FOOTER-->
                 <footer class="container">
                     <p class="float-right">
-                        <a href="#">Voltar ao topo</a>
+                        <a href="#main">Voltar ao topo</a>
                     </p>
                     <p>© 2018 IFMG Campus Sabará</p>
                 </footer>
+    </main>
 
-        </main>
+    <!-- Bootstrap core JavaScript -->
+    <% include ../partials/footer %>
 </body>
 
 </html>

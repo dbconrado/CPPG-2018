@@ -43,22 +43,28 @@
 															<div class="media-body">
 																<span class="media-meta pull-right">Febrero 13, 2016</span>
 																<h4 class="title">
+																		<% if (proceeding[1] != [] && proceeding[1] != undefined) { %>
 																	<%if (proceeding[3] == 'null') {%>
 																		<%= proceeding[1] %>
 																	<%} else {%>
 																		<a href="<%= proceeding[3] %>" target="blank"> <%= proceeding[1] %> </a>
 																	<%}%>
+																	<%}%>
 		
 																	<span class="pull-right Tìtulo">(Tìtulo)</span>
 																</h4>
 																<p class="summary">Autores:
+																	<% if (proceeding[2] != [] && proceeding[2] != undefined) { %>
 																	<% for (author of proceeding[2]){%>
 																		<span><%= author %>;</span>
 																	<%}%>
+																	<%}%>
 																</p>
 																<p class="summary">Alunos Envolvidos:
+																		<% if (proceeding[4] != [] && proceeding[4] != undefined) { %>
 																	<% for (student of proceeding[4]){%>
 																		<span><%= student %>;</span>
+																	<%}%>
 																	<%}%>
 																</p>
 															</div>

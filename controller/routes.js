@@ -448,7 +448,7 @@ router.get('/keyword=:word', function(req, res)
 
 		Promise.all(promises).then(proceedings =>
 		{
-			res.render('keywordPage', { proceedingsByKeyword: proceedings, word: keyword } );
+			res.render('pages/keywordPage', { proceedingsByKeyword: proceedings, word: keyword } );
 		});
 	}).catch((err) => setImmediate(() => { throw err; }));;
 });
@@ -511,13 +511,13 @@ router.post('/search', function(req, res)
 				if (err) throw err;
 			});
 		}
-		
 		searchValue = '%' + searchValue + '%'; // Apenas escapa as aspas simples
 
 		if(req.body.chkProceedings && req.body.chkResearchs)
 		{
 			functions.getProceedingsByItsNameTeacherOrStudents(searchValue).then(function(proceedings)
 			{
+		
 				functions.getResearchsByItsNameTeacherOrStudents(searchValue).then(function(researchWorks)
 				{
 					functions.getTeacherInfoByItsName(searchValue).then(function(cloud)
@@ -568,7 +568,6 @@ router.post('/search', function(req, res)
 					{
 						tagCloud.tagCloud(cloud, function (err , data)
 						{
-							console.log(researchWorks[0][0]);
 							if(err) throw err;
 							res.render('pages/searchProceedings', { chkBoxProceedings: false, chkBoxResearchWorks: true, researchWorksByName: researchWorks[0][0], researchWorksByAuthor: researchWorks[1][0], researchWorksByStudents: researchWorks[2][0], cloud: data});
 						},
