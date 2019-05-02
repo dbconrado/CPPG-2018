@@ -591,7 +591,20 @@ router.post('/search', function(req, res)
 
 router.get('/grupos-de-pesquisa', function(req, res)
 {
-	// res.render('/')
+	functions.getResearchGroupsCode().then(function(researchGroupsCodes)
+	{
+		var promises = [];
+		researchGroupsCodes.forEach(function(code)
+		{
+			const promise = functions.getResearchGroupInfoByItsCode(code.researchGroupCode);
+			promises.push(promise);
+		});
+
+		Promise.all(promises).then(researchGroups =>
+		{
+			res.render('pages/researchGroups', { researchGroups: researchGroups});
+		});
+	}).catch((err) => setImmediate(() => { throw err; }));
 });
 
 router.get('/pub-discentes/compilados/2014-2016.pdf', function(res) {

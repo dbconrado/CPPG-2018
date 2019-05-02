@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <% include ../partials/head %>
+    <link rel="stylesheet" type="text/css" href="/CPPG/assets/css/searchProceedings.css">
 </head>
 
 <body class="pt-5">
@@ -22,41 +23,51 @@
                 <div class="table-container text-left">
                     <table class="table table-filter">
                         <tbody>
+                            <% for (researchGroup of researchGroups){%>
                                 <tr data-status="Tìtulo">
-                                        <td class="text-center mx-auto">
-                                            <div class="ckbox m-auto d-block">
-                                                <input type="checkbox" id="checkbox1">
-                                                <label for="checkbox1"></label>
-                                            </div>
-                                        </td>
-                                        <td>
-                                                <div class="col-sm-4">
-                                                </div>
+                                    <td class="text-center mx-auto">
+                                        <div class="ckbox m-auto d-block">
+                                            <input type="checkbox" id="checkbox1">
+                                            <label for="checkbox1"></label>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="col-sm-4">
+                                        </div>
 
-                                                <div class="media d-block">
-                                                    <a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
-                                                        <img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-                                                    </a>
-                                                    <div class="media-body">
-                                                        <span class="media-meta float-right">Febrero 13, 2016</span>
-                                                        <h4 class="title">
-                                                            Título
-                                                            <span class="pull-right Tìtulo">(Tìtulo)</span>
-                                                        </h4>
-                                                        <p class="summary">Autores:
-                                                            
-                                                                <span>Autores</span>
-                                                            
-                                                        </p>
-                                                        <p class="summary">Alunos Envolvidos:
-                                                           
-                                                                <span>Alunos</span>
-                                                            
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                        </td>
-                                    </tr>
+                                        <div class="media d-block">
+                                            <a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
+                                                <img src="/CPPG/favicon.ico" class="media-photo">
+                                            </a>
+                                            <div class="media-body">
+                                                <span class="media-meta float-right">Febrero 13, 2016</span>
+
+                                                <h4 class="title">
+                                                    <%= researchGroup[1] %>
+                                                        <span class="pull-right Tìtulo">(Título)</span>
+                                                </h4>
+
+                                                <p class="summary">Autores:
+                                                    <% if (researchGroup[2] != [] && researchGroup[2] != undefined) { %>
+                                                        <% for (author of researchGroup[2]){%>
+                                                            <span>
+                                                                <%= author %>;</span>
+                                                            <%}%>
+                                                                <%}%>
+                                                </p>
+                                                <p class="summary">Alunos Envolvidos:
+                                                    <% if (researchGroup[3] != [] && researchGroup[3] != undefined) { %>
+                                                        <% for (student of researchGroup[3]) {%>
+                                                            <span>
+                                                                <%= student %>;</span>
+                                                            <%}%>
+                                                                <%}%>
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <% } %>
                         </tbody>
                     </table>
                 </div>
