@@ -448,31 +448,36 @@ var functions = {
 	},
 
 	getResearchGroupInfoByItsCode: function (researchGroupCode) {
-		const getresearchInfo = "SELECT S.nomeServidor AS researchAuthor, G.nome AS researchName, G.data_inicio AS initialDate FROM servidor S JOIN servidor_participa_grupo SG ON S.siapeServidor = SG.siapeServidor JOIN grupo_pesquisa G ON G.id = SG.idGrupo WHERE G.id = '" + researchGroupCode + "'";
+		const getGroupInfo = "SELECT S.nomeServidor AS researchAuthor, G.nome AS researchName, G.area as area, G.data_inicio AS initialDate FROM servidor S JOIN servidor_participa_grupo SG ON S.siapeServidor = SG.siapeServidor JOIN grupo_pesquisa G ON G.id = SG.idGrupo WHERE G.id = '" + researchGroupCode + "' ";
 		const getresearchStudents = "SELECT nomeAluno AS researchStudent FROM aluno_participa_grupo AG JOIN aluno A ON AG.matriculaAluno = A.matriculaAluno JOIN grupo_pesquisa G ON G.id = AG.idGrupo WHERE G.id = '" + researchGroupCode + "'";
-		const sql = getresearchInfo + ";" + getresearchStudents + ";";
+		const sql = getGroupInfo + ";" + getresearchStudents + ";";
 
 		return new Promise(function (resolve, reject) {
 			vars.con.query(sql, [1, 2], function (err, results, fields) {
 				if (err) reject(err);
-				var researchInfo = [];
-				researchInfo.push(researchGroupCode);
+				var groupInfo = [];
+				groupInfo.push(researchGroupCode);
 
-				if (results[0][0] != undefined) researchInfo.push(results[0][0]["researchName"]);
-				researchInfo.push([]);
+				if (results[0][0] != undefined) { 
+					groupInfo.push(results[0][0]["researchName"]);
+					groupInfo.push(results[0][0]["area"]);
+					groupInfo.push(results[0][0]["initialDate"]);
+				}
+				groupInfo.push([]);
 				results[0].forEach(function (result) {
 					var researchAuthor = functions.capitalizeString(result["researchAuthor"]);
-					researchInfo[2].push(researchAuthor);
+					groupInfo[4].push(researchAuthor);
 				});
 
 				// Itera entre os alunos envolvidos
-				researchInfo.push([]);
+				groupInfo.push([]);
 				results[1].forEach(function (student) {
 					if (student["researchStudent"] != [] && student["researchStudent"] != undefined) {
-						researchInfo[3].push(student["researchStudent"]);
+						groupInfo[5].push(student["researchStudent"]);
 					}
 				});
-				resolve(researchInfo);
+				console.log(groupInfo[5].length)
+				resolve(groupInfo);
 			});
 		});
 	}
