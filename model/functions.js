@@ -288,17 +288,20 @@ var functions = {
 				var researchInfo = [];
 				researchInfo.push(researchCode);
 
-				if (results[0][0] != undefined) researchInfo.push(results[0][0]["researchName"]);
+				if (results[0][0] != undefined){
+					researchInfo.push(results[0][0]["researchName"]);
+					researchInfo.push(results[0][0]["initialDate"]);
+				} 
 				researchInfo.push([]);
 				results[0].forEach(function (result) {
 					var researchAuthor = functions.capitalizeString(result["researchAuthor"]);
-					researchInfo[2].push(researchAuthor);
+					researchInfo[3].push(researchAuthor);
 				});
 
 				// Itera entre os alunos envolvidos
 				researchInfo.push([]);
 				results[1].forEach(function (student) {
-					researchInfo[3].push(student["researchStudent"]);
+					researchInfo[4].push(student["researchStudent"]);
 				});
 				resolve(researchInfo);
 			});
