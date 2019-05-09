@@ -41,9 +41,9 @@
                                             </a>
                                             <div class="media-body">
                                                 <span class="media-meta float-right">
-                                                    <% var now = researchGroup[3]; %>
-                                                        <% var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-                                                            <%= now.toLocaleDateString('en-GB',options); %>
+                                                    <% var now = researchGroup[3];
+                                                    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+                                                    <%= now.toLocaleDateString('en-GB',options); %>
                                                 </span>
                                                 <h4 class="title">
                                                     <%= researchGroup[1] %>
@@ -53,21 +53,21 @@
                                                     <%= researchGroup[2] %>
                                                 </h4>
                                                 <p class="summary">Pesquisadores:
-                                                    <% if (researchGroup[4] != [] && researchGroup[4] != undefined) { %>
-                                                        <% for (author of researchGroup[4]){%>
+                                                    <% if (researchGroup[4] != [] && researchGroup[4] != undefined) {
+                                                        for (author of researchGroup[4]){%>
                                                             <span>
                                                                 <%= author %>;</span>
-                                                            <%}%>
-                                                    <%}%>
+                                                        <%}
+                                                    }%>
                                                 </p>
                                                 <p class="summary">
                                                     <% if (researchGroup[5] != [] && researchGroup[5] != undefined && researchGroup[5].length != 0) { %>
                                                         Alunos Envolvidos:
-                                                        <% for (student of researchGroup[5]) {%> 
+                                                        <% for (student of researchGroup[5]) {%>
                                                             <span>
                                                                 <%= student %>;</span>
-                                                        <%}%>
-                                                    <%}%>
+                                                        <%}
+                                                    }%>
                                                 </p>
                                             </div>
                                         </div>
@@ -78,7 +78,7 @@
                     </table>
                 </div>
             </div>
-        </div>  
+        </div>
     </main>
 
 </body>

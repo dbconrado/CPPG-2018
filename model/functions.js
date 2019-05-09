@@ -421,7 +421,7 @@ var functions = {
 		});
 	},
 	getCispNextPresentations: function () {
-		const sql = "SELECT * FROM apresentacao_cisp";
+		const sql = "SELECT * FROM apresentacao_cisp order by data asc";
 		return new Promise(function (resolve, reject) {
 			vars.con.query(sql, function (err, results) {
 				if (err) reject(err);
@@ -431,9 +431,23 @@ var functions = {
 	},
 	getCispPrestationCode: function (codePresentation) {
 		const sql = "SELECT * FROM apresentacao_cisp WHERE id = " + codePresentation + ";";
+		result = [];
+		
 		return new Promise(function (resolve, reject) {
 			vars.con.query(sql, function (err, results) {
 				if (err) reject(err);
+				/*return new Promise(function (resolve) {
+					vars.fs.readdir(results['galeria_imagens'], (err, files) => {
+						if (err) reject(err);
+		
+						files.forEach(file => {
+							images.push(file);
+						});
+						console.log(images)
+					})
+				});*/
+				console.log(results['apresentador'])
+
 				resolve(results);
 			});
 		});
