@@ -17,24 +17,47 @@
 		<div class="card text-center">
 			<div class="card-header">
 				<h3>Projetos de Pesquisa Relacionados</h3>
-				<!-- <h5 class="text-left">Buscou por: <span class="ml-3">"<i>STR</i>"</span></h5> -->
 			</div>
 
+			<!--
 			<div class="card-body">
 				<div class="btn-group float-none float-lg-right mr-5 my-3">
 					<button type="button" class="btn btn-success btn-filter" data-target="Tìtulo">Título</button>
 					<button type="button" class="btn btn-warning btn-filter" data-target="Autor">Autor</button>
 					<button type="button" class="btn btn-danger btn-filter" data-target="Aluno">Aluno</button>
 					<button type="button" class="btn btn-default btn-filter" data-target="all">Todos</button>
+				</div> 
+			-->
+
+			<div class="my-3"></div>
+
+			<div class="row" style="width:100%;padding-left: 2%;">
+				<!-- FILTRO -->
+				<div>
+					<ul class="list-group">
+						<button class="list-group-item list-group-item-success">Filtrar por...</li>
+						<button class="list-group-item btn filter">Todos</button>
+						<li class="list-group-item list-group-item-success">Ano</li>
+						<button class="list-group-item btn filter">2019</button>
+						<button class="list-group-item btn filter">2018</button>
+						<button class="list-group-item btn filter">2017</button>
+						<button class="list-group-item btn filter">2016</button>
+						<button class="list-group-item btn filter">2015</button>
+						<button class="list-group-item btn filter">2014</button>
+						<button class="list-group-item btn filter">2013</button>
+						<button class="list-group-item btn filter">2012</button>
+						<button class="list-group-item btn filter">2011</button>
+					</ul>
 				</div>
 
-				<div class="dropdown-divider my-3"></div>
 
-				<div class="table-container text-left">
-					<table class="table table-filter">
+				<div class="table-container text-left col-lg">
+					<table class="table table-filter" id="researchWorkTable">
 						<tbody>
 							<% for (researchWork of researchWorks){%>
-								<tr data-status="Tìtulo">
+								<%	var now = new Date(researchWork[2]); %>
+
+								<tr data-status="Tìtulo" id="<%=now.getFullYear();%>">
 									<td class="text-center mx-auto">
 										<div class="ckbox m-auto d-block">
 											<input type="checkbox" id="checkbox1">
@@ -50,10 +73,10 @@
 												<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
 											</a>
 											<div class="media-body">
-												<span class="media-meta float-right">
 													<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){
-																var now = new Date(researchWork[2]);
-																var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+														var now = new Date(researchWork[2]); %>
+														<span class="media-meta float-right">
+																<%var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
 														<%= now.toLocaleDateString('en-GB',options); %>
 													<% } %>
 												</span>
@@ -63,7 +86,7 @@
 														<span class="pull-right Tìtulo">(Título)</span>
 												</h4>
 
-												<p class="summary">Autores:
+												<p class="summary Autor">Autores:
 													<% if (researchWork[3] != [] && researchWork[3] != undefined) {
 																for (author of researchWork[3]){%>
 														<span>
@@ -83,11 +106,13 @@
 										</div>
 									</td>
 								</tr>
-							<% } %>
+								<% } %>
 						</tbody>
 					</table>
 				</div>
 			</div>
+			
+		</div>
 		</div>
 
 		<!-- FOOTER -->
@@ -102,7 +127,7 @@
 	<!-- Bootstrap core JavaScript -->
 	<% include ../partials/footer %>
 
-	<!-- Other Js -->
-	<script src="/CPPG/assets/js/searchProceedings.js"></script>
+		<!-- Other Js -->
+		<script src="/CPPG/assets/js/searchProceedings.js"></script>
 
 </html>

@@ -34,19 +34,21 @@
 		<% if (chkBoxProceedings) {%>
 			<div class="card text-center">
 				<div class="card-header">
-					<h3>Publicações Relacionados</h3>
+					<h3>Publicações Relacionadas</h3>
 					<!-- <h5 class="text-left">Buscou por: <span class="ml-3">"<i>STR</i>"</span></h5> -->
 				</div>
 
 				<div class="card-body">
+
+					<!--
 					<div class="btn-group float-none float-lg-right mr-5 my-3">
-						<button type="button" class="btn btn-success btn-filter" data-target="Tìtulo">Ttulo</button>
+						<button type="button" class="btn btn-success btn-filter" data-target="Tìtulo">Título</button>
 						<button type="button" class="btn btn-warning btn-filter" data-target="Autor">Autor</button>
 						<button type="button" class="btn btn-danger btn-filter" data-target="Aluno">Aluno</button>
 						<button type="button" class="btn btn-default btn-filter" data-target="all">Todos</button>
 					</div>
 
-					<div class="dropdown-divider my-3"></div>
+					<div class="dropdown-divider my-3"></div> -->
 
 					<div class="table-container text-left">
 						<table class="table table-filter">
@@ -216,168 +218,169 @@
 							<!-- <h5 class="text-left">Buscou por: <span class="ml-3">"<i>STR</i>"</span></h5> -->
 						</div>
 
+						<!--
 						<div class="card-body">
 							<div class="btn-group float-none float-lg-right mr-5 my-3">
 								<button type="button" class="btn btn-success btn-filter" data-target="Tìtulo">Tìtulo</button>
 								<button type="button" class="btn btn-warning btn-filter" data-target="Autor">Autor</button>
 								<button type="button" class="btn btn-danger btn-filter" data-target="Aluno">Aluno</button>
 								<button type="button" class="btn btn-default btn-filter" data-target="all">Todos</button>
-							</div>
+							</div>-->
 
-							<div class="dropdown-divider my-3"></div>
+						<div class="my-3"></div>
 
-							<div class="table-container text-left">
-								<table class="table table-filter">
-									<tbody>
-										<% if (researchWorksByName){%>
-											<% for (researchWork of researchWorksByName){%>
-												<tr data-status="Tìtulo">
-													<td class="text-center mx-auto">
-														<div class="ckbox m-auto d-block">
-															<input type="checkbox" id="checkbox1">
-															<label for="checkbox1"></label>
-														</div>
-													</td>
-													<td>
-														<div class="col-sm-4">
-														</div>
+						<div class="table-container text-left">
+							<table class="table table-filter">
+								<tbody>
+									<% if (researchWorksByName){%>
+										<% for (researchWork of researchWorksByName){%>
+											<tr data-status="Tìtulo">
+												<td class="text-center mx-auto">
+													<div class="ckbox m-auto d-block">
+														<input type="checkbox" id="checkbox1">
+														<label for="checkbox1"></label>
+													</div>
+												</td>
+												<td>
+													<div class="col-sm-4">
+													</div>
 
-														<div class="media d-block">
-															<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
-																<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-															</a>
-															<div class="media-body">
-																<span class="media-meta float-right">
-																	<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){ %>
-																		<% var now = new Date(researchWork[2]); %>
-																			<% var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-																				<%= now.toLocaleDateString('en-GB',options); %>
-																					<% } %>
-																</span>
-																<h4 class="title">
-																	<%= researchWork[1] %>
-																		<span class="pull-right Tìtulo">(Título)</span>
-																</h4>
-																<p class="summary">Autores:
-																	<% for (author of researchWork[3]){%>
-																		<span>
-																			<%= author %>;</span>
-																		<%}%>
-																</p>
-																<p class="summary">Alunos Envolvidos:
-																	<% for (student of researchWork[4]){%>
-																		<span>
-																			<%= student %>;</span>
-																		<%}%>
-																</p>
-															</div>
-														</div>
-													</td>
-												</tr>
-												<% } %>
-													<% } %>
-
-														<% if (researchWorksByAuthor){%>
-															<% for (researchWork of researchWorksByAuthor){%>
-																<tr data-status="Autor">
-																	<td>
-																		<div class="ckbox">
-																			<input type="checkbox" id="checkbox1">
-																			<label for="checkbox1"></label>
-																		</div>
-																	</td>
-																	<td>
-																		<div class="col-sm-4"></div>
-
-																		<div class="media">
-																			<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
-																				<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-																			</a>
-																			<div class="media-body">
-																				<span class="media-meta pull-right">
-																					<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){ %>
-																						<% var now = new Date(researchWork[2]); %>
-																							<% var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-																								<%= now.toLocaleDateString('en-GB',options); %>
-																									<% } %>
-																				</span>
-																				<h4 class="title">
-																					<%= researchWork[1] %>
-																						<span class="pull-right Tìtulo">(Título)</span>
-																				</h4>
-																				<p class="summary">Autores:
-																					<% if (researchWork[3] != [] && researchWork[3] != undefined) { %>
-																						<% for (author of researchWork[3]){%>
-																							<span>
-																								<%= author %>;</span>
-																							<%}%>
-																								<%}%>
-																				</p>
-																				<p class="summary">Alunos Envolvidos:
-																					<% if (researchWork[4] != [] && researchWork[4] != undefined) { %>
-																						<% for (student of researchWork[4]){%>
-																							<span>
-																								<%= student %>;</span>
-																							<%}%>
-																								<%}%>
-																				</p>
-																			</div>
-																		</div>
-																	</td>
-																</tr>
-																<% } %>
-																	<% } %>
-
-																		<% if (researchWorksByStudents){%>
-																			<% for (researchWork of researchWorksByStudents){%>
-																				<tr data-status="Aluno">
-																					<td>
-																						<div class="ckbox">
-																							<input type="checkbox" id="checkbox1">
-																							<label for="checkbox1"></label>
-																						</div>
-																					</td>
-																					<td>
-																						<div class="media">
-																							<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
-																								<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-																							</a>
-																							<div class="media-body">
-																								<span class="media-meta pull-right">
-																									<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){ %>
-																										<% var now = new Date(researchWork[2]); %>
-																											<% var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-																												<%= now.toLocaleDateString('en-GB',options); %>
-																													<% } %>
-																								</span>
-																								<h4 class="title">
-																									<%= researchWork[1] %>
-																										<span class="pull-right Tìtulo">(Tìtulo)</span>
-																								</h4>
-																								<p class="summary">Autores:
-																									<% for (author of researchWork[3]){%>
-																										<span>
-																											<%= author %>;</span>
-																										<%}%>
-																								</p>
-																								<p class="summary">Alunos Envolvidos:
-																									<%if (researchWork[4]) {%>
-																										<% for (student of researchWork[4]){%>
-																											<span>
-																												<%= student %>;</span>
-																											<%}%>
-																												<%}%>
-																								</p>
-																							</div>
-																						</div>
-																					</td>
-																				</tr>
+													<div class="media d-block">
+														<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
+															<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
+														</a>
+														<div class="media-body">
+															<span class="media-meta float-right">
+																<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){ %>
+																	<% var now = new Date(researchWork[2]); %>
+																		<% var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+																			<%= now.toLocaleDateString('en-GB',options); %>
 																				<% } %>
-																					<% } %>
-									</tbody>
-								</table>
-							</div>
+															</span>
+															<h4 class="title">
+																<%= researchWork[1] %>
+																	<span class="pull-right Tìtulo">(Título)</span>
+															</h4>
+															<p class="summary">Autores:
+																<% for (author of researchWork[3]){%>
+																	<span>
+																		<%= author %>;</span>
+																	<%}%>
+															</p>
+															<p class="summary">Alunos Envolvidos:
+																<% for (student of researchWork[4]){%>
+																	<span>
+																		<%= student %>;</span>
+																	<%}%>
+															</p>
+														</div>
+													</div>
+												</td>
+											</tr>
+										<% }
+									} %>
+
+												<% if (researchWorksByAuthor){%>
+													<% for (researchWork of researchWorksByAuthor){%>
+														<tr data-status="Autor">
+															<td>
+																<div class="ckbox">
+																	<input type="checkbox" id="checkbox1">
+																	<label for="checkbox1"></label>
+																</div>
+															</td>
+															<td>
+																<div class="col-sm-4"></div>
+
+																<div class="media">
+																	<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
+																		<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
+																	</a>
+																	<div class="media-body">
+																		<span class="media-meta pull-right">
+																			<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){ %>
+																				<% var now = new Date(researchWork[2]); %>
+																					<% var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+																						<%= now.toLocaleDateString('en-GB',options); %>
+																							<% } %>
+																		</span>
+																		<h4 class="title">
+																			<%= researchWork[1] %>
+																				<span class="pull-right Tìtulo">(Título)</span>
+																		</h4>
+																		<p class="summary">Autores:
+																			<% if (researchWork[3] != [] && researchWork[3] != undefined) { %>
+																				<% for (author of researchWork[3]){%>
+																					<span>
+																						<%= author %>;</span>
+																					<%}%>
+																						<%}%>
+																		</p>
+																		<p class="summary">Alunos Envolvidos:
+																			<% if (researchWork[4] != [] && researchWork[4] != undefined) { %>
+																				<% for (student of researchWork[4]){%>
+																					<span>
+																						<%= student %>;</span>
+																					<%}%>
+																						<%}%>
+																		</p>
+																	</div>
+																</div>
+															</td>
+														</tr>
+														<% } %>
+															<% } %>
+
+																<% if (researchWorksByStudents){%>
+																	<% for (researchWork of researchWorksByStudents){%>
+																		<tr data-status="Aluno">
+																			<td>
+																				<div class="ckbox">
+																					<input type="checkbox" id="checkbox1">
+																					<label for="checkbox1"></label>
+																				</div>
+																			</td>
+																			<td>
+																				<div class="media">
+																					<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
+																						<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
+																					</a>
+																					<div class="media-body">
+																						<span class="media-meta pull-right">
+																							<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){ %>
+																								<% var now = new Date(researchWork[2]); %>
+																									<% var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+																										<%= now.toLocaleDateString('en-GB',options); %>
+																											<% } %>
+																						</span>
+																						<h4 class="title">
+																							<%= researchWork[1] %>
+																								<span class="pull-right Tìtulo">(Tìtulo)</span>
+																						</h4>
+																						<p class="summary">Autores:
+																							<% for (author of researchWork[3]){%>
+																								<span>
+																									<%= author %>;</span>
+																								<%}%>
+																						</p>
+																						<p class="summary">Alunos Envolvidos:
+																							<%if (researchWork[4]) {%>
+																								<% for (student of researchWork[4]){%>
+																									<span>
+																										<%= student %>;</span>
+																									<%}%>
+																										<%}%>
+																						</p>
+																					</div>
+																				</div>
+																			</td>
+																		</tr>
+																		<% } %>
+																			<% } %>
+								</tbody>
+							</table>
 						</div>
+					</div>
 					</div>
 					<% } %>
 						<!-- FOOTER -->
