@@ -19,23 +19,13 @@
 				<h3>Projetos de Pesquisa Relacionados</h3>
 			</div>
 
-			<!--
-			<div class="card-body">
-				<div class="btn-group float-none float-lg-right mr-5 my-3">
-					<button type="button" class="btn btn-success btn-filter" data-target="Tìtulo">Título</button>
-					<button type="button" class="btn btn-warning btn-filter" data-target="Autor">Autor</button>
-					<button type="button" class="btn btn-danger btn-filter" data-target="Aluno">Aluno</button>
-					<button type="button" class="btn btn-default btn-filter" data-target="all">Todos</button>
-				</div> 
-			-->
-
 			<div class="my-3"></div>
 
 			<div class="row" style="width:100%;padding-left: 2%;">
 				<!-- FILTRO -->
-				<div>
+				<div class="col-lg-2">
 					<ul class="list-group">
-						<button class="list-group-item list-group-item-success">Filtrar por...</li>
+						<li class="list-group-item list-group-item-success">Filtrar por...</li>
 						<button class="list-group-item btn filter">Todos</button>
 						<li class="list-group-item list-group-item-success">Ano</li>
 						<button class="list-group-item btn filter">2019</button>
@@ -47,6 +37,16 @@
 						<button class="list-group-item btn filter">2013</button>
 						<button class="list-group-item btn filter">2012</button>
 						<button class="list-group-item btn filter">2011</button>
+						<li class="list-group-item list-group-item-success">Modalidade da Bolsa</li>
+						<button class="list-group-item btn filter">PIBIC</button>
+						<button class="list-group-item btn filter">PIBIC-JR</button>
+						<button class="list-group-item btn filter">PIBITI</button>
+						<button class="list-group-item btn filter">Voluntário</button>
+						<button class="list-group-item btn filter">PIBEX</button>
+						<li class="list-group-item list-group-item-success">Agente Financiador</li>
+						<button class="list-group-item btn filter">Interno</button>
+						<button class="list-group-item btn filter">FAPEMIG</button>
+						<button class="list-group-item btn filter">CNPq</button>
 					</ul>
 				</div>
 
@@ -57,7 +57,7 @@
 							<% for (researchWork of researchWorks){%>
 								<%	var now = new Date(researchWork[2]); %>
 
-								<tr data-status="Tìtulo" id="<%=now.getFullYear();%>">
+								<tr data-status="Tìtulo" id="<%=now.getFullYear();%> <%=researchWork[5]%> <%=researchWork[6]%>">
 									<td class="text-center mx-auto">
 										<div class="ckbox m-auto d-block">
 											<input type="checkbox" id="checkbox1">

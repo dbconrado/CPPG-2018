@@ -279,7 +279,7 @@ var functions = {
 	*/
 	getResearchWorkInfoByItsCode: function (researchCode) {
 		const getresearchInfo = "SELECT S.nomeServidor AS researchAuthor, P.nomeProjeto AS researchName, P.dataInicio AS initialDate, P.dataTermino AS finalData FROM servidor S JOIN servidor_participa_projeto SP ON S.siapeServidor = SP.siapeServidor JOIN projeto P ON P.idProjeto = SP.idProjeto WHERE P.idProjeto = '" + researchCode + "'";
-		const getresearchStudents = "SELECT nomeAluno AS researchStudent FROM aluno_participa_projeto AP JOIN aluno A ON AP.matriculaAluno = A.matriculaAluno JOIN projeto P ON P.idProjeto = AP.idProjeto WHERE P.idProjeto = '" + researchCode + "'";
+		const getresearchStudents = "SELECT nomeAluno AS researchStudent, modalidadeBolsa AS scholarship, agenteFinanciadorBolsa AS financier FROM aluno_participa_projeto AP JOIN aluno A ON AP.matriculaAluno = A.matriculaAluno JOIN projeto P ON P.idProjeto = AP.idProjeto WHERE P.idProjeto = '" + researchCode + "'";
 		const sql = getresearchInfo + ";" + getresearchStudents + ";";
 
 		return new Promise(function (resolve, reject) {
@@ -303,6 +303,10 @@ var functions = {
 				results[1].forEach(function (student) {
 					researchInfo[4].push(student["researchStudent"]);
 				});
+				if (results[1][0] != undefined) {
+				researchInfo.push(results[1][0]["scholarship"]);
+				researchInfo.push(results[1][0]["financier"]);
+				}
 				resolve(researchInfo);
 			});
 		});

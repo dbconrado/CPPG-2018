@@ -23,7 +23,7 @@ $(document).ready(function () {
 
     if (value != 'Todos') {
       $('tr').each(function () {
-        if ($(this).attr('id') == value) {
+        if ($(this).attr('id').indexOf(value)>-1) {
           $(this).fadeIn();
         } else {
           $(this).fadeOut();
