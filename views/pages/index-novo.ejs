@@ -1,159 +1,194 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <% include ../partials/head %>
-    
-        <!-- Custom styles for this template -->
-        <link href="/CPPG/assets/css/index-novo.css" rel="stylesheet">
-    </head>
-      <body>
-          <div class="modal fade" tabindex="-1" id="fillCheckboxModal" tabindex="-1" role="dialog">
-              <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title">Erro</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div class="modal-body">
-                    <p>Você tem que selecionar pelo menos um tipo de busca!</p>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
-                  </div>
-                </div>
-              </div>
-            </div>
 
-    
-        <header>
-            <% include ../partials/navbar %>
-        </header>
-    
-        <main role="main">
-    
-          <div id="campus-brand-carousel" class="carousel slide" data-ride="carousel">
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <img class="campus-brand" src="/CPPG/assets/images/campus-1.jpg" alt="Foto da fachada do Campus">
-                <div class="container">
-                  <div class="carousel-caption">
-                    <h1>Pesquisa</h1>
-                    <p>Coordenação de Pesquisa, Inovação e Pós-Graduação</p>
+<head>
+  <% include ../partials/head %>
 
-                    <form id="searchForm" class="py-3 py-sm-4" method="POST" action="/CPPG/search">
-                      <div class="form-group form-inline justify-content-center">
-                          <input id="searchTextBox" name="searchValue" tabindex="2" class="form-control mr-sm-2 col-6" type="search" placeholder="Digite um projeto, autor ou alunos envolvidos" aria-label="Search" required>
-                          <button id="btnSearch" class="btn btn-success my-2 my-sm-0" type="submit" data-toogle="tooltip" title="Buscar projetos e/ou publicações">Buscar</button>
-                      </div>
-                      
-                      <div class="input-group mb-3 justify-content-center">
-                        <div class="input-group-prepend">
-                          <div class="input-group-text">
-                            <input name="chkResearchs" type="checkbox" aria-label="Cheque esta caixa se você deseja buscar por projetos">
-                          </div>
-                        </div>
-                        <div class="input-group-prepend pr-1">
-                            <span class="input-group-text">Projetos</span>
-                        </div>
+    <!-- Custom styles for this template -->
+    <link href="/CPPG/assets/css/index-novo.css" rel="stylesheet">
+</head>
 
-                        <div id="selSearchFields" class="input-group-prepend pl-1">
-                          <div class="input-group-text">
-                            <input name="chkProceedings" type="checkbox" aria-label="Cheque esta caixa se você deseja buscar por publicações">
-                          </div>
-                          <div class="input-group-prepend">
-                              <span class="input-group-text">Publicações</span>
-                          </div>
-                      </div>
-
-                      <div id="selSearchFields" class="input-group-prepend ml-1 pl-1">
-                        <div class="input-group-text">
-                          <input name="chkProceedings" type="checkbox" aria-label="Cheque esta caixa se você deseja buscar por publicações">
-                        </div>
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Grupos de Pesquisa</span>
-                        </div>
-                    </div>
-                      </div>
-                    </form>                    
-                    </div>
-                </div>
-              </div>
-            </div>
-          </div>
+<body>
+  <div class="modal fade" tabindex="-1" id="fillCheckboxModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Erro</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
-
-        <!-- PAINEL DE NOTÍCIAS -->
-        <div class="jumbotron col-lg-8 mx-auto">
-          <h1 class="display-4">Acontecendo no IFMG:</h1>
-          <p class="lead">Esse é um exemplo de uma notícia em destaque no portal. É um Jumbotron em Bootstrap</p>
-          <hr class="my-4">
-          <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-          <a class="btn btn-success btn-lg" href="#" role="button">Leia mais</a>
+        <div class="modal-body">
+          <p>Você tem que selecionar pelo menos um tipo de busca!</p>
         </div>
-    
-          <!-- Marketing messaging and featurettes
-          ================================================== -->
-          <!-- Wrap the rest of the page in another container to center all the content. -->
-    
-          <div class="container marketing">
-    
-              <!-- Three columns of text below the carousel -->
-              <div class="row">
-                <div class="col-lg-4">
-                  <img class="rounded" src="/CPPG/assets/images/icons/pie-chart.png" alt="Generic pie-chart icon" width="140" height="140">
-                  <h2 class="mt-3">Indicadores de Desempenho</h2>
-                  <p>Veja indicadores de desempenho do IFMG Campus Sabará</p>
-                  <p><a class="btn btn-secondary" href="/CPPG/indicadores" role="button">Ver mais »</a></p>
-                </div><!-- /.col-lg-4 -->
-                <div class="col-lg-4">
-                  <img class="rounded" src="/CPPG/assets/images/icons/research-works.png" alt="Generic research works icon" width="140" height="140">
-                  <h2 class="mt-3">Informações sobre projetos</h2>
-                  <p>Veja informações sobre os projetos de pesquisa existentes no IFMG Campus Sabará.</p>
-                  <p><a class="btn btn-secondary" href="/CPPG/projetos" role="button">Ver mais »</a></p>
-                </div><!-- /.col-lg-4 -->
-                <div class="col-lg-4">
-                  <img class="rounded" src="/CPPG/assets/images/icons/groups.png" alt="Generic research works icon" width="140" height="140">
-                  <h2 class="mt-3">Informações sobre grupos de pesquisa</h2>
-                  <p>Veja informações sobre os grupos de pesquisa existentes no IFMG Campus Sabará.</p>
-                  <p><a class="btn btn-secondary" href="/CPPG/grupos-de-pesquisa" role="button">Ver mais »</a></p>
-                </div><!-- /.col-lg-4 -->
-                <div class="col-lg-4">
-                    <img class="rounded" src="/CPPG/assets/images/icons/presentation.png" alt="Generic placeholder image" width="140" height="140">
-                    <h2 class="mt-3">CISP</h2>
-                    <p>Confira todas as informações sobre o CISP (Ciclo de Seminários de Pesquisa) do IFMG Campus Sabará</p>
-                    <p><a class="btn btn-secondary" href="/CPPG/cisp" role="button">Ver mais »</a></p>
-                  </div><!-- /.col-lg-4 -->
-                <div class="col-lg-4">
-                  <img class="rounded" src="/CPPG/assets/images/icons/photo-album.png" alt="Generic placeholder image" width="140" height="140">
-                  <h2 class="mt-3">Galeria de Fotos</h2>
-                  <p>Confira aqui fotos de eventos, palestras e mostrar que envolvem projetos de pesquisa do IFMG Campus Sabará.</p>
-                  <p><a class="btn btn-secondary" href="/CPPG/galeria" role="button">Ver mais »</a></p>
-                </div><!-- /.col-lg-4 -->
-              </div><!-- /.row -->
-      
-            </div><!-- /.container -->
-    
-          <hr class="featurette-divider my-4">
+        <div class="modal-footer">
+          <button type="button" class="btn btn-success" data-dismiss="modal">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-          <!-- WHO WE ARE -->
+
+  <header>
+    <% include ../partials/navbar %>
+  </header>
+
+  <main role="main">
+
+    <div id="campus-brand-carousel" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img class="campus-brand" src="/CPPG/assets/images/campus-1.jpg" alt="Foto da fachada do Campus">
           <div class="container">
-            <h2 class="text-center text-capitalize my-5">Quem somos</h2>
-            <p class="text-justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer condimentum, elit vitae ornare vulputate, arcu nulla rhoncus neque, at tincidunt turpis mauris eget quam. Curabitur consequat in libero nec molestie. Fusce vulputate vitae justo in sodales. Etiam luctus augue at quam gravida, sit amet iaculis lectus elementum. Donec euismod mi ultricies blandit vulputate. Vestibulum non egestas nisl. Donec posuere ut eros id tristique. Fusce ut mauris consequat, tempus lacus ac, congue mi. Sed dignissim metus purus, sit amet varius lectus maximus eget.</p>
+            <div class="carousel-caption">
+              <h1>Pesquisa</h1>
+              <p>Coordenação de Pesquisa, Inovação e Pós-Graduação</p>
 
-              <p class="text-justify">Aliquam ut dolor in augue rhoncus blandit. Suspendisse ullamcorper convallis purus non sollicitudin. Nulla facilisi. Morbi bibendum eros ac lorem rhoncus finibus. Suspendisse sit amet augue sapien. Phasellus tristique odio quis egestas euismod. Vivamus pellentesque erat massa. Vestibulum posuere risus ut tristique semper. Nam sed erat ac quam mattis aliquet. Vivamus quis orci est.</p>
+              <form id="searchForm" class="py-3 py-sm-4" method="POST" action="/CPPG/search">
+                <div class="form-group form-inline justify-content-center">
+                  <input id="searchTextBox" name="searchValue" tabindex="2" class="form-control mr-sm-2 col-6" type="search" placeholder="Digite um projeto, autor ou alunos envolvidos"
+                    aria-label="Search" required>
+                  <button id="btnSearch" class="btn btn-success my-2 my-sm-0" type="submit" data-toogle="tooltip" title="Buscar projetos e/ou publicações">Buscar</button>
+                </div>
+
+                <div class="input-group mb-3 justify-content-center">
+                  <div class="input-group-prepend">
+                    <div class="input-group-text">
+                      <input name="chkResearchs" type="checkbox" aria-label="Cheque esta caixa se você deseja buscar por projetos">
+                    </div>
+                  </div>
+                  <div class="input-group-prepend pr-1">
+                    <span class="input-group-text">Projetos</span>
+                  </div>
+
+                  <div id="selSearchFields" class="input-group-prepend pl-1">
+                    <div class="input-group-text">
+                      <input name="chkProceedings" type="checkbox" aria-label="Cheque esta caixa se você deseja buscar por publicações">
+                    </div>
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Publicações</span>
+                    </div>
+                  </div>
+
+                  <div id="selSearchFields" class="input-group-prepend ml-1 pl-1">
+                    <div class="input-group-text">
+                      <input name="chkProceedings" type="checkbox" aria-label="Cheque esta caixa se você deseja buscar por publicações">
+                    </div>
+                    <div class="input-group-prepend">
+                      <span class="input-group-text">Grupos de Pesquisa</span>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
           </div>
-          <!-- FOOTER -->
-          <footer class="container mt-5">
-            <p class="float-right"><a href="#">Voltar ao topo</a></p>
-            <p>© 2018 IFMG Campus Sabará</p>
-            <div>Icons made by <a href="https://www.flaticon.com/authors/gregor-cresnar" title="Gregor Cresnar">Gregor Cresnar</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a></div>
-          </footer>
-        </main>
-    
-        <!-- Bootstrap core JavaScript -->
-        <% include ../partials/footer %>
-        <!-- Other JS -->
-        <script src="/CPPG/assets/js/index-novo.js"></script>
+        </div>
+      </div>
+    </div>
+    </div>
+
+    <!-- PAINEL DE NOTÍCIAS -->
+    <div class="jumbotron col-lg-8 mx-auto">
+      <h1 class="display-4">Acontecendo no IFMG:</h1>
+      <p class="lead">Esse é um exemplo de uma notícia em destaque no portal. É um Jumbotron em Bootstrap</p>
+      <hr class="my-4">
+      <p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
+      <a class="btn btn-success btn-lg" href="#" role="button">Leia mais</a>
+    </div>
+
+    <!-- Marketing messaging and featurettes
+          ================================================== -->
+    <!-- Wrap the rest of the page in another container to center all the content. -->
+
+    <div class="container marketing">
+
+      <!-- Three columns of text below the carousel -->
+      <div class="row">
+        <div class="col-lg-4">
+          <img class="rounded" src="/CPPG/assets/images/icons/pie-chart.png" alt="Generic pie-chart icon" width="140" height="140">
+          <h2 class="mt-3">Indicadores de Desempenho</h2>
+          <p>Veja indicadores de desempenho do IFMG Campus Sabará</p>
+          <p>
+            <a class="btn btn-secondary" href="/CPPG/indicadores" role="button">Ver mais »</a>
+          </p>
+        </div>
+        <!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <img class="rounded" src="/CPPG/assets/images/icons/research-works.png" alt="Generic research works icon" width="140" height="140">
+          <h2 class="mt-3">Informações sobre projetos</h2>
+          <p>Veja informações sobre os projetos de pesquisa existentes no IFMG Campus Sabará.</p>
+          <p>
+            <a class="btn btn-secondary" href="/CPPG/projetos" role="button">Ver mais »</a>
+          </p>
+        </div>
+        <!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <img class="rounded" src="/CPPG/assets/images/icons/groups.png" alt="Generic research works icon" width="140" height="140">
+          <h2 class="mt-3">Informações sobre grupos de pesquisa</h2>
+          <p>Veja informações sobre os grupos de pesquisa existentes no IFMG Campus Sabará.</p>
+          <p>
+            <a class="btn btn-secondary" href="/CPPG/grupos-de-pesquisa" role="button">Ver mais »</a>
+          </p>
+        </div>
+        <!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <img class="rounded" src="/CPPG/assets/images/icons/presentation.png" alt="Generic placeholder image" width="140" height="140">
+          <h2 class="mt-3">CISP</h2>
+          <p>Confira todas as informações sobre o CISP (Ciclo de Seminários de Pesquisa) do IFMG Campus Sabará</p>
+          <p>
+            <a class="btn btn-secondary" href="/CPPG/cisp" role="button">Ver mais »</a>
+          </p>
+        </div>
+        <!-- /.col-lg-4 -->
+        <div class="col-lg-4">
+          <img class="rounded" src="/CPPG/assets/images/icons/photo-album.png" alt="Generic placeholder image" width="140" height="140">
+          <h2 class="mt-3">Galeria de Fotos</h2>
+          <p>Confira aqui fotos de eventos, palestras e mostrar que envolvem projetos de pesquisa do IFMG Campus Sabará.</p>
+          <p>
+            <a class="btn btn-secondary" href="/CPPG/galeria" role="button">Ver mais »</a>
+          </p>
+        </div>
+        <!-- /.col-lg-4 -->
+      </div>
+      <!-- /.row -->
+
+    </div>
+    <!-- /.container -->
+
+    <hr class="featurette-divider my-4">
+
+    <!-- WHO WE ARE -->
+    <div class="container">
+      <h2 class="text-center text-capitalize my-5">Quem somos</h2>
+      <p class="text-justify">O desenvolvimento da pesquisa e inovação é além de uma oportunidade de completação na formação discente, uma ação necessária
+        para solucionar problemas do dia-a-dia, permitindo a maior competitividade de negócios e a resolução de questões,
+        tais como a proposição de tecnologias que tragam melhorias a qualidade de vida.</p>
+      <p class="text-justify">A Coordenação de Pesquisa, Inovação e Pós-graduação do IFMG Campus Sabará, busca fomentar o desenvolvimento da pesquisa
+        e inovação por meio de estímulos para criação de projetos que envolvam a comunidade acadêmica.</p>
+      <p class="text-justify">Se você é um discente do IFMG Campus Sabará e tem o desejo de partipar de projetos de pesquisa e inovação, fique atento
+        aos Editais de seleção ou procure um professor de sua afinidade para desenvolver conjuntamente com ele uma proposta.</p>
+      <p class="text-justify">Se você for alguém da comunidade e tiver interesse em desenvolver conjuntamente com o IFMG Campus Sabará uma pesquisa
+        para solucionar algum problema ou melhorar algum processo, entre em contato pelo e-mail pesquisa.sabara@ifmg.edu.br
+        .
+      </p>
+    </div>
+    <!-- FOOTER -->
+    <footer class="container mt-5">
+      <p class="float-right">
+        <a href="#">Voltar ao topo</a>
+      </p>
+      <p>© 2018 IFMG Campus Sabará</p>
+      <div>Icons made by
+        <a href="https://www.flaticon.com/authors/gregor-cresnar" title="Gregor Cresnar">Gregor Cresnar</a> from
+        <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by
+        <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
+      </div>
+    </footer>
+  </main>
+
+  <!-- Bootstrap core JavaScript -->
+  <% include ../partials/footer %>
+    <!-- Other JS -->
+    <script src="/CPPG/assets/js/index-novo.js"></script>
+
 </html>

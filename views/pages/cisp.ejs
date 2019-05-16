@@ -77,8 +77,8 @@
               </div>
             </div>
           </div>
-      <% } %>
-    <% } %>
+          <% } %>
+            <% } %>
     </div>
     <!-- FIM PRÓXIMAS APRESENTAÇÕES -->
 
@@ -90,9 +90,11 @@
           <% if(presentation['apresentado'] == 1){ %>
             <div class="col-md-4">
               <div class="card mb-4 box-shadow">
-                <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Foto de capa da apresentação"
-                  style="height: 225px; width: 100%; display: block;" src="<%=presentation['galeria_imagens']%>photo1.jpg"
-                  data-holder-rendered="true">
+                <a href="/CPPG/cisp/<%=presentation['id']%>">
+                  <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Foto de capa da apresentação"
+                    style="height: 225px; width: 100%; display: block;" src="<%=presentation['galeria_imagens']%>photo1.jpg"
+                    data-holder-rendered="true">
+                </a>
                 <div class="card-body">
                   <p class="card-text">
                     <%= presentation['titulo'] %> -
@@ -107,16 +109,16 @@
               </div>
             </div>
             <% } %>
-        <% } %>
+              <% } %>
 
-        <!-- FIM GALERIA DE APRESENTAÇÕES -->
-        <!--FOOTER-->
-        <footer class="container">
-           <p class="float-right">
-               <a href="#">Voltar ao topo</a>
-            </p>
-            <p>© 2018 IFMG Campus Sabará</p>
-        </footer>
+                <!-- FIM GALERIA DE APRESENTAÇÕES -->
+                <!--FOOTER-->
+                <footer class="container">
+                  <p class="float-right">
+                    <a href="#">Voltar ao topo</a>
+                  </p>
+                  <p>© 2018 IFMG Campus Sabará</p>
+                </footer>
   </main>
   <!-- Bootstrap core JavaScript -->
   <% include ../partials/footer %>

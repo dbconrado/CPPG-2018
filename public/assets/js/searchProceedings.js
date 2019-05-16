@@ -29,12 +29,12 @@ $(document).ready(function () {
           $(this).fadeOut();
         }
       });
-      $('.filter').css('box-shadow','none');
-      $(this).css('box-shadow','0 0 0 .2rem rgba(0,123,255,.25)');
+      $('.filter').removeClass('btn-success');
+      $(this).addClass('btn-success');
     } else {
       $('tr').fadeIn();
-      $('.filter').css('box-shadow','none');
-      $(this).css('box-shadow','0 0 0 .2rem rgba(0,123,255,.25)');
+      $('.filter').removeClass('btn-success');
+      $(this).addClass('btn-success');
     }
   });
 
