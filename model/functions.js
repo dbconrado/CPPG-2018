@@ -316,19 +316,23 @@ var functions = {
 	   return: array containing proceeding code, it's name and authors
 	*/
 	getProceedingInfo: function (proceedingCode) {
-		const getProceedingInfo = "SELECT S.nomeServidor AS proceedingAuthor, P.nomePublicacao AS proceedingName, P.URN_ArtigoCompleto AS proceedingPath FROM servidor S JOIN servidor_publica SP ON S.siapeServidor = SP.siapeServidor JOIN publicacao P ON P.codPublicacao = SP.codPublicacao WHERE P.codPublicacao = " + proceedingCode + "";
-		const getProceedingStudents = "SELECT nomeAluno AS proceedingStudent FROM aluno_publica AP JOIN aluno A ON AP.matriculaAluno = A.matriculaAluno JOIN publicacao P ON P.codPublicacao = AP.codPublicacao WHERE P.codPublicacao = " + proceedingCode + "";
+		const getProceedingInfo = "SELECT S.nomeServidor AS proceedingAuthor, P.nomePublicacao AS proceedingName, P.URN_ArtigoCompleto AS proceedingPath, SP.ano AS year, SP.local AS local, SP.país AS pais FROM servidor S JOIN servidor_publica SP ON S.siapeServidor = SP.siapeServidor JOIN publicacao P ON P.codPublicacao = SP.codPublicacao WHERE P.codPublicacao = " + proceedingCode + "";
+		const getProceedingStudents = "SELECT nomeAluno AS proceedingStudent, AP.ano AS year, AP.local AS local, AP.país as pais  FROM aluno_publica AP JOIN aluno A ON AP.matriculaAluno = A.matriculaAluno JOIN publicacao P ON P.codPublicacao = AP.codPublicacao WHERE P.codPublicacao = " + proceedingCode + "";
 		const sql = getProceedingInfo + ";" + getProceedingStudents + ";";
 
 		return new Promise(function (resolve, reject) {
 			vars.con.query(sql, [1, 2], function (err, results, fields) {
 				var proceedingInfo = [];
 				proceedingInfo.push(proceedingCode);
+				console.log(results)
 				proceedingInfo.push(results[0][0]["proceedingName"]);
 				proceedingInfo.push([]);
 
 				if (results[0][0]["proceedingPath"] != null) proceedingInfo.push(results[0][0]["proceedingPath"]);
 				else proceedingInfo.push('null');
+				proceedingInfo.push(results[0][0]["year"]);
+				proceedingInfo.push(results[0][0]["local"]);
+				proceedingInfo.push(results[0][0]["pais"]);
 				results[0].forEach(function (result) {
 					var proceedingAuthor = functions.capitalizeString(result["proceedingAuthor"]);
 					proceedingInfo[2].push(proceedingAuthor);
@@ -337,7 +341,7 @@ var functions = {
 				// Itera entre os alunos envolvidos
 				proceedingInfo.push([]);
 				results[1].forEach(function (student) {
-					proceedingInfo[4].push(student["proceedingStudent"]);
+					proceedingInfo[7].push(student["proceedingStudent"]);
 				});
 				resolve(proceedingInfo);
 			});

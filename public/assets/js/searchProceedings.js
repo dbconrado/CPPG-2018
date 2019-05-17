@@ -23,7 +23,7 @@ $(document).ready(function () {
 
     if (value != 'Todos') {
       $('tr').each(function () {
-        if ($(this).attr('id').indexOf(value)>-1) {
+        if ($(this).attr('id').indexOf(value) > -1) {
           $(this).fadeIn();
         } else {
           $(this).fadeOut();
@@ -34,6 +34,46 @@ $(document).ready(function () {
     } else {
       $('tr').fadeIn();
       $('.filter').removeClass('btn-success');
+      $(this).addClass('btn-success');
+    }
+  });
+
+  $('.research-filter').click(function () {
+    var value = $(this).text();
+
+    if (value != 'Todos') {
+      $('tr[id*=researchWork]').each(function () {
+          if ($(this).attr('id').indexOf(value) > - 1) {
+            $(this).fadeIn();
+          } else {
+            $(this).fadeOut();
+          }
+        });
+      $('.research-filter').removeClass('btn-success');
+      $(this).addClass('btn-success');
+    } else {
+      $('tr[id*=researchWork]').fadeIn();
+      $('.research-filter').removeClass('btn-success');
+      $(this).addClass('btn-success');
+    }
+  });
+
+  $('.proceeding-filter').click(function () {
+    var value = $(this).text();
+
+    if (value != 'Todos') {
+      $('tr[id*=proceeding]').each(function () {
+          if ($(this).attr('id').indexOf(value) > - 1) {
+            $(this).fadeIn();
+          } else {
+            $(this).fadeOut();
+          }
+        });
+      $('.proceeding-filter').removeClass('btn-success');
+      $(this).addClass('btn-success');
+    } else {
+      $('tr[id*=proceeding]').fadeIn();
+      $('.proceeding-filter').removeClass('btn-success');
       $(this).addClass('btn-success');
     }
   });
