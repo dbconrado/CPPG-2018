@@ -79,24 +79,75 @@
 						<div class="table-container text-left col-lg">
 							<table class="table table-filter">
 								<tbody>
-									<% if (proceedingsByName){%>
-										<% for (proceeding of proceedingsByName){%>
-											<tr data-status="Tìtulo" id="proceeding <%=proceeding[4];%> <%=proceeding[5];%> <%=proceeding[6];%>">
-												<td class="text-center mx-auto">
-													<div class="ckbox m-auto d-block">
-														<input type="checkbox" id="checkbox1">
-														<label for="checkbox1"></label>
-													</div </td>
+									<% if (proceedingsByName){
+										for (proceeding of proceedingsByName){%>
+										<tr data-status="Tìtulo" id="proceeding <%=proceeding[4];%> <%=proceeding[5];%> <%=proceeding[6];%>">
+											<td class="text-center mx-auto">
+												<div class="ckbox m-auto d-block">
+													<input type="checkbox" id="checkbox1">
+													<label for="checkbox1"></label>
+												</div </td>
+												<td>
+													<div class="col-sm-4">
+													</div>
+
+													<div class="media d-block">
+														<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
+															<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
+														</a>
+														<div class="media-body">
+															<span class="media-meta float-right">
+																<%=proceeding[4];%>
+															</span>
+															<h4 class="title">
+																<%if (proceeding[3] == 'null') {%>
+																	<%= proceeding[1] %>
+																		<%} else {%>
+																			<a href="<%= proceeding[3] %>" target="blank">
+																				<%= proceeding[1] %>
+																			</a>
+																			<%}%>
+
+																				<span class="pull-right Tìtulo">(Título)</span>
+															</h4>
+															<p class="summary">Autores:
+																<% for (author of proceeding[2]){%>
+																	<span>
+																		<%= author %>;</span>
+																	<%}%>
+															</p>
+															<p class="summary">Alunos Envolvidos:
+																<% for (student of proceeding[7]){%>
+																	<span>
+																		<%= student %>;</span>
+																	<%}%>
+															</p>
+														</div>
+													</div>
+												</td>
+										</tr>
+										<% }
+									} %>
+
+											<% if (proceedingsByAuthor){
+											for (proceeding of proceedingsByAuthor){%>
+												<tr data-status="Autor" id="proceeding <%=proceeding[4];%> <%=proceeding[5];%> <%=proceeding[6];%>">
+													<td>
+														<div class="ckbox">
+															<input type="checkbox" id="checkbox1">
+															<label for="checkbox1"></label>
+														</div>
+													</td>
 													<td>
 														<div class="col-sm-4">
 														</div>
 
-														<div class="media d-block">
+														<div class="media">
 															<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
 																<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
 															</a>
 															<div class="media-body">
-																<span class="media-meta float-right">
+																<span class="media-meta pull-right">
 																	<%=proceeding[4];%>
 																</span>
 																<h4 class="title">
@@ -108,7 +159,7 @@
 																				</a>
 																				<%}%>
 
-																					<span class="pull-right Tìtulo">(Título)</span>
+																					<span class="pull-right Tìtulo">(Tìtulo)</span>
 																</h4>
 																<p class="summary">Autores:
 																	<% for (author of proceeding[2]){%>
@@ -125,110 +176,59 @@
 															</div>
 														</div>
 													</td>
-											</tr>
-											<% } %>
-												<% } %>
+												</tr>
+												<% }
+										} %>
 
-													<% if (proceedingsByAuthor){%>
-														<% for (proceeding of proceedingsByAuthor){%>
-															<tr data-status="Autor" id="proceeding <%=proceeding[4];%> <%=proceeding[5];%> <%=proceeding[6];%>">
-																<td>
-																	<div class="ckbox">
-																		<input type="checkbox" id="checkbox1">
-																		<label for="checkbox1"></label>
-																	</div>
-																</td>
-																<td>
-																	<div class="col-sm-4">
-																	</div>
-
-																	<div class="media">
-																		<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
-																			<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-																		</a>
-																		<div class="media-body">
-																			<span class="media-meta pull-right">
-																				<%=proceeding[4];%>
-																			</span>
-																			<h4 class="title">
-																				<%if (proceeding[3] == 'null') {%>
-																					<%= proceeding[1] %>
-																						<%} else {%>
-																							<a href="<%= proceeding[3] %>" target="blank">
-																								<%= proceeding[1] %>
-																							</a>
-																							<%}%>
-
-																								<span class="pull-right Tìtulo">(Tìtulo)</span>
-																			</h4>
-																			<p class="summary">Autores:
-																				<% for (author of proceeding[2]){%>
-																					<span>
-																						<%= author %>;</span>
-																					<%}%>
-																			</p>
-																			<p class="summary">Alunos Envolvidos:
-																				<% for (student of proceeding[7]){%>
-																					<span>
-																						<%= student %>;</span>
-																					<%}%>
-																			</p>
-																		</div>
-																	</div>
-																</td>
-															</tr>
-															<% }
-													} %>
-
-																<% if (proceedingsByStudents){
+													<% if (proceedingsByStudents){
 																for (proceeding of proceedingsByStudents){%>
-																	<tr data-status="Aluno" id="proceeding <%=proceeding[4];%> <%=proceeding[5];%> <%=proceeding[6];%>">
-																		<td>
-																			<div class="ckbox">
-																				<input type="checkbox" id="checkbox1">
-																				<label for="checkbox1"></label>
-																			</div>
-																		</td>
-																		<td>
-																			<div class="col-sm-4">
-																			</div>
+														<tr data-status="Aluno" id="proceeding <%=proceeding[4];%> <%=proceeding[5];%> <%=proceeding[6];%>">
+															<td>
+																<div class="ckbox">
+																	<input type="checkbox" id="checkbox1">
+																	<label for="checkbox1"></label>
+																</div>
+															</td>
+															<td>
+																<div class="col-sm-4">
+																</div>
 
-																			<div class="media">
-																				<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
-																					<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-																				</a>
-																				<div class="media-body">
-																					<span class="media-meta pull-right">
-																						<%=now%>
-																					</span>
-																					<h4 class="title">
-																						<%if (proceeding[3] == 'null') {%>
+																<div class="media">
+																	<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
+																		<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
+																	</a>
+																	<div class="media-body">
+																		<span class="media-meta pull-right">
+																			<%=now%>
+																		</span>
+																		<h4 class="title">
+																			<%if (proceeding[3] == 'null') {%>
+																				<%= proceeding[1] %>
+																					<%} else {%>
+																						<a href="<%= proceeding[3] %>" target="blank">
 																							<%= proceeding[1] %>
-																								<%} else {%>
-																									<a href="<%= proceeding[3] %>" target="blank">
-																										<%= proceeding[1] %>
-																									</a>
-																									<%}%>
+																						</a>
+																						<%}%>
 
-																										<span class="pull-right Tìtulo">(Título)</span>
-																					</h4>
-																					<p class="summary">Autores:
-																						<% for (author of proceeding[2]){%>
-																							<span>
-																								<%= author %>;</span>
-																							<%}%>
-																					</p>
-																					<p class="summary">Alunos Envolvidos:
-																						<% for (student of proceeding[7]){%>
-																							<span>
-																								<%= student %>;</span>
-																							<%}%>
-																					</p>
-																				</div>
-																			</div>
-																		</td>
-																	</tr>
-																	<% }
+																							<span class="pull-right Tìtulo">(Título)</span>
+																		</h4>
+																		<p class="summary">Autores:
+																			<% for (author of proceeding[2]){%>
+																				<span>
+																					<%= author %>;</span>
+																				<%}%>
+																		</p>
+																		<p class="summary">Alunos Envolvidos:
+																			<% for (student of proceeding[7]){%>
+																				<span>
+																					<%= student %>;</span>
+																				<%}%>
+																		</p>
+																	</div>
+																</div>
+															</td>
+														</tr>
+														<% }
 															} %>
 								</tbody>
 							</table>
@@ -236,13 +236,211 @@
 					</div>
 				</div>
 			</div>
-			<% } %>
+			<% }
 
-				<% if (chkBoxResearchWorks) {%>
+				if (chkBoxResearchWorks) {%>
+				<div class="card text-center">
+					<div class="card-header">
+						<!-- CHECKBOX PROJETOS DE PESQUISA -->
+						<h3>Projetos de Pesquisa Relacionados</h3>
+						<!-- <h5 class="text-left">Buscou por: <span class="ml-3">"<i>STR</i>"</span></h5> -->
+					</div>
+
+					<div class="my-3"></div>
+
+					<div class="row" style="width:100%;padding-left: 2%;">
+
+						<!-- FILTRO -->
+						<div class="col-lg-2">
+							<ul class="list-group">
+								<li class="list-group-item list-group-item-success">Filtrar por...</li>
+								<button class="btn btn-success research-filter">Todos</button>
+								<li class="list-group-item list-group-item-success">Ano</li>
+								<button class="btn research-filter">2019</button>
+								<button class="btn research-filter">2018</button>
+								<button class="btn research-filter">2017</button>
+								<button class="btn research-filter">2016</button>
+								<button class="btn research-filter">2015</button>
+								<button class="btn research-filter">2014</button>
+								<button class="btn research-filter">2013</button>
+								<button class="btn research-filter">2012</button>
+								<button class="btn research-filter">2011</button>
+								<li class="list-group-item list-group-item-success">Modalidade da Bolsa</li>
+								<button class="btn research-filter">PIBIC</button>
+								<button class="btn research-filter">PIBIC-JR</button>
+								<button class="btn research-filter">PIBITI</button>
+								<button class="btn research-filter">Voluntário</button>
+								<button class="btn research-filter">PIBEX</button>
+								<li class="list-group-item list-group-item-success">Agente Financiador</li>
+								<button class="btn research-filter">Interno</button>
+								<button class="btn research-filter">FAPEMIG</button>
+								<button class="btn research-filter">CNPq</button>
+							</ul>
+						</div>
+
+						<div class="table-container text-left col-lg">
+							<table class="table table-filter">
+								<tbody>
+									<% if (researchWorksByName){%>
+										<% for (researchWork of researchWorksByName){%>
+											<% var now = new Date(researchWork[2]); %>
+												<tr data-status="Tìtulo" id="researchWork <%=now.getFullYear();%> <%=researchWork[5]%> <%=researchWork[6]%>">
+													<td class="text-center mx-auto">
+														<div class="ckbox m-auto d-block">
+															<input type="checkbox" id="checkbox1">
+															<label for="checkbox1"></label>
+														</div>
+													</td>
+													<td>
+														<div class="col-sm-4">
+														</div>
+
+														<div class="media d-block">
+															<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
+																<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
+															</a>
+															<div class="media-body">
+																<span class="media-meta float-right">
+																	<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){
+																			var now = new Date(researchWork[2]);
+																			var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+																		<%= now.toLocaleDateString('en-GB',options); %>
+																			<% } %>
+																</span>
+																<h4 class="title">
+																	<%= researchWork[1] %>
+																		<span class="pull-right Tìtulo">(Título)</span>
+																</h4>
+																<p class="summary">Autores:
+																	<% for (author of researchWork[3]){%>
+																		<span>
+																			<%= author %>;</span>
+																		<%}%>
+																</p>
+																<p class="summary">Alunos Envolvidos:
+																	<% for (student of researchWork[4]){%>
+																		<span>
+																			<%= student %>;</span>
+																		<%}%>
+																</p>
+															</div>
+														</div>
+													</td>
+												</tr>
+												<% }
+									} %>
+
+													<% if (researchWorksByAuthor){
+															for (researchWork of researchWorksByAuthor){
+																var now = new Date(researchWork[2]); %>
+														<tr data-status="Autor" id="researchWork <%=now.getFullYear();%> <%=researchWork[5]%> <%=researchWork[6]%>">
+															<td>
+																<div class="ckbox">
+																	<input type="checkbox" id="checkbox1">
+																	<label for="checkbox1"></label>
+																</div>
+															</td>
+															<td>
+																<div class="col-sm-4"></div>
+
+																<div class="media">
+																	<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
+																		<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
+																	</a>
+																	<div class="media-body">
+																		<span class="media-meta pull-right">
+																			<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){
+																						var now = new Date(researchWork[2]);
+																						var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+																				<%= now.toLocaleDateString('en-GB',options); %>
+																					<% } %>
+																		</span>
+																		<h4 class="title">
+																			<%= researchWork[1] %>
+																				<span class="pull-right Tìtulo">(Título)</span>
+																		</h4>
+																		<p class="summary">Autores:
+																			<% if (researchWork[3] != [] && researchWork[3] != undefined) {
+																						for (author of researchWork[3]){%>
+																				<span>
+																					<%= author %>;</span>
+																				<%}
+																					}%>
+																		</p>
+																		<p class="summary">Alunos Envolvidos:
+																			<% if (researchWork[4] != [] && researchWork[4] != undefined) {
+																						for (student of researchWork[4]){%>
+																				<span>
+																					<%= student %>;</span>
+																				<%}
+																					}%>
+																		</p>
+																	</div>
+																</div>
+															</td>
+														</tr>
+														<% }
+															} %>
+
+															<% if (researchWorksByStudents){
+																for (researchWork of researchWorksByStudents){
+																				var now = new Date(researchWork[2]); %>
+																<tr data-status="Aluno" id="researchWork <%=now.getFullYear();%> <%=researchWork[5]%> <%=researchWork[6]%>">
+																	<td>
+																		<div class="ckbox">
+																			<input type="checkbox" id="checkbox1">
+																			<label for="checkbox1"></label>
+																		</div>
+																	</td>
+																	<td>
+																		<div class="media">
+																			<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
+																				<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
+																			</a>
+																			<div class="media-body">
+																				<span class="media-meta pull-right">
+																					<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){
+																								var now = new Date(researchWork[2]);
+																									var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+																						<%= now.toLocaleDateString('en-GB',options); %>
+																							<% } %>
+																				</span>
+																				<h4 class="title">
+																					<%= researchWork[1] %>
+																						<span class="pull-right Tìtulo">(Título)</span>
+																				</h4>
+																				<p class="summary">Autores:
+																					<% for (author of researchWork[3]){%>
+																						<span>
+																							<%= author %>;</span>
+																						<%}%>
+																				</p>
+																				<p class="summary">Alunos Envolvidos:
+																					<%if (researchWork[4]) {
+																								for (student of researchWork[4]){%>
+																						<span>
+																							<%= student %>;</span>
+																						<%}
+																								}%>
+																				</p>
+																			</div>
+																		</div>
+																	</td>
+																</tr>
+																<% }
+																} %>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<%}
+
+				if (chkBoxGroups) {%>
 					<div class="card text-center">
 						<div class="card-header">
-							<!-- CHECKBOX PROJETOS DE PESQUISA -->
-							<h3>Projetos de Pesquisa Relacionados</h3>
+							<!-- CHECKBOX GRUPOS DE PESQUISA -->
+							<h3>Grupos de Pesquisa Relacionados</h3>
 							<!-- <h5 class="text-left">Buscou por: <span class="ml-3">"<i>STR</i>"</span></h5> -->
 						</div>
 
@@ -254,181 +452,174 @@
 							<div class="col-lg-2">
 								<ul class="list-group">
 									<li class="list-group-item list-group-item-success">Filtrar por...</li>
-									<button class="btn btn-success research-filter">Todos</button>
+									<button class="btn btn-success group-filter">Todos</button>
 									<li class="list-group-item list-group-item-success">Ano</li>
-									<button class="btn research-filter">2019</button>
-									<button class="btn research-filter">2018</button>
-									<button class="btn research-filter">2017</button>
-									<button class="btn research-filter">2016</button>
-									<button class="btn research-filter">2015</button>
-									<button class="btn research-filter">2014</button>
-									<button class="btn research-filter">2013</button>
-									<button class="btn research-filter">2012</button>
-									<button class="btn research-filter">2011</button>
-									<li class="list-group-item list-group-item-success">Modalidade da Bolsa</li>
-									<button class="btn research-filter">PIBIC</button>
-									<button class="btn research-filter">PIBIC-JR</button>
-									<button class="btn research-filter">PIBITI</button>
-									<button class="btn research-filter">Voluntário</button>
-									<button class="btn research-filter">PIBEX</button>
-									<li class="list-group-item list-group-item-success">Agente Financiador</li>
-									<button class="btn research-filter">Interno</button>
-									<button class="btn research-filter">FAPEMIG</button>
-									<button class="btn research-filter">CNPq</button>
+									<button class="btn group-filter">2019</button>
+									<button class="btn group-filter">2018</button>
+									<button class="btn group-filter">2017</button>
+									<button class="btn group-filter">2016</button>
+									<button class="btn group-filter">2015</button>
+									<button class="btn group-filter">2014</button>
+									<button class="btn group-filter">2013</button>
+									<button class="btn group-filter">2012</button>
+									<button class="btn group-filter">2011</button>
+									<li class="list-group-item list-group-item-success">Área</li>
+									<button class="btn group-filter">Administração</button>
+									<button class="btn group-filter">Ciência da Computação</button>
+
 								</ul>
 							</div>
 
 							<div class="table-container text-left col-lg">
 								<table class="table table-filter">
 									<tbody>
-										<% if (researchWorksByName){%>
-											<% for (researchWork of researchWorksByName){%>
-												<% var now = new Date(researchWork[2]); %>
-													<tr data-status="Tìtulo" id="researchWork <%=now.getFullYear();%> <%=researchWork[5]%> <%=researchWork[6]%>">
-														<td class="text-center mx-auto">
-															<div class="ckbox m-auto d-block">
+										<% if (groupsByName){
+												for (group of groupsByName){
+													var now = new Date(group[3]); %>
+											<tr data-status="Tìtulo" id="group <%=now.getFullYear()%> <%=group[2]%>">
+												<td class="text-center mx-auto">
+													<div class="ckbox m-auto d-block">
+														<input type="checkbox" id="checkbox1">
+														<label for="checkbox1"></label>
+													</div>
+												</td>
+												<td>
+													<div class="col-sm-4">
+													</div>
+
+													<div class="media d-block">
+														<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
+															<img src="/CPPG/favicon.ico" class="media-photo">
+														</a>
+														<div class="media-body">
+															<span class="media-meta float-right">
+																<% if (group[3] != [] && group[3] != undefined && group[3] != null){
+																	var now = new Date(group[3]);
+																		var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+															<%= now.toLocaleDateString('en-GB',options); %>
+																<% } %>
+															</span>
+															<h4 class="title">
+																<%= group[1] %>
+																	<span class="pull-right Tìtulo">(Título)</span>
+															</h4>
+															<p class="summary">Autores:
+																<% for (author of group[4]){%>
+																	<span>
+																		<%= author %>;</span>
+																	<%}%>
+															</p>
+															<p class="summary">Alunos Envolvidos:
+																<% for (student of group[5]){%>
+																	<span>
+																		<%= student %>;</span>
+																	<%}%>
+															</p>
+														</div>
+													</div>
+												</td>
+											</tr>
+											<% }
+										} %>
+
+												<%	if (groupsByAuthor){
+												for (group of groupsByAuthor){
+													var now = new Date(group[3]); %>
+													<tr data-status="Autor" id="group <%=now.getFullYear()%> <%=group[2]%>">
+														<td>
+															<div class="ckbox">
 																<input type="checkbox" id="checkbox1">
 																<label for="checkbox1"></label>
 															</div>
 														</td>
 														<td>
-															<div class="col-sm-4">
-															</div>
+															<div class="col-sm-4"></div>
 
-															<div class="media d-block">
+															<div class="media">
 																<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
-																	<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
+																	<img src="/CPPG/favicon.ico" class="media-photo">
 																</a>
 																<div class="media-body">
-																	<span class="media-meta float-right">
-																		<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){ %>
-																			<% var now = new Date(researchWork[2]); %>
-																				<% var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-																					<%= now.toLocaleDateString('en-GB',options); %>
-																						<% } %>
+																	<span class="media-meta pull-right">
+																<% if (group[3] != [] && group[3] != undefined && group[3] != null){
+																	var now = new Date(group[3]);
+																		var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+															<%= now.toLocaleDateString('en-GB',options); %>
+																<% } %>
 																	</span>
 																	<h4 class="title">
-																		<%= researchWork[1] %>
+																		<%= group[1] %>
 																			<span class="pull-right Tìtulo">(Título)</span>
 																	</h4>
 																	<p class="summary">Autores:
-																		<% for (author of researchWork[3]){%>
+																		<% if (group[4] != [] && group[4] != undefined) {
+																	for (author of group[4]){%>
 																			<span>
 																				<%= author %>;</span>
-																			<%}%>
+																			<%}
+																}%>
 																	</p>
 																	<p class="summary">Alunos Envolvidos:
-																		<% for (student of researchWork[4]){%>
+																		<% if (group[5] != [] && group[5] != undefined) {
+																	for (student of group[5]){%>
 																			<span>
 																				<%= student %>;</span>
-																			<%}%>
+																			<%}
+																}%>
 																	</p>
 																</div>
 															</div>
 														</td>
 													</tr>
 													<% }
-									} %>
-
-														<% if (researchWorksByAuthor){
-										for (researchWork of researchWorksByAuthor){%>
-															<% var now = new Date(researchWork[2]); %>
-																<tr data-status="Autor" id="researchWork <%=now.getFullYear();%> <%=researchWork[5]%> <%=researchWork[6]%>">
-																	<td>
-																		<div class="ckbox">
-																			<input type="checkbox" id="checkbox1">
-																			<label for="checkbox1"></label>
+										}%>
+														<% if (groupsByStudents){
+											for (group of groupsByStudents){
+												var now = new Date(group[3]); %>
+															<tr data-status="Aluno" id="group <%=now.getFullYear()%> <%=group[2]%>">
+																<td>
+																	<div class="ckbox">
+																		<input type="checkbox" id="checkbox1">
+																		<label for="checkbox1"></label>
+																	</div>
+																</td>
+																<td>
+																	<div class="media">
+																		<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
+																			<img src="/CPPG/favicon.ico" class="media-photo">
+																		</a>
+																		<div class="media-body">
+																			<span class="media-meta pull-right">		
+																<% if (group[3] != [] && group[3] != undefined && group[3] != null){
+																	var now = new Date(group[3]);
+																		var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+															<%= now.toLocaleDateString('en-GB',options); %>
+																<% } %>
+																			</span>
+																			<h4 class="title">
+																				<%= group[1] %>
+																					<span class="pull-right Tìtulo">(Título)</span>
+																			</h4>
+																			<p class="summary">Autores:
+																				<% for (author of group[4]){%>
+																					<span>
+																						<%= author %>;</span>
+																					<%}%>
+																			</p>
+																			<p class="summary">Alunos Envolvidos:
+																				<%if (group[5]) {
+																			for (student of group[5]){%>
+																					<span>
+																						<%= student %>;</span>
+																					<%}
+																		}%>
+																			</p>
 																		</div>
-																	</td>
-																	<td>
-																		<div class="col-sm-4"></div>
-
-																		<div class="media">
-																			<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
-																				<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-																			</a>
-																			<div class="media-body">
-																				<span class="media-meta pull-right">
-																					<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){ %>
-																						<% var now = new Date(researchWork[2]); %>
-																							<% var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-																								<%= now.toLocaleDateString('en-GB',options); %>
-																									<% } %>
-																				</span>
-																				<h4 class="title">
-																					<%= researchWork[1] %>
-																						<span class="pull-right Tìtulo">(Título)</span>
-																				</h4>
-																				<p class="summary">Autores:
-																					<% if (researchWork[3] != [] && researchWork[3] != undefined) { %>
-																						<% for (author of researchWork[3]){%>
-																							<span>
-																								<%= author %>;</span>
-																							<%}%>
-																								<%}%>
-																				</p>
-																				<p class="summary">Alunos Envolvidos:
-																					<% if (researchWork[4] != [] && researchWork[4] != undefined) { %>
-																						<% for (student of researchWork[4]){%>
-																							<span>
-																								<%= student %>;</span>
-																							<%}%>
-																								<%}%>
-																				</p>
-																			</div>
-																		</div>
-																	</td>
-																</tr>
-																<% }
-															} %>
-
-																	<% if (researchWorksByStudents){
-																			for (researchWork of researchWorksByStudents){
-																				var now = new Date(researchWork[2]); %>
-																		<tr data-status="Aluno" id="researchWork <%=now.getFullYear();%> <%=researchWork[5]%> <%=researchWork[6]%>">
-																			<td>
-																				<div class="ckbox">
-																					<input type="checkbox" id="checkbox1">
-																					<label for="checkbox1"></label>
-																				</div>
-																			</td>
-																			<td>
-																				<div class="media">
-																					<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
-																						<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-																					</a>
-																					<div class="media-body">
-																						<span class="media-meta pull-right">
-																							<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){
-																								var now = new Date(researchWork[2]);
-																									var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-																								<%= now.toLocaleDateString('en-GB',options); %>
-																									<% } %>
-																						</span>
-																						<h4 class="title">
-																							<%= researchWork[1] %>
-																								<span class="pull-right Tìtulo">(Título)</span>
-																						</h4>
-																						<p class="summary">Autores:
-																							<% for (author of researchWork[3]){%>
-																								<span>
-																									<%= author %>;</span>
-																								<%}%>
-																						</p>
-																						<p class="summary">Alunos Envolvidos:
-																							<%if (researchWork[4]) {
-																								for (student of researchWork[4]){%>
-																								<span>
-																									<%= student %>;</span>
-																								<%}
-																								}%>
-																						</p>
-																					</div>
-																				</div>
-																			</td>
-																		</tr>
-																		<% }
-																} %>
+																	</div>
+																</td>
+															</tr>
+															<% }
+												} %>
 									</tbody>
 								</table>
 							</div>
@@ -436,6 +627,8 @@
 					</div>
 					</div>
 					<% } %>
+
+						</div>
 						<!-- FOOTER -->
 						<footer class="container">
 							<p class="float-right">

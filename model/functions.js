@@ -131,6 +131,71 @@ var functions = {
 			throw e;
 		}
 	},
+	getGroupsByItsNameTeacherOrStudents: function (toSearchValue) {
+		var treatedResults = [];
+		var queryGetGroupsByTitle = "SELECT id AS groupCode FROM grupo_pesquisa WHERE nome LIKE '" + toSearchValue + "'";
+		var queryGetGroupsByTeachers = "SELECT G.id AS groupCode, nome AS groupName, nomeServidor AS groupAuthor FROM grupo_pesquisa G JOIN servidor_participa_grupo SG ON SG.idGrupo = G.id JOIN servidor S ON S.siapeServidor = SG.siapeServidor WHERE S.nomeServidor LIKE '" + toSearchValue + "'";
+		var queryGetGroupsByStudents = "SELECT G.id AS groupCode FROM grupo_pesquisa G JOIN aluno_participa_grupo AG ON AG.idGrupo = G.id JOIN aluno A ON A.matriculaAluno = AG.matriculaAluno WHERE A.nomeAluno LIKE '" + toSearchValue + "'";
+		var sql = queryGetGroupsByTitle + ";" + queryGetGroupsByTeachers + ";" + queryGetGroupsByStudents + ";";
+
+		try {
+			return new Promise(function (resolve) {
+				vars.con.query(sql, [1, 2, 3], function (err, results) {
+					if (err) {
+						return Promise.reject(err);
+					}
+
+					//Trata cada resultado obtido
+					//Trata a busca por nome do grupo
+					var GroupsByName = [];
+					var promises = [];
+					results[0].forEach(function (result) {
+						var groupCode = result["groupCode"];
+						const promise = functions.getResearchGroupInfoByItsCode(groupCode);
+						promises.push(promise);
+					});
+
+					//Trata cada resultado obtido
+					//Trata a busca por nome de autor
+					Promise.all(promises).then(Groups => {
+						GroupsByName.push(Groups);
+						treatedResults.push(GroupsByName);
+
+						var GroupsByAuthor = [];
+						promises = [];
+						results[1].forEach(function (result) {
+							var groupCode = result["groupCode"];
+							const promise = functions.getResearchGroupInfoByItsCode(groupCode);
+							promises.push(promise);
+						});
+						//Trata cada resultado obtido
+						//Trata a busca por nome de aluno
+						Promise.all(promises).then(research => {
+							GroupsByAuthor.push(research);
+							treatedResults.push(GroupsByAuthor);
+
+							var GroupsByStudents = [];
+							promises = [];
+							results[2].forEach(function (result) {
+								var groupCode = result["groupCode"];
+								const promise = functions.getResearchGroupInfoByItsCode(groupCode);
+								promises.push(promise);
+							});
+
+							Promise.all(promises).then(research => {
+								GroupsByStudents.push(research);
+								treatedResults.push(GroupsByStudents);
+								resolve(treatedResults);
+							});
+						});
+					});
+				});
+			});
+		}
+		catch (e) {
+			throw e;
+		}
+	},
 	getResearchWorksByYearRangeAndTeacher: function (yearRange, teacherCod) {
 		try {
 			var years = "";
@@ -288,10 +353,10 @@ var functions = {
 				var researchInfo = [];
 				researchInfo.push(researchCode);
 
-				if (results[0][0] != undefined){
+				if (results[0][0] != undefined) {
 					researchInfo.push(results[0][0]["researchName"]);
 					researchInfo.push(results[0][0]["initialDate"]);
-				} 
+				}
 				researchInfo.push([]);
 				results[0].forEach(function (result) {
 					var researchAuthor = functions.capitalizeString(result["researchAuthor"]);
@@ -304,8 +369,8 @@ var functions = {
 					researchInfo[4].push(student["researchStudent"]);
 				});
 				if (results[1][0] != undefined) {
-				researchInfo.push(results[1][0]["scholarship"]);
-				researchInfo.push(results[1][0]["financier"]);
+					researchInfo.push(results[1][0]["scholarship"]);
+					researchInfo.push(results[1][0]["financier"]);
 				}
 				resolve(researchInfo);
 			});
@@ -440,7 +505,7 @@ var functions = {
 	getCispPrestationCode: function (codePresentation) {
 		const sql = "SELECT * FROM apresentacao_cisp WHERE id = " + codePresentation + ";";
 		result = [];
-		
+
 		return new Promise(function (resolve, reject) {
 			vars.con.query(sql, function (err, results) {
 				if (err) reject(err);
@@ -483,7 +548,7 @@ var functions = {
 				var groupInfo = [];
 				groupInfo.push(researchGroupCode);
 
-				if (results[0][0] != undefined) { 
+				if (results[0][0] != undefined) {
 					groupInfo.push(results[0][0]["researchName"]);
 					groupInfo.push(results[0][0]["area"]);
 					groupInfo.push(results[0][0]["initialDate"]);

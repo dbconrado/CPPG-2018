@@ -78,4 +78,24 @@ $(document).ready(function () {
     }
   });
 
+  $('.group-filter').click(function () {
+    var value = $(this).text();
+
+    if (value != 'Todos') {
+      $('tr[id*=group]').each(function () {
+          if ($(this).attr('id').indexOf(value) > - 1) {
+            $(this).fadeIn();
+          } else {
+            $(this).fadeOut();
+          }
+        });
+      $('.group-filter').removeClass('btn-success');
+      $(this).addClass('btn-success');
+    } else {
+      $('tr[id*=group]').fadeIn();
+      $('.group-filter').removeClass('btn-success');
+      $(this).addClass('btn-success');
+    }
+  });
+
 });
