@@ -366,7 +366,9 @@ var functions = {
 				// Itera entre os alunos envolvidos
 				researchInfo.push([]);
 				results[1].forEach(function (student) {
-					researchInfo[4].push(student["researchStudent"]);
+					if (researchInfo[4] != undefined) {
+						researchInfo[4].push(student["researchStudent"]);
+					}
 				});
 				if (results[1][0] != undefined) {
 					researchInfo.push(results[1][0]["scholarship"]);
