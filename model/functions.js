@@ -521,8 +521,6 @@ var functions = {
 						console.log(images)
 					})
 				});*/
-				console.log(results['apresentador'])
-
 				resolve(results);
 			});
 		});

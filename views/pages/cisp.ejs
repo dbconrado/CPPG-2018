@@ -29,25 +29,31 @@
     <br>O
     <b>CISP</b> foi iniciado em setembro de 2018 e contou com quatro pesquisadores que compartilharam suas pesquisas com discentes,
     servidores e comunidade externa do campus ao longo do ano. Em setembro o
-    <a href="http://lattes.cnpq.br/4469934696623908">Prof. Me. Daniel Conrado</a> apresentou sua pesquisa sobre a elaboração de um jogo digital terapêutico para apoiar o
+    Prof. Me. Daniel Conrado apresentou sua pesquisa sobre a elaboração de um jogo digital terapêutico para apoiar o
     tratatamento e bem-estar de crianças com câncer. Em outubro o
-    <a href="http://lattes.cnpq.br/6792126176343478">Prof. Dr. Daniel Rocha</a> abordou a bioengenharia e a aplicação dos conhecimentos de engenharia no desenvolvimento de
+    Prof. Dr. Daniel Rocha abordou a bioengenharia e a aplicação dos conhecimentos de engenharia no desenvolvimento de
     tecnologias para auxiliar os seres vivos. No dia 14 de novembro a bacharelanda em Sistemas de Informação do IFMG-Sabará,
-    <a href="http://lattes.cnpq.br/9305919692112746">Nayane França</a> apresentou sua pesquisa para identificação de perfis ansiosos no meio acadêmico utilizando técnicas
+    Nayane França apresentou sua pesquisa para identificação de perfis ansiosos no meio acadêmico utilizando técnicas
     de ciências de dados. No dia 28 de novembro foi a vez de uma convidada externa, a
-    <a href="http://lattes.cnpq.br/6972706454904139">Profª. Drª. Lillia Barsante</a> que falou sobre modelagem matemática do ciclo do
+    Profª. Drª. Lillia Barsante que falou sobre modelagem matemática do ciclo do
     <i>Aedes</i>, tema de seu doutorado no CEFET-MG e que vem trabalhando em projetos de pesquisa com professores e alunos do
     IFMG-Sabará. O seminário ocorreu em consoante à "Semana Nacional de Combate ao
     <i>Aedes</i>", que ocorre do dia 25 a 30 de novembro. O
     <b>CISP 2018</b> encerrou-se no dia 12 de dezembro com a apresentação da
-    <a href="http://lattes.cnpq.br/2858105725830291">Profª. Drª. Camila Pereira</a>. A proposição da criação destes ciclos de seminários, bem como sua organização foi idealizada
+    Profª. Drª. Camila Pereira. A proposição da criação destes ciclos de seminários, bem como sua organização foi idealizada
     pelos professores do campus: Carlos Alexandre, Cristiane Norbiato e Daniel Conrado.
+
+    <% var count = 0;
+     for(presentation of presentations) {
+      if (presentation['apresentado'] == 0) count++;
+    } 
+    if (count > 0){ %>
 
     <!-- PRÓXIMAS APRESENTAÇÕES -->
     <h2 class="featurette-heading my-2">Próximas Apresentações</h2>
     <div class="row mb-2">
-      <% for(presentation of presentations) { %>
-        <% if(presentation['apresentado'] == 0){ %>
+      <% for(presentation of presentations) {
+        if(presentation['apresentado'] == 0){ %>
           <div class="col-md-6">
             <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
               <div class="col p-4 d-flex flex-column position-static">
@@ -77,10 +83,12 @@
               </div>
             </div>
           </div>
-          <% } %>
-            <% } %>
+          <% }
+         } %>
     </div>
     <!-- FIM PRÓXIMAS APRESENTAÇÕES -->
+
+  <%} %>
 
     <!-- GALERIA DE APRESENTAÇÕES -->
     <h2 class="featurette-heading my-2">Apresentações Anteriores</h2>
