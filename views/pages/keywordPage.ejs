@@ -53,11 +53,7 @@
 												</a>
 												<div class="media-body">
 													<span class="media-meta pull-right">
-														<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){ %>
-															<% var now = new Date(researchWork[2]); %>
-															<% var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-															<%= now.toLocaleDateString('en-GB',options); %>
-														<% } %>
+															<%=proceeding[4];%>
 													</span>
 													<h4 class="title">
 														<% if (proceeding[1] != [] && proceeding[1] != undefined) { %>
@@ -81,8 +77,8 @@
 																	<%}%>
 													</p>
 													<p class="summary">Alunos Envolvidos:
-														<% if (proceeding[4] != [] && proceeding[4] != undefined) { %>
-															<% for (student of proceeding[4]){%>
+														<% if (proceeding[7] != [] && proceeding[7] != undefined) { %>
+															<% for (student of proceeding[7]){%>
 																<span>
 																	<%= student %>;</span>
 																<%}%>
