@@ -19,67 +19,107 @@
                 <h3>Grupos de Pesquisa</h3>
             </div>
 
-            <div class="card-body">
-                <div class="table-container text-left">
-                    <table class="table table-filter">
-                        <tbody>
-                            <% for (researchGroup of researchGroups){%>
-                                <tr data-status="Tìtulo">
-                                    <td class="text-center mx-auto">
-                                        <div class="ckbox m-auto d-block">
-                                            <input type="checkbox" id="checkbox1">
-                                            <label for="checkbox1"></label>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <div class="col-sm-4">
-                                        </div>
+            <div class="row" style="width:100%;padding-left: 2%;">
 
-                                        <div class="media d-block">
-                                            <a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
-                                                <img src="/CPPG/favicon.ico" class="media-photo">
-                                            </a>
-                                            <div class="media-body">
-                                                <span class="media-meta float-right">
-                                                    <% var now = researchGroup[3];
+                <div class="col-lg-2">
+                    <ul class="list-group">
+                        <li class="list-group-item list-group-item-success">Filtrar por...</li>
+                        <button class="btn btn-success group-filter">Todos</button>
+                        <li class="list-group-item list-group-item-success">Ano</li>
+                        <button class="btn group-filter">2019</button>
+                        <button class="btn group-filter">2018</button>
+                        <button class="btn group-filter">2017</button>
+                        <button class="btn group-filter">2016</button>
+                        <button class="btn group-filter">2015</button>
+                        <button class="btn group-filter">2014</button>
+                        <button class="btn group-filter">2013</button>
+                        <button class="btn group-filter">2012</button>
+                        <button class="btn group-filter">2011</button>
+                        <li class="list-group-item list-group-item-success">Área</li>
+                        <button class="btn group-filter">Administração</button>
+                        <button class="btn group-filter">Ciência da Computação</button>
+
+                    </ul>
+                </div>
+
+                <div class="card-body">
+                    <div class="table-container text-left">
+                        <table class="table table-filter">
+                            <tbody>
+                                <% for (researchGroup of researchGroups){
+                                    var now = new Date(researchGroup[3]);%>
+                                    <tr data-status="Tìtulo" id="group <%=now.getFullYear()%> <%=researchGroup[2]%>">
+                                        <td class="text-center mx-auto">
+                                            <div class="ckbox m-auto d-block">
+                                                <input type="checkbox" id="checkbox1">
+                                                <label for="checkbox1"></label>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <div class="col-sm-4">
+                                            </div>
+
+                                            <div class="media d-block">
+                                                <a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
+                                                    <img src="/CPPG/favicon.ico" class="media-photo">
+                                                </a>
+                                                <div class="media-body">
+                                                    <span class="media-meta float-right">
+                                                        <% var now = researchGroup[3];
                                                     var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-                                                    <%= now.toLocaleDateString('en-GB',options); %>
-                                                </span>
-                                                <h4 class="title">
-                                                    <%= researchGroup[1] %>
-                                                        <span class="pull-right Tìtulo">(Título)</span>
-                                                </h4>
-                                                <h4 class="title text-muted">Área:
-                                                    <%= researchGroup[2] %>
-                                                </h4>
-                                                <p class="summary">Pesquisadores:
-                                                    <% if (researchGroup[4] != [] && researchGroup[4] != undefined) {
+                                                            <%= now.toLocaleDateString('en-GB',options); %>
+                                                    </span>
+                                                    <h4 class="title">
+                                                        <%= researchGroup[1] %>
+                                                            <span class="pull-right Tìtulo">(Título)</span>
+                                                    </h4>
+                                                    <h4 class="title text-muted">Área:
+                                                        <%= researchGroup[2] %>
+                                                    </h4>
+                                                    <p class="summary">Pesquisadores:
+                                                        <% if (researchGroup[4] != [] && researchGroup[4] != undefined) {
                                                         for (author of researchGroup[4]){%>
                                                             <span>
                                                                 <%= author %>;</span>
-                                                        <%}
+                                                            <%}
                                                     }%>
-                                                </p>
-                                                <p class="summary">
-                                                    <% if (researchGroup[5] != [] && researchGroup[5] != undefined && researchGroup[5].length != 0) { %>
-                                                        Alunos Envolvidos:
-                                                        <% for (student of researchGroup[5]) {%>
-                                                            <span>
-                                                                <%= student %>;</span>
-                                                        <%}
+                                                    </p>
+                                                    <p class="summary">
+                                                        <% if (researchGroup[5] != [] && researchGroup[5] != undefined && researchGroup[5].length != 0) { %>
+                                                            Alunos Envolvidos:
+                                                            <% for (student of researchGroup[5]) {%>
+                                                                <span>
+                                                                    <%= student %>;</span>
+                                                                <%}
                                                     }%>
-                                                </p>
+                                                    </p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                            <% } %>
-                        </tbody>
-                    </table>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
+        <footer class="container">
+            <p class="float-right">
+                <a href="#">Voltar ao topo</a>
+            </p>
+            <p>© 2018 IFMG Campus Sabará</p>
+        </footer>
     </main>
+
+    <!-- Bootstrap core JavaScript -->
+    <% include ../partials/footer %>
+
+        <!-- Other Js -->
+        <script src="/CPPG/assets/js/searchProceedings.js"></script>
+        <script type="text/javascript">
+            document.title = 'Grupos de Pesquisa - ' + document.title;
+        </script>
 
 </body>
 

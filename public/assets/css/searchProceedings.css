@@ -37,6 +37,9 @@
     .panel .btn-group .btn {
         transition: background-color .3s ease;
     }
+    .btn {
+        white-space: normal;
+    }
     .table-filter {
         background-color: #fff;
         border-bottom: 1px solid #eee;

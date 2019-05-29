@@ -440,7 +440,7 @@ router.post('/search', function (req, res) {
 									randomize: true,
 									numBuckets: 5,
 									htmlTag: 'a',
-									additionalAttributes: { href: vars.config.url + '/teacher={{tag}}' }
+									additionalAttributes: { href: req.baseUrl + '/CPPG/teacher={{tag}}' }
 								});
 						}).catch((err) => setImmediate(() => { throw err; }));
 					}).catch((err) => setImmediate(() => { throw err; }));
@@ -460,7 +460,7 @@ router.post('/search', function (req, res) {
 								randomize: true,
 								numBuckets: 5,
 								htmlTag: 'a',
-								additionalAttributes: { href: vars.config.url + '/teacher={{tag}}' }
+								additionalAttributes: { href: req.baseUrl + '/CPPG/teacher={{tag}}' }
 							});
 					}).catch((err) => setImmediate(() => { throw err; }));
 				}).catch((err) => setImmediate(() => { throw err; }));
@@ -478,7 +478,7 @@ router.post('/search', function (req, res) {
 								randomize: true,
 								numBuckets: 5,
 								htmlTag: 'a',
-								additionalAttributes: { href: vars.config.url + '/teacher={{tag}}' }
+								additionalAttributes: { href: req.baseUrl + '/CPPG/teacher={{tag}}' }
 							});
 					}).catch((err) => setImmediate(() => { throw err; }));
 				}).catch((err) => setImmediate(() => { throw err; }));
@@ -496,7 +496,7 @@ router.post('/search', function (req, res) {
 								randomize: true,
 								numBuckets: 5,
 								htmlTag: 'a',
-								additionalAttributes: { href: vars.config.url + '/teacher={{tag}}' }
+								additionalAttributes: { href: req.baseUrl + '/CPPG/teacher={{tag}}' }
 							});
 					}).catch((err) => setImmediate(() => { throw err; }));
 				}).catch((err) => setImmediate(() => { throw err; }));
@@ -515,7 +515,7 @@ router.post('/search', function (req, res) {
 								randomize: true,
 								numBuckets: 5,
 								htmlTag: 'a',
-								additionalAttributes: { href: vars.config.url + '/teacher={{tag}}' }
+								additionalAttributes: { href: req.baseUrl + '/CPPG/teacher={{tag}}' }
 							});
 					}).catch((err) => setImmediate(() => { throw err; }));
 				}).catch((err) => setImmediate(() => { throw err; }));
@@ -532,7 +532,7 @@ router.post('/search', function (req, res) {
 								randomize: true,
 								numBuckets: 5,
 								htmlTag: 'a',
-								additionalAttributes: { href: vars.config.url + '/teacher={{tag}}' }
+								additionalAttributes: { href: req.baseUrl + '/CPPG/teacher={{tag}}' }
 							});
 					}).catch((err) => setImmediate(() => { throw err; }));
 				}).catch((err) => setImmediate(() => { throw err; }));
@@ -549,7 +549,7 @@ router.post('/search', function (req, res) {
 								randomize: true,
 								numBuckets: 5,
 								htmlTag: 'a',
-								additionalAttributes: { href: vars.config.url + '/teacher={{tag}}' }
+								additionalAttributes: { href: req.baseUrl + '/CPPG/teacher={{tag}}' }
 							});
 					}).catch((err) => setImmediate(() => { throw err; }));
 				}).catch((err) => setImmediate(() => { throw err; }));

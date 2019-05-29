@@ -1,45 +1,58 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-    <head>
-        <% include ../partials/head %>
-    </head>
-      <body>
-    
-        <header>
-			<% include ../partials/navbar %>
-			
+
+<head>
+	<% include ../partials/head %>
+</head>
+
+<body>
+
+	<header>
+		<% include ../partials/navbar %>
+
 			<link rel="stylesheet" href="/CPPG/assets/css/geraCertificado.css">
-			
+
 			<!-- Latest compiled and minified CSS -->
 			<link rel="stylesheet" type="text/css" href="/CPPG/assets/css/cloud.css">
-        </header>
-    
-        <main role="main" class="mt-5">
-    
-			<div class="row">
-				<section class="content col-md-6 mx-auto my-5 text-center">
-					<br>
-					<div>
-						<div class="card">
-							<div class="card-header">
-									<h5 class="card-title">Áreas de Publicação</h5>
-							</div>
-							<div class="card-body">
-								<div class="cloud text-truncate">
-									<%- cloud %>
-								</div>										
+	</header>
+
+	<main role="main" class="mt-5">
+
+		<div class="row">
+			<section class="content col-md-6 mx-auto my-5 text-center">
+				<br>
+				<div>
+					<div class="card">
+						<div class="card-header">
+							<h5 class="card-title">Áreas de Publicação</h5>
+						</div>
+						<div class="card-body">
+							<div class="cloud text-truncate">
+								<%- cloud %>
 							</div>
 						</div>
 					</div>
-				</section>
-			</div>
-    
-			<!-- FOOTER -->
-			<footer class="container">
-			<p class="float-right"><a href="#">Voltar ao topo</a></p>
+				</div>
+			</section>
+		</div>
+
+		<!-- FOOTER -->
+		<footer class="container">
+			<p class="float-right">
+				<a href="#">Voltar ao topo</a>
+			</p>
 			<p>© 2018 IFMG Campus Sabará</p>
-			</footer>
-        </main>
-	
-		<!-- Bootstrap core JavaScript -->
-		<% include ../partials/footer %>
+		</footer>
+	</main>
+
+	<!-- Bootstrap core JavaScript -->
+	<% include ../partials/footer %>
+		<script type="text/javascript">
+			var path = window.location.pathname
+			var teacher = unescape(path.substring(path.indexOf('=') + 1))
+			console.log()
+			document.title = teacher + ' - ' + document.title;
+		</script>
+</body>
+
+</html>
