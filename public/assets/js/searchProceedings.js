@@ -31,8 +31,9 @@ $(document).ready(function () {
       });
       $('.filter').removeClass('btn-success');
       $(this).addClass('btn-success');
+      $('html, body').animate({scrollTop:$('#container').offset().top},500);
     } else {
-      $('tr').fadeIn();
+      $('tr').fadeIn();   
       $('.filter').removeClass('btn-success');
       $(this).addClass('btn-success');
     }
@@ -51,6 +52,7 @@ $(document).ready(function () {
         });
       $('.research-filter').removeClass('btn-success');
       $(this).addClass('btn-success');
+      $('html, body').animate({scrollTop:$('#research').offset().top},500);
     } else {
       $('tr[id*=researchWork]').fadeIn();
       $('.research-filter').removeClass('btn-success');
@@ -71,6 +73,7 @@ $(document).ready(function () {
         });
       $('.proceeding-filter').removeClass('btn-success');
       $(this).addClass('btn-success');
+      $('html, body').animate({scrollTop:$('#proceedings').offset().top},500);
     } else {
       $('tr[id*=proceeding]').fadeIn();
       $('.proceeding-filter').removeClass('btn-success');
@@ -91,6 +94,7 @@ $(document).ready(function () {
         });
       $('.group-filter').removeClass('btn-success');
       $(this).addClass('btn-success');
+      $('html, body').animate({scrollTop:$('#container').offset().top},500);
     } else {
       $('tr[id*=group]').fadeIn();
       $('.group-filter').removeClass('btn-success');
