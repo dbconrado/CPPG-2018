@@ -93,7 +93,7 @@ router.get('/indicadores', function (req, res) {
 					randomize: false,
 					numBuckets: 5,
 					htmlTag: 'a',
-					additionalAttributes: { href: vars.config.url + '/keyword={{tag}}' }
+					additionalAttributes: { href: req.baseUrl + '/CPPG/keyword={{tag}}' }
 				});
 		}).catch((err) => setImmediate(() => { throw err; }));
 	}
@@ -330,7 +330,7 @@ router.get('/teacher=:teacherName', function (req, res) {
 					randomize: false,
 					numBuckets: 5,
 					htmlTag: 'a',
-					additionalAttributes: { href: vars.config.url + '/keyword={{tag}}', title: '' }
+					additionalAttributes: { href: req.baseUrl + '/CPPG/keyword={{tag}}', title: '' }
 				});
 		}).catch((err) => setImmediate(() => { throw err; }));
 	}
@@ -378,7 +378,7 @@ router.get('/keyword=:word', function (req, res) {
 		});
 	}).catch((err) => setImmediate(() => { throw err; }));;
 });
-
+/*
 router.post('/antigo-search', function (req, res) {
 	var searchValue = req.body.searchValue;
 	try {
@@ -408,7 +408,7 @@ router.post('/antigo-search', function (req, res) {
 	catch (err) {
 		throw err;
 	}
-});
+});*/
 
 router.get('/galeria', function (req, res) {
 	functions.getGalleryImagesNames().then(function (imageNames) {
