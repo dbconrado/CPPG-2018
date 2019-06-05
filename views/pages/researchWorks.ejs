@@ -57,71 +57,63 @@
 							<% for (researchWork of researchWorks){%>
 								<%	var now = new Date(researchWork[2]); %>
 
-								<tr data-status="Tìtulo" id="<%=now.getFullYear();%> <%=researchWork[5]%> <%=researchWork[6]%>">
-									<td class="text-center mx-auto">
-										<div class="ckbox m-auto d-block">
-											<input type="checkbox" id="<%=researchWork[1]%>">
-											<label for="<%=researchWork[1]%>"></label>
-										</div>
-									</td>
-									<td>
-										<div class="col-sm-4">
-										</div>
+									<tr data-status="Tìtulo" id="<%=now.getFullYear();%> <%=researchWork[5]%> <%=researchWork[6]%>">
+										<td class="text-center mx-auto">
+											<div class="ckbox m-auto d-block">
+												<input type="checkbox" id="<%=researchWork[1]%>">
+												<label for="<%=researchWork[1]%>"></label>
+											</div>
+										</td>
+										<td>
+											<div class="col-sm-4">
+											</div>
 
-										<div class="media d-block">
-											<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
-												<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
-											</a>
-											<div class="media-body">
+											<div class="media d-block">
+												<a href="#" class="float-left pr-3 pr-md-0 mr-md-5">
+													<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
+												</a>
+												<div class="media-body">
 													<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){
 														var now = new Date(researchWork[2]); %>
 														<span class="media-meta float-right">
-																<%var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-														<%= now.toLocaleDateString('en-GB',options); %>
-													<% } %>
-												</span>
+															<%var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+																<%= now.toLocaleDateString('en-GB',options); %>
+																	<% } %>
+														</span>
 
-												<h4 class="title">
-													<%= researchWork[1] %>
-														<span class="pull-right Tìtulo">(Título)</span>
-												</h4>
+														<h4 class="title">
+															<%= researchWork[1] %>
+																<span class="pull-right Tìtulo">(Título)</span>
+														</h4>
 
-												<p class="summary Autor">Autores:
-													<% if (researchWork[3] != [] && researchWork[3] != undefined) {
+														<p class="summary Autor">Autores:
+															<% if (researchWork[3] != [] && researchWork[3] != undefined) {
 																for (author of researchWork[3]){%>
-														<span>
-															<%= author %>;</span>
-														<%}
+																<span>
+																	<%= author %>;</span>
+																<%}
 													}%>
-												</p>
-												<p class="summary">Alunos Envolvidos:
-													<% if (researchWork[4] != [] && researchWork[4] != undefined) {
+														</p>
+														<p class="summary">Alunos Envolvidos:
+															<% if (researchWork[4] != [] && researchWork[4] != undefined) {
 																for (student of researchWork[4]) {%>
-														<span>
-															<%= student %>;</span>
-														<%}
+																<span>
+																	<%= student %>;</span>
+																<%}
 													}%>
-												</p>
+														</p>
+												</div>
 											</div>
-										</div>
-									</td>
-								</tr>
-								<% } %>
+										</td>
+									</tr>
+									<% } %>
 						</tbody>
 					</table>
 				</div>
 			</div>
-			
-		</div>
-		</div>
 
-		<!-- FOOTER -->
-		<footer class="container">
-			<p class="float-right">
-				<a href="#">Voltar ao topo</a>
-			</p>
-			<p>© 2018 IFMG Campus Sabará</p>
-		</footer>
+		</div>
+		</div>
 	</main>
 
 	<!-- Bootstrap core JavaScript -->
@@ -132,5 +124,6 @@
 		<script type="text/javascript">
 			document.title = 'Projetos - ' + document.title;
 		</script>
+</body>
 
 </html>

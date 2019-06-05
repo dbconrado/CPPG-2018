@@ -27,8 +27,8 @@
                         </h2>
                     
                     <p class="mb-1 text-muted">
-                        <% var now = presentation['data']; %>
-                            <% var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+                        <% var now = presentation['data'];
+                            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
                                 <%= now.toLocaleDateString('en-GB',options); %>
                                     <br>
                                     <%= now.toLocaleTimeString(); %>
@@ -85,13 +85,6 @@
             </div>
             <!-- /.blog-post -->
             <% } %>
-                <!--FOOTER-->
-                <footer class="container">
-                    <p class="float-right">
-                        <a href="#main">Voltar ao topo</a>
-                    </p>
-                    <p>© 2018 IFMG Campus Sabará</p>
-                </footer>
     </main>
 
     <!-- Bootstrap core JavaScript -->

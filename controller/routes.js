@@ -602,4 +602,8 @@ router.get('/cisp/:codPresentation', function (req, res) {
 		res.render('pages/presentationDetails', { presentations: result });
 	}).catch((err) => setImmediate(() => { throw err; }));
 });
+
+router.get('/sobre', function(req, res){
+	res.render('pages/about');
+});
 module.exports = router;
