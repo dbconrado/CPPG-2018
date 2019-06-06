@@ -3,6 +3,33 @@
 
 <head>
     <% include ../partials/head %>
+        <style>
+            h1, h3 {
+                font-family: Helvetica, Arial, sans-serif;
+                font-weight: bold;
+                line-height: 1em;
+            }
+
+            .inset-text {
+                /* Shadows are visible under slightly transparent text color */
+                color: rgba(0, 0, 0, 0.8);
+                text-shadow: 1px 4px 6px #def, 0 0 0 #000, 1px 4px 6px #def;
+            }
+
+            /* Don't show shadows when selecting text */
+
+            ::-moz-selection {
+                background: #5af;
+                color: #fff;
+                text-shadow: none;
+            }
+
+            ::selection {
+                background: #5af;
+                color: #fff;
+                text-shadow: none;
+            }
+        </style>
 </head>
 
 <body class="pt-5">
@@ -10,19 +37,45 @@
         <% include ../partials/navbar %>
     </header>
 
-    <main>
-        <div class="container">
-            <div class="col-sm-6">
-                <h2>Fluxo de Projetos</h2>
+    <main class="container">
+        <h1 class="text-center mb-5 inset-text">Coordenação de Pesquisa, Inovação e Pós-Graduação</h1>
+        <div class="row">
+            <div class="col-sm-8">
+                <p class="title text-muted font-weight-bold">Coordenador de Pesquisa, Inovação e Pós-graduação: Doutor Carlos Alexandre Silva</p>
+                <p>O desenvolvimento da pesquisa e inovação é além de uma oportunidade de completação na formação discente,
+                    uma ação necessária para solucionar problemas do dia-a-dia, permitindo a maior competitividade de negócios
+                    e a resolução de questões, tais como a proposição de tecnologias que tragam melhorias a qualidade de
+                    vida.</p>
+                <p>A Coordenação de Pesquisa, Inovação e Pós-graduação do IFMG Campus Sabará, busca fomentar o desenvolvimento
+                    da pesquisa e inovação por meio de estímulos para criação de projetos que envolvam a comunidade acadêmica.
+                    </p>
+                <p>Se você é um discente do IFMG Campus Sabará e tem o desejo de partipar de projetos de pesquisa e inovação,
+                    fique atento aos Editais de seleção ou procure um professor de sua afinidade para desenvolver conjuntamente
+                    com ele uma proposta.</p>
+                <p>Se você for alguém da comunidade e tiver interesse em desenvolver conjuntamente com o IFMG Campus Sabará
+                    uma pesquisa para solucionar algum problema ou melhorar algum processo, entre em contato pelo e-mail
+                    pesquisa.sabara@ifmg.edu.br.</p>
+                <h3 class="text-center inset-text">Cadastro de Projetos</h3>
                 <p>Todo projeto desenvolvido ou em desenvolvimento no IFMG Campus Sabará (com bolsista ou voluntários), deverá
                     ser devidamente cadastrado no link abaixo. Este cadastro é garantia da certificação e emissão de declarações
                     dos orientadores, co-orientadores, bolsistas e voluntários. Para novas propostas o cadastro por si só
                     não implica na aprovação do projeto, sendo o mesmo, avaliado conforme previsto em Edital.</p>
             </div>
-            <div class="col-sm-2">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloremque recusandae culpa rem nesciunt eaque exercitationem
-                    beatae sint commodi laboriosam iste tenetur asperiores eos, veritatis iusto deserunt autem sapiente,
-                    accusantium molestiae!</p>
+            <div class="col-sm-4">
+                <h3 class="text-center">Templates</h3>
+                <ul>
+                    <button class="btn btn-success">Template MS-Word</button>
+                    <button class="btn btn-success mt-2">Template em LateX</li>
+                        <button class="btn btn-success mt-2">Template para apresentação (PPTX)</button>
+                        <button class="btn btn-success mt-2">Template para apresentação (LateX)</button>
+                        <button class="btn btn-success mt-2">Template para posters</button>
+                </ul>
+            </div>
+            <div class="col-sm-8" align="center">
+                <h3 class="text-center inset-text">Fluxos</h3>
+                <img class="mt-3" src="/CPPG/assets/images/fluxo_voluntario.jpg">
+                <img class="mt-5" src="/CPPG/assets/images/fluxo_bolsista.jpg">
+                <img class="mt-5" src="/CPPG/assets/images/fluxo_eventos.jpg">
             </div>
         </div>
     </main>
@@ -30,6 +83,10 @@
 
 
     <% include ../partials/footer %>
+
+        <script type="text/javascript">
+            document.title = 'Sobre - ' + document.title;
+        </script>
 
 </body>
 
