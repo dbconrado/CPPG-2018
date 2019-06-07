@@ -3,33 +3,6 @@
 
 <head>
     <% include ../partials/head %>
-        <style>
-            h1, h3 {
-                font-family: Helvetica, Arial, sans-serif;
-                font-weight: bold;
-                line-height: 1em;
-            }
-
-            .inset-text {
-                /* Shadows are visible under slightly transparent text color */
-                color: rgba(0, 0, 0, 0.8);
-                text-shadow: 1px 4px 6px #def, 0 0 0 #000, 1px 4px 6px #def;
-            }
-
-            /* Don't show shadows when selecting text */
-
-            ::-moz-selection {
-                background: #5af;
-                color: #fff;
-                text-shadow: none;
-            }
-
-            ::selection {
-                background: #5af;
-                color: #fff;
-                text-shadow: none;
-            }
-        </style>
 </head>
 
 <body class="pt-5">
@@ -62,7 +35,7 @@
                     não implica na aprovação do projeto, sendo o mesmo, avaliado conforme previsto em Edital.</p>
             </div>
             <div class="col-sm-4">
-                <h3 class="text-center">Templates</h3>
+                <h3 class="text-center inset-text">Templates</h3>
                 <ul>
                     <button class="btn btn-success">Template MS-Word</button>
                     <button class="btn btn-success mt-2">Template em LateX</li>

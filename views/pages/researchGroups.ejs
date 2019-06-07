@@ -16,7 +16,7 @@
     <main role="main" class="container" id="container">
         <div class="card text-center">
             <div class="card-header">
-                <h3>Grupos de Pesquisa</h3>
+                <h3 class="inset-text">Grupos de Pesquisa</h3>
             </div>
 
             <div class="row" style="width:100%;padding-left: 2%;">
@@ -44,7 +44,7 @@
 
                 <div class="card-body">
                     <div class="table-container text-left">
-                        <table class="table table-filter">
+                        <table class="table table-filter" id="researchGroupsTable">
                             <tbody>
                                 <% for (researchGroup of researchGroups){
                                     var now = new Date(researchGroup[3]);%>

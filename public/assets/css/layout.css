@@ -3,5 +3,61 @@
 
 body {
     padding: 0 0;
-    color: #5a5ared;
+    /* color: #5a5ared; */
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: Helvetica, Arial, sans-serif;
+    font-weight: bold;
+    line-height: 1em;
+}
+
+.inset-text {
+    /* Shadows are visible under slightly transparent text color */
+    color: rgba(0, 0, 0, 0.8);
+    text-shadow: 1px 4px 6px #def, 0 0 0 #000, 1px 4px 6px #def;
+}
+
+/* Don't show shadows when selecting text */
+
+::-moz-selection {
+    background: #5af;
+    color: #fff;
+    text-shadow: none;
+}
+
+::selection {
+    background: #5af;
+    color: #fff;
+    text-shadow: none;
+}
+
+input[type=checkbox].css-checkbox {
+    position:absolute; z-index:-1000; left:-1000px; overflow: hidden; clip: rect(0 0 0 0); height:1px; width:1px; margin:-1px; padding:0; border:0;
+}
+
+input[type=checkbox].css-checkbox + label.css-label {
+    padding-left:22px;
+    height:17px; 
+    display:inline-block;
+    line-height:17px;
+    background-repeat:no-repeat;
+    background-position: 0 0;
+    font-size:17px;
+    vertical-align:middle;
+    cursor:pointer;
+
+}
+
+input[type=checkbox].css-checkbox:checked + label.css-label {
+    background-position: 0 -17px;
+}
+label.css-label {
+background-image:url(http://csscheckbox.com/checkboxes/u/csscheckbox_314a66eb1641f8832a7ada19bbf96697.png);
+-webkit-touch-callout: none;
+-webkit-user-select: none;
+-khtml-user-select: none;
+-moz-user-select: none;
+-ms-user-select: none;
+user-select: none;
 }

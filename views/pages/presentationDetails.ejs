@@ -15,7 +15,7 @@
 
     <main role="main" class="container" id="main">
         <% for (presentation of presentations) { %>
-            <h3 class="pb-4 mb-4 font-italic border-bottom">
+            <h3 class="pb-4 mb-4 font-italic border-bottom inset-text">
                 <%=presentation['titulo']%>
             </h3>
 
@@ -37,21 +37,21 @@
                     </p>
                 </div>
                 <!-- CONTAINER -->
-                <h2 class="mt-3">Resumo da Apresentação</h2>
+                <h2 class="mt-3 inset-text">Resumo da Apresentação</h2>
                 <p>
                     <%= presentation['resumo']; %>
                 </p>
                 <div style="clear: both;"></div>
                 <br>
                 <hr>
-                <h2 class="mt-3">Sobre o(a) Apresentador(a)</h2>
+                <h2 class="mt-3 inset-text">Sobre o(a) Apresentador(a)</h2>
                 <p>
                     <%= presentation['sobre_apresentador']; %>
                 </p>
                 <% if(presentation['apresentado']) { %>
                     <div class="container">
                         <hr>
-                        <h2 class="mt-3">Fotos da Apresentação</h2>
+                        <h2 class="mt-3 inset-text">Fotos da Apresentação</h2>
                         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
                             <ol class="carousel-indicators">
                                 <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
