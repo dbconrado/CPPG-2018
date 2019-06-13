@@ -29,100 +29,77 @@
   </div>
 
 
-  <header>
+
+  <header class="masthead mb-5" data-ride="carousel">
     <% include ../partials/navbar %>
+      <div class="carousel-item active" style="height: 100%;">
+        <img class="campus-brand w-100 h-100" src="/CPPG/assets/images/campus-1.jpg" alt="Foto da fachada do Campus" style="object-fit: cover;">
+
+        <div class="carousel-caption" id="header-caption">
+          <h1>Pesquisa</h1>
+          <p>Coordenação de Pesquisa, Inovação e Pós-Graduação</p>
+
+          <form id="searchForm" class="py-3 py-sm-4" method="POST" action="/CPPG/search">
+            <div class="form-group form-inline justify-content-center">
+              <input id="searchTextBox" name="searchValue" tabindex="2" class="form-control mr-sm-2 col-6" type="search" placeholder="Digite um projeto, autor ou alunos envolvidos"
+                aria-label="Search" required>
+              <button id="btnSearch" class="btn btn-success my-2 my-sm-0" type="submit" data-toogle="tooltip" title="Buscar projetos e/ou publicações">Buscar</button>
+            </div>
+            <!--
+            <div class="input-group mb-3 justify-content-center">
+              <div id="selSearchFields" class="input-group-prepend input-group-text pt-3 mt-2">
+
+                <input type="checkbox" name="chkResearchs" id="chkResearchs" class="css-checkbox" aria-label="Cheque esta caixa se você deseja buscar por projetos">
+                <label for="chkResearchs" class="css-label small">Projetos</label>
+              </div>
+
+              <div id="selSearchFields" class="input-group-prepend input-group-text ml-2 mt-2 pt-3">
+                <input type="checkbox" name="chkProceedings" id="chkProceedings" class="css-checkbox" aria-label="Cheque esta caixa se você deseja buscar por publicações"
+                />
+                <label for="chkProceedings" class="css-label">Publicações</label>
+              </div>
+
+              <div id="selSearchFields" class="input-group-prepend input-group-text ml-2 mt-2 pt-3">
+                <input type="checkbox" name="chkGroups" id="chkGroups" class="css-checkbox" aria-label="Cheque esta caixa se você deseja buscar por grupos de pesquisa"
+                />
+                <label for="chkGroups" class="css-label">Grupos de Pesquisa</label>
+              </div>
+            </div> -->
+
+          </form>
+
+        </div>
+      </div>
   </header>
 
   <main role="main">
 
-    <div id="campus-brand-carousel" class="carousel slide" data-ride="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-item active">
-          <img class="campus-brand" src="/CPPG/assets/images/campus-1.jpg" alt="Foto da fachada do Campus">
-          <div class="container">
-            <div class="carousel-caption">
-              <h1>Pesquisa</h1>
-              <p>Coordenação de Pesquisa, Inovação e Pós-Graduação</p>
-
-              <form id="searchForm" class="py-3 py-sm-4" method="POST" action="/CPPG/search">
-                <div class="form-group form-inline justify-content-center">
-                  <input id="searchTextBox" name="searchValue" tabindex="2" class="form-control mr-sm-2 col-6" type="search" placeholder="Digite um projeto, autor ou alunos envolvidos"
-                    aria-label="Search" required>
-                  <button id="btnSearch" class="btn btn-success my-2 my-sm-0" type="submit" data-toogle="tooltip" title="Buscar projetos e/ou publicações">Buscar</button>
-                </div>
-
-                <div class="input-group mb-3 justify-content-center">
-
-                  <div id="selSearchFields" class="input-group-prepend input-group-text pt-3">
-
-                    <input type="checkbox" name="chkResearchs" id="chkResearchs" class="css-checkbox" aria-label="Cheque esta caixa se você deseja buscar por projetos">
-                    <label for="chkResearchs" class="css-label small">Projetos</label>
-                    <!--<div class="input-group-prepend">
-                    <div class="input-group-text">
-                      <input name="chkResearchs" type="checkbox" aria-label="Cheque esta caixa se você deseja buscar por projetos">
-                    </div>
-                  </div>
-                  <div class="input-group-prepend pr-1">
-                    <span class="input-group-text">Projetos</span>
-                  </div>-->
-                  </div>
-
-                  <div id="selSearchFields" class="input-group-prepend input-group-text ml-2 pt-3">
-                    <input type="checkbox" name="chkProceedings" id="chkProceedings" class="css-checkbox" aria-label="Cheque esta caixa se você deseja buscar por publicações"
-                    />
-                    <label for="chkProceedings" class="css-label">Publicações</label>
-                    <!-- <div class="input-group-text">
-                      <input name="chkProceedings" type="checkbox" aria-label="Cheque esta caixa se você deseja buscar por publicações">
-                    </div>
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">Publicações</span>
-                    </div>-->
-                  </div>
-
-                  <div id="selSearchFields" class="input-group-prepend input-group-text ml-2 pt-3">
-                    <input type="checkbox" name="chkGroups" id="chkGroups" class="css-checkbox" aria-label="Cheque esta caixa se você deseja buscar por grupos de pesquisa"
-                    />
-                    <label for="chkGroups" class="css-label">Grupos de Pesquisa</label>
-                    <!--<div class="input-group-text">
-                      <input name="chkGroups" type="checkbox" aria-label="Cheque esta caixa se você deseja buscar por grupos de pesquisa">
-                    </div>
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">Grupos de Pesquisa</span>
-                    </div> -->
-                  </div>
-                </div>
-
-              </form>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    </div>
-
     <!--CAROUSEL DE EVENTOS-->
-    <div id="carouselEvents" class="carousel slide" data-ride="carousel">
+    <div id="carouselEvents" class="carousel slide container" data-ride="carousel">
       <ol class="carousel-indicators">
         <li data-target="#carouselEvents" data-slide-to="0" class="active"></li>
         <li data-target="#carouselEvents" data-slide-to="1"></li>
-        <li data-target="#carouselEvents" data-slide-to="2"></li>
+        <!--<li data-target="#carouselEvents" data-slide-to="2"></li>-->
       </ol>
       <div class="carousel-inner">
         <div class="carousel-item active">
-          <a href="/CPPG/cisp/">
-            <img class="d-block w-100 slide-image" src="/CPPG/assets/images/2cisp.jpg" alt="First Slide">
-          </a>
+          <img class="d-block w-100" src="/CPPG/assets/images/2cisp.jpg" alt="First Slide">
+          <div class="carousel-caption">
+            <a class="btn btn-secondary h-100" href="/CPPG/cisp/">Veja mais</a>
+          </div>
         </div>
         <div class="carousel-item">
-          <a href="https://www.ifmg.edu.br/landing/" target="_blank">
-            <img class="d-block w-100 slide-image" src="/CPPG/assets/images/index/vestibular_2019.jpeg" alt="Second slide">
-          </a>
+            <img class="d-block w-100" src="/CPPG/assets/images/index/vestibular_2019.jpeg" alt="Second slide">
+          <div class="carousel-caption">
+            <a class="btn btn-secondary" href="https://www.ifmg.edu.br/landing/" target="_blank">Veja mais</a>
+          </div>
         </div>
+        <!--
         <div class="carousel-item">
           <a href="https://www.ifmg.edu.br/sabara/noticias/vi-arraia-do-ifmg-campus-sabara-2" target="_blank">
             <img class="d-block w-100 slide-image" src="/CPPG/assets/images/index/arraia.jpeg" alt="Third slide">
           </a>
-        </div>
+        </div> -->
       </div>
       <a class="carousel-control-prev" href="#carouselEvents" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>

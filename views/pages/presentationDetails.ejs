@@ -20,21 +20,29 @@
             </h3>
 
             <div class="blog-post">
-                <div class="media d-block float-left pr-3 pr-md-0 mr-md-5 row no-gutters border rounded overflow-hidden">
-                        <img src="<%=presentation['galeria_imagens']%>photo1.jpg" class="media-photo" width="100%" height="250px" alt="foto do autor(a)">
-                        <h2 class="blog-post-title">
-                            <a href="<%=presentation['lattes']%>" target="_blank"><%=presentation['apresentador']%></a>
-                        </h2>
-                    
-                    <p class="mb-1 text-muted">
-                        <% var now = presentation['data'];
-                            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-                                <%= now.toLocaleDateString('en-GB',options); %>
+                <div class="media d-block float-left pl-0 pr-0 mr-md-5 no-gutters border rounded col-sm-6">
+                    <% if (presentation['apresentado']) { %>
+                        <img src="<%=presentation['galeria_imagens']%>photo1.jpg" class="media-photo" width="100%" alt="foto do autor(a)">
+                        <% } else { %>
+                            <img src="/CPPG/assets/images/2cisp.jpg" class="media-photo" width="100%" alt="2º cisp">
+                            <% } %>
+                                <h2 class="blog-post-title">
+                                    <%=presentation['apresentador']%>
+                                </h2>
+
+                                <p class="mb-1 text-muted">
+                                    <a href="<%=presentation['lattes']%>" target="_blank">
+                                        <img src="/CPPG/assets/images/cisp/lattes.png" class="thumbnail" width="100px" height="52px" alt="currículo lattes">
+                                    </a>
                                     <br>
-                                    <%= now.toLocaleTimeString(); %>
-                                        <br>
-                                        <%= presentation['local']; %>
-                    </p>
+                                    <% var now = presentation['data'];
+                            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
+                                        <%= now.toLocaleDateString('en-GB',options); %>
+                                            <br>
+                                            <%= now.toLocaleTimeString(); %>
+                                                <br>
+                                                <%= presentation['local']; %>
+                                </p>
                 </div>
                 <!-- CONTAINER -->
                 <h2 class="mt-3 inset-text">Resumo da Apresentação</h2>
@@ -89,9 +97,9 @@
 
     <!-- Bootstrap core JavaScript -->
     <% include ../partials/footer %>
-    <script type="text/javascript">
-        document.title = 'Detalhes da Apresentação - ' + document.title;
-    </script>
+        <script type="text/javascript">
+            document.title = 'Detalhes da Apresentação - ' + document.title;
+        </script>
 </body>
 
 </html>

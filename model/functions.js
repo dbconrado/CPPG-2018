@@ -496,7 +496,7 @@ var functions = {
 		});
 	},
 	getCispNextPresentations: function () {
-		const sql = "SELECT * FROM apresentacao_cisp order by data asc";
+		const sql = "SELECT * FROM apresentacao_cisp order by data desc";
 		return new Promise(function (resolve, reject) {
 			vars.con.query(sql, function (err, results) {
 				if (err) reject(err);

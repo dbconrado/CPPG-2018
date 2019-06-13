@@ -426,7 +426,7 @@ router.post('/search', function (req, res) {
 		}
 		searchValue = '%' + searchValue + '%'; // Apenas escapa as aspas simples
 
-		if (req.body.chkProceedings && req.body.chkResearchs && req.body.chkGroups) {
+		// if (req.body.chkProceedings && req.body.chkResearchs && req.body.chkGroups) {
 			functions.getProceedingsByItsNameTeacherOrStudents(searchValue).then(function (proceedings) {
 				functions.getResearchsByItsNameTeacherOrStudents(searchValue).then(function (researchWorks) {
 					functions.getGroupsByItsNameTeacherOrStudents(searchValue).then(function (groups) {
@@ -447,7 +447,7 @@ router.post('/search', function (req, res) {
 				}).catch((err) => setImmediate(() => { throw err; }));
 			}).catch((err) => setImmediate(() => { throw err; }));
 
-		} else if (req.body.chkProceedings && req.body.chkResearchs) {
+		/*} else if (req.body.chkProceedings && req.body.chkResearchs) {
 			functions.getProceedingsByItsNameTeacherOrStudents(searchValue).then(function (proceedings) {
 
 				functions.getResearchsByItsNameTeacherOrStudents(searchValue).then(function (researchWorks) {
@@ -554,7 +554,7 @@ router.post('/search', function (req, res) {
 					}).catch((err) => setImmediate(() => { throw err; }));
 				}).catch((err) => setImmediate(() => { throw err; }));
 			}
-		}
+		}*/
 	}
 	catch (err) {
 		throw err;

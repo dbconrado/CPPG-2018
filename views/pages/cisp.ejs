@@ -15,7 +15,7 @@
 
     <h1 class="text-center mt-2 inset-text">CISP</h1>
 
-    <h2 class="featurette-heading my-2 inset-text">O que é o CISP?</h2>
+    <h2 class="featurette-heading mt-4 mb-0 inset-text">O que é o CISP?</h2>
     <br> O
     <i class="font-italic">Ciclo de Seminários de Pesquisa</i> (
     <b>CISP</b>) do IFMG-Sabará foi criado em agosto de 2018 tendo como objetivo proporcionar um ambiente de discussões científicas
@@ -25,7 +25,7 @@
     coletivo, propiciando um ambiente descontraído como nos moldes do
     <i class="font-italic">pint of science</i>, sendo os seminários ocorrendo no espaço interno do campus e o lanche como um café da tarde.
 
-    <h2 class="featurette-heading my-2 inset-text">Como tudo começou</h2>
+    <h2 class="featurette-heading mt-4 mb-0 inset-text">Como tudo começou</h2>
     <br>O
     <b>CISP</b> foi iniciado em setembro de 2018 e contou com quatro pesquisadores que compartilharam suas pesquisas com discentes,
     servidores e comunidade externa do campus ao longo do ano. Em setembro o Prof. Me. Daniel Conrado apresentou sua pesquisa
@@ -49,7 +49,7 @@
     if (count > 0){ %>
 
       <!-- PRÓXIMAS APRESENTAÇÕES -->
-      <h2 class="featurette-heading my-2 inset-text">Próximas Apresentações</h2>
+      <h2 class="featurette-heading my-4 inset-text">Próximas Apresentações</h2>
       <div class="row mb-2">
         <% for(presentation of presentations) {
         if(presentation['apresentado'] == 0){ %>
@@ -90,7 +90,7 @@
       <%} %>
 
         <!-- GALERIA DE APRESENTAÇÕES -->
-        <h2 class="featurette-heading my-2 inset-text">Apresentações Anteriores</h2>
+        <h2 class="featurette-heading my-4 inset-text">Apresentações Anteriores</h2>
         <div class="container">
           <div class="row">
             <% for(presentation of presentations){
@@ -98,9 +98,8 @@
               <div class="col-md-4">
                 <div class="card mb-4 box-shadow">
                   <a href="/CPPG/cisp/<%=presentation['id']%>">
-                    <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Foto de capa da apresentação"
-                      style="height: 225px; width: 100%; display: block;" src="<%=presentation['galeria_imagens']%>photo1.jpg"
-                      data-holder-rendered="true">
+                    <img class="card-img-top d-block w-100"  alt="Foto de capa da apresentação" src="<%=presentation['galeria_imagens']%>photo1.jpg"
+                      data-holder-rendered="true" style="height: 255px; object-fit: scale-down;">
                   </a>
                   <div class="card-body">
                     <p class="card-text">
