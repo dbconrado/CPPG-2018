@@ -149,3 +149,7 @@
     .table-filter .media .summary {
         font-size: 14px;
     }
+
+    .nav-item .nav-link {
+        color: #28a745;
+    }
