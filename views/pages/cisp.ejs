@@ -65,10 +65,6 @@
                   <% var now = presentation['data']; %>
                     <% var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
                       <%= now.toLocaleDateString('en-GB',options); %>
-                        <br>
-                        <%= now.toLocaleTimeString(); %>
-                          <br>
-                          <%= presentation['local']; %>
                 </div>
                 <p class="card-text mb-auto">
                   <%= presentation['apresentador'] %>
@@ -76,7 +72,7 @@
                 <a href="/CPPG/cisp/<%=presentation['id']%>" class="stretched-link">Ver mais</a>
               </div>
               <div class="col-auto d-none d-lg-block">
-                <img class="bd-placeholder-img" width="200" height="100%" src="/CPPG/assets/images/2cisp.jpg" focusable="false" role="img"
+                <img class="img-fluid" src="<%=presentation['galeria_imagens']%>selfie.jpeg" focusable="false" role="img"
                   aria-label="Placeholder: Thumbnail">
                 </img>
               </div>
