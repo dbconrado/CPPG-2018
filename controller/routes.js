@@ -8,6 +8,7 @@ var vars = require('../model/variables.js');
 var functions = require('../model/functions.js');
 var fs = require('fs');
 var ejsLint = require('ejs-lint');
+var dayjs = require('dayjs');
 
 router.get('/', function (req, res) {
 	res.render('pages/index-novo');
@@ -433,7 +434,7 @@ router.post('/search', function (req, res) {
 
 						functions.getTeacherInfoByItsName(searchValue).then(function (cloud) {
 							tagCloud.tagCloud(cloud, function (err, data) {
-								res.render('pages/searchProceedings', { chkBoxProceedings: true, chkBoxResearchWorks: true, chkBoxGroups: true, proceedingsByName: proceedings[0][0], proceedingsByAuthor: proceedings[1][0], proceedingsByStudents: proceedings[2][0], researchWorksByName: researchWorks[0][0], researchWorksByAuthor: researchWorks[1][0], researchWorksByStudents: researchWorks[2][0], groupsByName: groups[0][0], groupsByAuthor: groups[1][0], groupsByStudents: groups[2][0], cloud: data });
+								res.render('pages/searchProceedings', { chkBoxProceedings: true, chkBoxResearchWorks: true, chkBoxGroups: true, proceedingsByName: proceedings[0][0], proceedingsByAuthor: proceedings[1][0], proceedingsByStudents: proceedings[2][0], researchWorksByName: researchWorks[0][0], researchWorksByAuthor: researchWorks[1][0], researchWorksByStudents: researchWorks[2][0], groupsByName: groups[0][0], groupsByAuthor: groups[1][0], groupsByStudents: groups[2][0], cloud: data, dayjs: dayjs });
 							},
 								{
 									classPrefix: 'btn tag tag',
@@ -570,7 +571,7 @@ router.get('/grupos-de-pesquisa', function (req, res) {
 		});
 
 		Promise.all(promises).then(researchGroups => {
-			res.render('pages/researchGroups', { researchGroups: researchGroups });
+			res.render('pages/researchGroups', { researchGroups: researchGroups, dayjs: dayjs });
 		});
 	}).catch((err) => setImmediate(() => { throw err; }));
 });
@@ -598,7 +599,7 @@ router.get('/cisp', function (req, res) {
 
 router.get('/cisp/:codPresentation', function (req, res) {
 	var id = req.params.codPresentation;
-	functions.getCispPrestationCode(id).then(function (result) {
+	functions.getCispPrestationByCode(id).then(function (result) {
 		res.render('pages/presentationDetails', { presentations: result });
 	}).catch((err) => setImmediate(() => { throw err; }));
 });

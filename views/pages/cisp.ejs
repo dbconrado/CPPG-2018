@@ -62,9 +62,7 @@
                   <%= presentation['titulo'] %>
                 </h3>
                 <div class="mb-1 text-muted">
-                  <% var now = presentation['data']; %>
-                    <% var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-                      <%= now.toLocaleDateString('en-GB',options); %>
+                  <%= presentation['data']; %>
                 </div>
                 <p class="card-text mb-auto">
                   <%= presentation['apresentador'] %>

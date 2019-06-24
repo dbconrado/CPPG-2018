@@ -314,10 +314,8 @@
 												</a>
 												<div class="media-body">
 													<span class="media-meta float-right">
-														<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){
-																			var now = new Date(researchWork[2]);
-																			var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-															<%= now.toLocaleDateString('en-GB',options); %>
+														<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){ %>
+																			<%= researchWork[2] %>
 																<% } %>
 													</span>
 													<h4 class="title">
@@ -362,11 +360,9 @@
 													</a>
 													<div class="media-body">
 														<span class="media-meta pull-right">
-															<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){
-																						var now = new Date(researchWork[2]);
-																						var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-																<%= now.toLocaleDateString('en-GB',options); %>
-																	<% } %>
+																<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){ %>
+																	<%= researchWork[2] %>
+														<% } %>
 														</span>
 														<h4 class="title">
 															<%= researchWork[1] %>
@@ -412,11 +408,9 @@
 															</a>
 															<div class="media-body">
 																<span class="media-meta pull-right">
-																	<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){
-																								var now = new Date(researchWork[2]);
-																									var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-																		<%= now.toLocaleDateString('en-GB',options); %>
-																			<% } %>
+																		<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){ %>
+																			<%= researchWork[2] %>
+																<% } %>
 																</span>
 																<h4 class="title">
 																	<%= researchWork[1] %>
@@ -503,11 +497,7 @@
 												</a>
 												<div class="media-body">
 													<span class="media-meta float-right">
-														<% if (group[3] != [] && group[3] != undefined && group[3] != null){
-																	var now = new Date(group[3]);
-																		var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-															<%= now.toLocaleDateString('en-GB',options); %>
-																<% } %>
+															<%= dayjs(group[3]).format('DD/MM/YYYY'); %>
 													</span>
 													<h4 class="title">
 														<%= group[1] %>
@@ -550,11 +540,7 @@
 													</a>
 													<div class="media-body">
 														<span class="media-meta pull-right">
-															<% if (group[3] != [] && group[3] != undefined && group[3] != null){
-																	var now = new Date(group[3]);
-																		var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-																<%= now.toLocaleDateString('en-GB',options); %>
-																	<% } %>
+																<%= dayjs(group[3]).format('DD/MM/YYYY'); %>
 														</span>
 														<h4 class="title">
 															<%= group[1] %>
@@ -599,11 +585,7 @@
 														</a>
 														<div class="media-body">
 															<span class="media-meta pull-right">
-																<% if (group[3] != [] && group[3] != undefined && group[3] != null){
-																	var now = new Date(group[3]);
-																		var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-																	<%= now.toLocaleDateString('en-GB',options); %>
-																		<% } %>
+																	<%= dayjs(group[3]).format('DD/MM/YYYY'); %>
 															</span>
 															<h4 class="title">
 																<%= group[1] %>

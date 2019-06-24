@@ -72,11 +72,9 @@
 													<img src="https://s3.amazonaws.com/uifaces/faces/twitter/fffabs/128.jpg" class="media-photo">
 												</a>
 												<div class="media-body">
-													<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){
-														var now = new Date(researchWork[2]); %>
+													<% if (researchWork[2] != [] && researchWork[2] != undefined && researchWork[2] != null){ %>
 														<span class="media-meta float-right">
-															<%var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-																<%= now.toLocaleDateString('en-GB',options); %>
+																<%= researchWork[2] %>
 																	<% } %>
 														</span>
 

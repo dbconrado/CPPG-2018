@@ -35,13 +35,11 @@
                                         <img src="/CPPG/assets/images/cisp/lattes.png" class="thumbnail mb-2" style="height: auto; width: auto;" alt="currículo lattes">
                                     </a>
                                     <br>
-                                    <% var now = presentation['data'];
-                            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-                                        <%= now.toLocaleDateString('en-GB',options); %>
-                                            <br>
-                                            <%= now.toLocaleTimeString(); %>
-                                                <br>
-                                                <%= presentation['local']; %>
+                                    <%= presentation['data'];%>
+                                    <br>
+                                    <%= presentations['hora'] %>
+                                    <br>
+                                    <%= presentation['local']; %>
                                 </p>
                 </div>
                 <!-- CONTAINER -->

@@ -1,4 +1,5 @@
 var vars = require('./variables.js');
+var dayjs = require("dayjs");
 
 var functions = {
 	getResearchsByItsNameTeacherOrStudents: function (toSearchValue) {
@@ -355,7 +356,7 @@ var functions = {
 
 				if (results[0][0] != undefined) {
 					researchInfo.push(results[0][0]["researchName"]);
-					researchInfo.push(results[0][0]["initialDate"]);
+					researchInfo.push(dayjs(results[0][0]["initialDate"]).format('DD/MM/YYYY'));
 				}
 				researchInfo.push([]);
 				results[0].forEach(function (result) {
@@ -500,27 +501,25 @@ var functions = {
 		return new Promise(function (resolve, reject) {
 			vars.con.query(sql, function (err, results) {
 				if (err) reject(err);
+				results.forEach(function(result){
+					console.log(result['data'])
+					result['data'] = dayjs(result['data']).format('DD/MM/YYYY');
+				});
 				resolve(results);
 			});
 		});
 	},
-	getCispPrestationCode: function (codePresentation) {
+	getCispPrestationByCode: function (codePresentation) {
 		const sql = "SELECT * FROM apresentacao_cisp WHERE id = " + codePresentation + ";";
-		result = [];
 
 		return new Promise(function (resolve, reject) {
 			vars.con.query(sql, function (err, results) {
 				if (err) reject(err);
-				/*return new Promise(function (resolve) {
-					vars.fs.readdir(results['galeria_imagens'], (err, files) => {
-						if (err) reject(err);
-		
-						files.forEach(file => {
-							images.push(file);
-						});
-						console.log(images)
-					})
-				});*/
+				results.forEach(function(result){
+					results['hora'] = dayjs(result['data']).format('HH:mm');
+					result['data'] = dayjs(result['data']).format('DD/MM/YYYY');
+				});
+				console.log(results['hora'])
 				resolve(results);
 			});
 		});

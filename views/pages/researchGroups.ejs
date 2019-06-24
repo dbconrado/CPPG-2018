@@ -64,9 +64,7 @@
                                                 </a>
                                                 <div class="media-body">
                                                     <span class="media-meta float-right">
-                                                        <% var now = researchGroup[3];
-                                                    var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }; %>
-                                                            <%= now.toLocaleDateString('en-GB',options); %>
+                                                        <%= dayjs(researchGroup[3]).format('DD/MM/YYYY'); %>
                                                     </span>
                                                     <h4 class="title">
                                                         <%= researchGroup[1] %>
