@@ -593,7 +593,8 @@ router.get('/cisp', function (req, res) {
 		results.forEach(function (result) {
 			presentations.push(result);
 		});
-		res.render('pages/cisp', { presentations: presentations });
+
+		res.render('pages/cisp', { presentations: results });
 	}).catch((err) => setImmediate(() => { throw err; }));
 });
 

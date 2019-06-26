@@ -498,13 +498,17 @@ var functions = {
 	},
 	getCispNextPresentations: function () {
 		const sql = "SELECT * FROM apresentacao_cisp order by data desc";
+		var count = 0;
 		return new Promise(function (resolve, reject) {
 			vars.con.query(sql, function (err, results) {
 				if (err) reject(err);
 				results.forEach(function(result){
-					console.log(result['data'])
 					result['data'] = dayjs(result['data']).format('DD/MM/YYYY');
+					if (!result['apresentado']){
+						count++;
+					}
 				});
+				results['contador'] = count;
 				resolve(results);
 			});
 		});
