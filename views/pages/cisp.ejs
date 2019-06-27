@@ -50,54 +50,35 @@
       <div class="row mb-2">
         <% for(presentation of presentations) {
         if(presentation['apresentado'] == 0){ %>
-          <!--<div class="col-md-6">
-            <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
-              <div class="col p-4 d-flex flex-column position-static">
-                <strong class="d-inline-block mb-2 text-primary">
-                </strong>
-                <h3 class="mb-0">
-                  <%= presentation['titulo'] %>
-                </h3>
-                <div class="mb-1 text-muted">
-                  <%= presentation['data']; %>
+
+          <div class="col-md-4 mb-0 pl-0 pr-0">
+            <div class="article mb-0">
+              <a href="/CPPG/cisp/<%=presentation['id']%>" class="blog-img text-center">
+                <img class="img-responsive" src="<%=presentation['galeria_imagens']%>selfie.jpeg">
+                <div class="overlay"></div>
+                <div class="link">
+                  <span class="read text-left">Ver mais</h2>
                 </div>
-                <p class="card-text mb-auto">
-                  <%= presentation['apresentador'] %>
+              </a>
+              <div class="desc mr-2 ml-2 text-center text-justify">
+                <span class="meta">
+                  <%= presentation['data']; %>
+                </span>
+                <h2>
+                  <a href="/CPPG/cisp/<%=presentation['id']%>">
+                    <%= presentation['apresentador'] %>
+                  </a>
+                </h2>
+                <p class="text-muted">
+                  <%= presentation['titulo'] %>
                 </p>
-                <a href="/CPPG/cisp/<%=presentation['id']%>" class="stretched-link">Ver mais</a>
-              </div>
-              <div class="col-auto d-none d-lg-block">
-                <img class="img-fluid" src="<%=presentation['galeria_imagens']%>selfie.jpeg" focusable="false" role="img" aria-label="Placeholder: Thumbnail">
-                </img>
               </div>
             </div>
-          </div> -->
-
-            <!-- <div class="item"> -->
-							<div class="col-md-4 mb-0 pl-0 pr-0">
-								<div class="article mb-0">
-									<a href="/CPPG/cisp/<%=presentation['id']%>" class="blog-img text-center">
-										<img class="img-responsive" src="<%=presentation['galeria_imagens']%>selfie.jpeg" alt="html5 bootstrap by colorlib.com">
-										<div class="overlay"></div>
-										<div class="link">
-											<span class="read text-left">Ver mais</h2>
-										</div>
-									</a>
-									<div class="desc mr-2 ml-2 text-center text-justify">
-										<span class="meta"><%= presentation['data']; %></span>
-										<h2><a href="/CPPG/cisp/<%=presentation['id']%>"><%= presentation['apresentador'] %></a></h2>
-										<p class="text-muted"><%= presentation['titulo'] %> </p>
-									</div>
-								</div>
-							</div>
-						<!-- </div> -->
-
-
+          </div>
           <% }
          } %>
       </div>
       <!-- FIM PRÓXIMAS APRESENTAÇÕES -->
-
       <%} %>
 
         <!-- GALERIA DE APRESENTAÇÕES -->
@@ -110,7 +91,7 @@
                 <div class="card mb-4 box-shadow">
                   <a href="/CPPG/cisp/<%=presentation['id']%>">
                     <img class="card-img-top d-block w-100" alt="Foto de capa da apresentação" src="<%=presentation['galeria_imagens']%>photo1.jpg"
-                      data-holder-rendered="true" style="height: 255px; object-fit: scale-down;">
+                      data-holder-rendered="true" style="height: 250px; object-fit: scale-down;">
                   </a>
                   <div class="card-body">
                     <p class="card-text">
