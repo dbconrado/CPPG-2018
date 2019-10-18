@@ -23,24 +23,25 @@
                 <div class="media d-block float-left pl-0 pr-0 mr-md-5 no-gutters border rounded col-sm-6">
                     <% if (presentation['apresentado']) { %>
                         <img src="<%=presentation['galeria_imagens']%>photo1.jpg" class="media-photo mb-2" width="100%" alt="foto do autor(a)">
-                        <% } else { %>
-                            <img src="/CPPG/assets/images/2cisp.jpg" class="media-photo mb-2" width="100%" alt="2º cisp">
-                            <% } %>
-                                <h2 class="blog-post-title">
-                                    <%=presentation['apresentador']%>
-                                </h2>
+                    <% } else { %>
+                        <img src="/CPPG/assets/images/2cisp.jpg" class="media-photo mb-2" width="100%" alt="2º cisp">
+                    <% } %>
+                    
+                    <h2 class="blog-post-title">
+                        <%=presentation['apresentador']%>
+                    </h2>
 
-                                <p class="mb-1 text-muted">
-                                    <a href="<%=presentation['lattes']%>" target="_blank">
-                                        <img src="/CPPG/assets/images/cisp/lattes.png" class="thumbnail mb-2" style="height: auto; width: auto;" alt="currículo lattes">
-                                    </a>
-                                    <br>
-                                    <%= presentation['data'];%>
-                                    <br>
-                                    <%= presentations['hora'] %>
-                                    <br>
-                                    <%= presentation['local']; %>
-                                </p>
+                    <p class="mb-1 text-muted">
+                        <a href="<%=presentation['lattes']%>" target="_blank">
+                            <img src="/CPPG/assets/images/cisp/lattes.png" class="thumbnail mb-2" style="height: auto; width: auto;" alt="currículo lattes">
+                        </a>
+                        <br>
+                        <%= presentation['data'];%>
+                        <br>
+                        <%= presentations['hora'] %>
+                        <br>
+                        <%= presentation['local']; %>
+                    </p>
                 </div>
                 <!-- CONTAINER -->
                 <h2 class="mt-3 inset-text">Resumo da Apresentação</h2>
