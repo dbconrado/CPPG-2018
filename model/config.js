@@ -6,8 +6,8 @@ var config = {
         database: {
             host:   'localhost',
             port:   '3306',
-            user:   'root',
-            pass:   'root',
+            user:   'cppg',
+            pass:   'cppg123',
             db:     'cppg'
         },
         //server details
